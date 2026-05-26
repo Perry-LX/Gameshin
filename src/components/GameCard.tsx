@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import type { GameItem } from '../types';
 
 interface GameCardProps {
@@ -12,16 +13,46 @@ const statusLabels: Record<GameItem['status'], string> = {
 
 export function GameCard({ game }: GameCardProps) {
   const isDisabled = game.status === 'coming-soon';
+  const isInternal = game.url.startsWith('/');
 
-  return (
-    <a
-      href={isDisabled ? undefined : game.url}
-      target={isDisabled ? undefined : '_blank'}
-      rel={isDisabled ? undefined : 'noopener noreferrer'}
-      className={`game-card ${isDisabled ? 'disabled' : ''}`}
-      style={{ '--card-accent': game.color } as React.CSSProperties}
-    >
-      {/* Pixel corner decorations */}
+  if (isDisabled) {
+    return (
+      <div
+        className="game-card disabled"
+        style={{ '--card-accent': game.color } as React.CSSProperties}
+      >
+        <div className="pixel-corners">
+          <span className="pixel-corner tl" />
+          <span className="pixel-corner tr" />
+          <span className="pixel-corner bl" />
+          <span className="pixel-corner br" />
+        </div>
+
+        <div className="card-icon-wrapper">
+          <span className="card-icon">{game.icon}</span>
+        </div>
+
+        <div className="card-body">
+          <h3 className="card-title">{game.title}</h3>
+          <p className="card-desc">{game.description}</p>
+
+          <div className="card-footer">
+            <div className="card-tags">
+              {game.tags.map((tag) => (
+                <span key={tag} className="pixel-tag">▸ {tag}</span>
+              ))}
+            </div>
+            <span className="card-status" data-status={game.status}>
+              {statusLabels[game.status]}
+            </span>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  const content = (
+    <>
       <div className="pixel-corners">
         <span className="pixel-corner tl" />
         <span className="pixel-corner tr" />
@@ -40,9 +71,7 @@ export function GameCard({ game }: GameCardProps) {
         <div className="card-footer">
           <div className="card-tags">
             {game.tags.map((tag) => (
-              <span key={tag} className="pixel-tag">
-                ▸ {tag}
-              </span>
+              <span key={tag} className="pixel-tag">▸ {tag}</span>
             ))}
           </div>
           <span className="card-status" data-status={game.status}>
@@ -51,7 +80,31 @@ export function GameCard({ game }: GameCardProps) {
         </div>
       </div>
 
-      {!isDisabled && <span className="card-play-btn">▶ PLAY</span>}
+      <span className="card-play-btn">▶ PLAY</span>
+    </>
+  );
+
+  if (isInternal) {
+    return (
+      <Link
+        to={game.url}
+        className="game-card"
+        style={{ '--card-accent': game.color } as React.CSSProperties}
+      >
+        {content}
+      </Link>
+    );
+  }
+
+  return (
+    <a
+      href={game.url}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="game-card"
+      style={{ '--card-accent': game.color } as React.CSSProperties}
+    >
+      {content}
     </a>
   );
 }

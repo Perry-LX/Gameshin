@@ -1,11 +1,14 @@
 import { useState, useMemo } from 'react';
+import { Routes, Route } from 'react-router-dom';
 import { Header } from './components/Header';
 import { GameList } from './components/GameList';
 import { Footer } from './components/Footer';
+import { SnakeGame } from './pages/SnakeGame';
+import { TetrisGame } from './pages/TetrisGame';
 import { games } from './data/games';
 import './index.css';
 
-function App() {
+function HomePage() {
   const [activeCategory, setActiveCategory] = useState('all');
 
   const filteredGames = useMemo(() => {
@@ -25,6 +28,16 @@ function App() {
       </main>
       <Footer />
     </div>
+  );
+}
+
+function App() {
+  return (
+    <Routes>
+      <Route path="/" element={<HomePage />} />
+      <Route path="/game/snake" element={<SnakeGame />} />
+      <Route path="/game/tetris" element={<TetrisGame />} />
+    </Routes>
   );
 }
 

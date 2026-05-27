@@ -91,13 +91,14 @@ export class ChessEngine implements EngineControls {
   private winner: Side | 0 | null = null;
   private difficulty: Difficulty = 3;
   private presetIndex = 0;
-  private mode: 'menu' | 'duel' | 'preset' = 'menu';
+  private mode: 'menu' | 'duel' | 'preset' | 'pvp' = 'menu';
   private skin: SkinType;
   private openings: string[] = [];
   private historyBill: string[] = [];
   private moveHistory: string[] = [];
   private lastMoveText = '';
   private aiTimer: number | null = null;
+  private versus: 'ai' | 'human' = 'ai';
 
   constructor(options: EngineOptions) {
     this.canvas = options.canvas;
@@ -187,17 +188,79 @@ export class ChessEngine implements EngineControls {
       mode: this.mode,
       difficulty: this.difficulty,
       presetIndex: this.presetIndex,
+      lastMoveText: this.lastMoveText,
+      moveNotations: this.buildMoveNotations(),
+      currentSkin: this.skin,
+      isPlaying: this.isPlaying,
+      turn: this.getCurrentTurnSide(),
     };
   }
 
   private buildStatusText() {
     if (!this.ready) return '资源加载中...';
-    if (this.winner === 1) return `你赢了${this.lastMoveText ? ` · ${this.lastMoveText}` : ''}`;
-    if (this.winner === -1) return `AI 获胜${this.lastMoveText ? ` · ${this.lastMoveText}` : ''}`;
+    if (this.winner === 1) return `${this.mode === 'pvp' ? '红方胜' : '你赢了'}${this.lastMoveText ? ` · ${this.lastMoveText}` : ''}`;
+    if (this.winner === -1) return `${this.mode === 'pvp' ? '黑方胜' : 'AI 获胜'}${this.lastMoveText ? ` · ${this.lastMoveText}` : ''}`;
     if (this.mode === 'menu') return '选择模式后开始对弈';
-    const prefix = this.mode === 'duel' ? '人机对弈' : `残局挑战 · ${PRESETS[this.presetIndex]?.name ?? ''}`;
+    const prefix = this.mode === 'duel'
+      ? '人机对弈'
+      : this.mode === 'pvp'
+        ? '人人对战'
+        : `残局挑战 · ${PRESETS[this.presetIndex]?.name ?? ''}`;
     if (this.thinking) return `${prefix} · AI 思考中...`;
-    return `${prefix} · 难度 ${this.difficulty}${this.lastMoveText ? ` · ${this.lastMoveText}` : ''}`;
+    return `${prefix}${this.mode === 'pvp' ? '' : ` · 难度 ${this.difficulty}`}${this.lastMoveText ? ` · ${this.lastMoveText}` : ''}`;
+  }
+
+  private buildMoveNotations() {
+    const notations: string[] = [];
+    const board = cloneBoard(this.startBoard);
+
+    for (const code of this.moveHistory) {
+      const [x, y, newX, newY] = code.split('').map((value) => parseInt(value, 10));
+      const moving = board[y]?.[x];
+      if (!moving) continue;
+      notations.push(this.createMoveText(moving, x, y, newX, newY));
+      board[newY][newX] = moving;
+      board[y][x] = undefined;
+    }
+
+    return notations;
+  }
+
+  private getCurrentTurnSide(): Side {
+    return this.moveHistory.length % 2 === 0 ? 1 : -1;
+  }
+
+  private getHumanControlSide(): Side {
+    return this.mode === 'pvp' ? this.getCurrentTurnSide() : 1;
+  }
+
+  private shouldAiRespond() {
+    return this.versus === 'ai' && this.mode !== 'pvp';
+  }
+
+  private finishTurnAfterHumanMove(movingSide: Side) {
+    const nextSide = this.getCurrentTurnSide();
+    if (!this.hasAnyLegalMoves(this.board, nextSide)) {
+      this.finishGame(movingSide);
+      return;
+    }
+    if (this.shouldAiRespond() && nextSide === -1) {
+      this.queueAiMove();
+      return;
+    }
+    this.draw();
+    this.emitStatus();
+  }
+
+  private async applySkin(skin: SkinType) {
+    this.skin = skin;
+    this.ready = false;
+    this.emitStatus();
+    this.assets = await this.loadAssets(this.skin);
+    if (this.destroyed) return;
+    this.ready = true;
+    this.draw();
+    this.emitStatus();
   }
 
   private syncPiecesFromBoard() {
@@ -314,12 +377,12 @@ export class ChessEngine implements EngineControls {
           this.finishGame(-1);
           return;
         }
-        this.queueAiMove();
+        this.finishTurnAfterHumanMove(selected.my);
       }
       return;
     }
 
-    if (piece.my === 1) {
+    if (piece.my === this.getHumanControlSide()) {
       this.selectedKey = key;
       this.dotMoves = this.getLegalMoves(key, x, y, this.board);
       this.syncPiecesFromBoard();
@@ -340,14 +403,11 @@ export class ChessEngine implements EngineControls {
     this.dotMoves = [];
     this.syncPiecesFromBoard();
     this.playAudio(this.clickAudio);
-    if (!this.hasAnyLegalMoves(this.board, -1)) {
-      this.finishGame(1);
-      return;
-    }
-    this.queueAiMove();
+    this.finishTurnAfterHumanMove(selected.my);
   }
 
   private queueAiMove() {
+    if (!this.shouldAiRespond()) return;
     this.thinking = true;
     this.emitStatus();
     this.draw();
@@ -792,6 +852,7 @@ export class ChessEngine implements EngineControls {
 
   startDuel(difficulty: Difficulty) {
     if (!this.ready) return;
+    this.versus = 'ai';
     this.difficulty = difficulty;
     this.mode = 'duel';
     this.startBoard = cloneBoard(INITIAL_BOARD);
@@ -810,8 +871,29 @@ export class ChessEngine implements EngineControls {
     this.emitStatus();
   }
 
+  startHumanDuel() {
+    if (!this.ready) return;
+    this.versus = 'human';
+    this.mode = 'pvp';
+    this.startBoard = cloneBoard(INITIAL_BOARD);
+    this.board = cloneBoard(INITIAL_BOARD);
+    this.moveHistory = [];
+    this.historyBill = this.openings.slice();
+    this.selectedKey = null;
+    this.dotMoves = [];
+    this.lastPane.isShow = false;
+    this.thinking = false;
+    this.winner = null;
+    this.lastMoveText = '';
+    this.isPlaying = true;
+    this.syncPiecesFromBoard();
+    this.draw();
+    this.emitStatus();
+  }
+
   startPreset(index: number) {
     if (!this.ready) return;
+    this.versus = 'ai';
     this.presetIndex = index;
     this.mode = 'preset';
     this.difficulty = 4;
@@ -835,15 +917,20 @@ export class ChessEngine implements EngineControls {
     if (!this.ready || this.mode === 'menu') return;
     if (this.mode === 'duel') {
       this.startDuel(this.difficulty);
+    } else if (this.mode === 'pvp') {
+      this.startHumanDuel();
     } else {
       this.startPreset(this.presetIndex);
     }
   }
 
   regret() {
-    if (!this.ready || this.moveHistory.length < 2 || this.mode === 'menu') return;
-    this.moveHistory.pop();
-    this.moveHistory.pop();
+    if (!this.ready || this.mode === 'menu') return;
+    const steps = this.mode === 'pvp' ? 1 : 2;
+    if (this.moveHistory.length < steps) return;
+    for (let i = 0; i < steps; i += 1) {
+      this.moveHistory.pop();
+    }
     this.board = cloneBoard(this.startBoard);
 
     for (const code of this.moveHistory) {
@@ -859,7 +946,7 @@ export class ChessEngine implements EngineControls {
     this.winner = null;
     this.thinking = false;
     this.isPlaying = true;
-    this.lastMoveText = this.moveHistory.length ? `已悔棋 ${this.moveHistory.length / 2} 回合` : '';
+    this.lastMoveText = this.moveHistory.length ? `已悔棋 ${this.mode === 'pvp' ? this.moveHistory.length : this.moveHistory.length / 2} ${this.mode === 'pvp' ? '步' : '回合'}` : '';
     this.syncPiecesFromBoard();
     this.draw();
     this.emitStatus();
@@ -867,14 +954,12 @@ export class ChessEngine implements EngineControls {
 
   async cycleSkin() {
     const next: SkinType = this.skin === 'stype1' ? 'stype3' : this.skin === 'stype2' ? 'stype1' : 'stype2';
-    this.skin = next;
-    this.ready = false;
-    this.emitStatus();
-    this.assets = await this.loadAssets(this.skin);
-    if (this.destroyed) return;
-    this.ready = true;
-    this.draw();
-    this.emitStatus();
+    await this.applySkin(next);
+  }
+
+  async setSkin(skin: SkinType) {
+    if (skin === this.skin) return;
+    await this.applySkin(skin);
   }
 
   setDifficulty(difficulty: Difficulty) {

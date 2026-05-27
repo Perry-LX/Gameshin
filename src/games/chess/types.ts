@@ -66,9 +66,14 @@ export interface ChessStatus {
   scoreText: string;
   winner: Side | 0 | null;
   thinking: boolean;
-  mode: 'menu' | 'duel' | 'preset';
+  mode: 'menu' | 'duel' | 'preset' | 'pvp';
   difficulty: Difficulty;
   presetIndex: number;
+  lastMoveText: string;
+  moveNotations: string[];
+  currentSkin: SkinType;
+  isPlaying: boolean;
+  turn: Side;
 }
 
 export interface EngineOptions extends RuntimeRefs {
@@ -78,10 +83,12 @@ export interface EngineOptions extends RuntimeRefs {
 
 export interface EngineControls {
   startDuel: (difficulty: Difficulty) => void;
+  startHumanDuel: () => void;
   startPreset: (index: number) => void;
   restart: () => void;
   regret: () => void;
-  cycleSkin: () => void;
+  cycleSkin: () => Promise<void>;
+  setSkin: (skin: SkinType) => Promise<void>;
   setDifficulty: (difficulty: Difficulty) => void;
   setPresetIndex: (index: number) => void;
   getStatus: () => ChessStatus;

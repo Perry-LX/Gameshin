@@ -1,0 +1,446 @@
+.chess-plus-page {
+  min-height: 100vh;
+  padding: 20px 20px 36px;
+}
+
+.chess-plus-hero {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 18px;
+  align-items: start;
+  padding: 18px;
+  margin-bottom: 18px;
+  border: 2px solid #6a4a23;
+  background:
+    linear-gradient(180deg, rgba(75, 46, 22, 0.94), rgba(40, 27, 18, 0.94)),
+    radial-gradient(circle at top, rgba(255, 204, 128, 0.12), transparent 52%);
+  box-shadow:
+    0 16px 38px rgba(0, 0, 0, 0.28),
+    inset 0 0 0 1px rgba(255, 220, 170, 0.08);
+}
+
+.chess-plus-back-btn,
+.chess-plus-primary-btn,
+.chess-plus-secondary-btn,
+.chess-plus-select {
+  border: 2px solid #7f5a2c;
+  background: rgba(29, 19, 12, 0.88);
+  color: #f6e7c8;
+  transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+.chess-plus-back-btn,
+.chess-plus-primary-btn,
+.chess-plus-secondary-btn {
+  cursor: pointer;
+}
+
+.chess-plus-back-btn:hover,
+.chess-plus-primary-btn:hover,
+.chess-plus-secondary-btn:hover,
+.chess-plus-select:focus {
+  border-color: #f0b45f;
+  box-shadow: 0 0 18px rgba(240, 180, 95, 0.24);
+  transform: translateY(-1px);
+}
+
+.chess-plus-back-btn {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.72rem;
+  line-height: 1.4;
+  padding: 12px 16px;
+  white-space: nowrap;
+}
+
+.chess-plus-hero-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.chess-plus-kicker {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 2px;
+  color: #f0b45f;
+}
+
+.chess-plus-hero-copy h1 {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 1.4rem;
+  color: #fff2d9;
+  line-height: 1.4;
+}
+
+.chess-plus-word {
+  display: inline-block;
+  margin-left: 14px;
+  font-size: 1.08em;
+  font-style: italic;
+  letter-spacing: 1px;
+  color: #f0b45f;
+  text-shadow: 0 0 12px rgba(240, 180, 95, 0.28);
+}
+
+.chess-plus-hero-copy p:last-child {
+  max-width: 760px;
+  color: rgba(255, 239, 213, 0.82);
+  font-size: 0.98rem;
+}
+
+.chess-plus-hero-badges {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.chess-plus-hero-badges span {
+  padding: 10px 12px;
+  background: rgba(17, 11, 8, 0.62);
+  border: 1px solid rgba(240, 180, 95, 0.35);
+  color: #f6dfb2;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.6rem;
+  line-height: 1.5;
+}
+
+.chess-plus-shell {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(340px, 0.85fr);
+  gap: 20px;
+  align-items: start;
+}
+
+.chess-plus-board-card,
+.chess-plus-panel {
+  border: 2px solid #6a4a23;
+  background:
+    linear-gradient(180deg, rgba(246, 236, 212, 0.96), rgba(222, 203, 173, 0.94));
+  color: #28190f;
+  box-shadow:
+    0 14px 34px rgba(0, 0, 0, 0.18),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.18);
+}
+
+.chess-plus-board-card {
+  padding: 18px;
+}
+
+.chess-plus-board-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: start;
+  margin-bottom: 18px;
+}
+
+.chess-plus-board-label {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.6rem;
+  color: #7f5a2c;
+  margin-bottom: 8px;
+}
+
+.chess-plus-board-header h2 {
+  font-size: 1.1rem;
+  line-height: 1.5;
+  color: #3a2618;
+}
+
+.chess-plus-board-meta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.chess-plus-board-meta span {
+  padding: 8px 12px;
+  border: 1px solid rgba(97, 63, 30, 0.25);
+  background: rgba(255, 248, 237, 0.72);
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.56rem;
+  color: #6e4b23;
+}
+
+.chess-plus-canvas-stage {
+  display: flex;
+  justify-content: center;
+}
+
+.chess-plus-canvas-frame {
+  position: relative;
+  width: fit-content;
+  max-width: 100%;
+  padding: 14px;
+  background:
+    linear-gradient(180deg, rgba(88, 55, 28, 0.96), rgba(58, 36, 20, 0.96));
+  border: 3px solid #7f5a2c;
+  box-shadow:
+    0 0 0 2px rgba(255, 220, 170, 0.12) inset,
+    0 10px 24px rgba(0, 0, 0, 0.24);
+}
+
+.chess-plus-canvas {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.chess-plus-overlay {
+  position: absolute;
+  inset: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(25, 16, 10, 0.72);
+  backdrop-filter: blur(2px);
+}
+
+.chess-plus-overlay-panel {
+  min-width: 220px;
+  padding: 18px;
+  border: 2px solid #f0b45f;
+  background: linear-gradient(180deg, rgba(62, 37, 19, 0.96), rgba(34, 21, 13, 0.98));
+  color: #fff1d3;
+  text-align: center;
+}
+
+.chess-plus-overlay-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  margin-bottom: 12px;
+  border-radius: 50%;
+  background: #f2d2a2;
+  color: #862d18;
+  font-size: 1.6rem;
+  font-weight: 700;
+}
+
+.chess-plus-overlay-panel h3 {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin-bottom: 8px;
+}
+
+.chess-plus-overlay-panel p {
+  color: rgba(255, 241, 211, 0.84);
+  margin-bottom: 14px;
+}
+
+.chess-plus-footer-hints {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.chess-plus-footer-hints span {
+  padding: 10px 12px;
+  border: 1px solid rgba(97, 63, 30, 0.24);
+  background: rgba(255, 248, 237, 0.76);
+  font-size: 0.88rem;
+  color: #5d3d1f;
+}
+
+.chess-plus-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.chess-plus-panel {
+  padding: 16px;
+}
+
+.chess-plus-panel-title {
+  margin-bottom: 12px;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.68rem;
+  color: #8c5b24;
+}
+
+.chess-plus-form-grid,
+.chess-plus-panel-actions,
+.chess-plus-stats-grid {
+  display: grid;
+  gap: 10px;
+}
+
+.chess-plus-form-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-bottom: 12px;
+}
+
+.chess-plus-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.chess-plus-field span {
+  font-size: 0.86rem;
+  color: #6f4a22;
+}
+
+.chess-plus-panel-actions.two-col {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.chess-plus-primary-btn,
+.chess-plus-secondary-btn,
+.chess-plus-select {
+  min-height: 46px;
+  padding: 12px 14px;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.64rem;
+  line-height: 1.5;
+}
+
+.chess-plus-primary-btn {
+  background: linear-gradient(180deg, #9b2c18, #6e1f13);
+  color: #fff1d7;
+}
+
+.chess-plus-secondary-btn {
+  background: linear-gradient(180deg, #2a1a10, #1c110b);
+}
+
+.chess-plus-select {
+  width: 100%;
+  appearance: none;
+  outline: none;
+  cursor: pointer;
+}
+
+.chess-plus-select:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.chess-plus-stats-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.chess-plus-stats-grid article {
+  padding: 12px;
+  border: 1px solid rgba(97, 63, 30, 0.2);
+  background: rgba(255, 250, 240, 0.68);
+  min-height: 82px;
+}
+
+.chess-plus-stats-grid span {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 0.8rem;
+  color: #7a5125;
+}
+
+.chess-plus-stats-grid strong {
+  display: block;
+  color: #2f1f13;
+  line-height: 1.5;
+}
+
+.chess-plus-moves-table {
+  border: 1px solid rgba(97, 63, 30, 0.2);
+  background: rgba(255, 250, 240, 0.74);
+}
+
+.chess-plus-moves-head,
+.chess-plus-moves-row {
+  display: grid;
+  grid-template-columns: 72px minmax(0, 1fr) minmax(0, 1fr);
+  gap: 10px;
+  align-items: center;
+}
+
+.chess-plus-moves-head {
+  padding: 10px 12px;
+  border-bottom: 1px solid rgba(97, 63, 30, 0.2);
+  background: rgba(97, 63, 30, 0.08);
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.56rem;
+  color: #7b5124;
+}
+
+.chess-plus-moves-body {
+  max-height: 360px;
+  overflow: auto;
+}
+
+.chess-plus-moves-row {
+  padding: 12px;
+  border-bottom: 1px dashed rgba(97, 63, 30, 0.16);
+  color: #312014;
+  font-size: 0.92rem;
+}
+
+.chess-plus-moves-row:last-child {
+  border-bottom: 0;
+}
+
+.chess-plus-empty-state {
+  padding: 16px;
+  border: 1px dashed rgba(97, 63, 30, 0.24);
+  background: rgba(255, 250, 240, 0.74);
+  color: #6c4821;
+}
+
+@media (max-width: 1120px) {
+  .chess-plus-shell {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 820px) {
+  .chess-plus-hero {
+    grid-template-columns: 1fr;
+  }
+
+  .chess-plus-hero-badges {
+    justify-content: flex-start;
+  }
+
+  .chess-plus-board-header {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 640px) {
+  .chess-plus-page {
+    padding-inline: 12px;
+  }
+
+  .chess-plus-hero-copy h1 {
+    font-size: 1.05rem;
+  }
+
+  .chess-plus-kicker,
+  .chess-plus-hero-badges span,
+  .chess-plus-board-meta span,
+  .chess-plus-panel-title,
+  .chess-plus-primary-btn,
+  .chess-plus-secondary-btn,
+  .chess-plus-select,
+  .chess-plus-moves-head {
+    font-size: 0.52rem;
+  }
+
+  .chess-plus-form-grid,
+  .chess-plus-panel-actions.two-col,
+  .chess-plus-stats-grid,
+  .chess-plus-moves-head,
+  .chess-plus-moves-row {
+    grid-template-columns: 1fr;
+  }
+
+  .chess-plus-moves-row {
+    gap: 4px;
+  }
+}

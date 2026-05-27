@@ -29,7 +29,7 @@ export function GameCard({ game }: GameCardProps) {
         </div>
 
         <div className="card-icon-wrapper">
-          <span className="card-icon">{game.icon}</span>
+          <span className={`card-icon ${game.iconVariant === 'seal' ? 'card-icon-seal' : ''}`}>{game.icon}</span>
         </div>
 
         <div className="card-body">
@@ -61,7 +61,7 @@ export function GameCard({ game }: GameCardProps) {
       </div>
 
       <div className="card-icon-wrapper">
-        <span className="card-icon">{game.icon}</span>
+        <span className={`card-icon ${game.iconVariant === 'seal' ? 'card-icon-seal' : ''}`}>{game.icon}</span>
       </div>
 
       <div className="card-body">

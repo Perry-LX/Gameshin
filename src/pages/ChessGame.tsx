@@ -12,6 +12,11 @@ const DEFAULT_STATUS: ChessStatus = {
   mode: 'menu',
   difficulty: 3,
   presetIndex: 0,
+  lastMoveText: '',
+  moveNotations: [],
+  currentSkin: 'stype2',
+  isPlaying: false,
+  turn: 1,
 };
 
 export function ChessGame() {

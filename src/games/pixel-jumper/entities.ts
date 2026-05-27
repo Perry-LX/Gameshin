@@ -5,7 +5,7 @@ import type { Bullet, InputState, MonsterRuntime, Player, Rect, RunData } from '
 
 function createBullet(run: RunData, monster: MonsterRuntime): Bullet {
   run.bulletSerial += 1;
-  const direction = monster.shootDirection ?? monster.facing;
+  const direction = monster.facing;
   const vx = (monster.bulletSpeed ?? BULLET_DEFAULT_SPEED) * (direction === 'left' ? -1 : 1);
   return {
     id: `bullet-${run.bulletSerial}`,
@@ -52,15 +52,23 @@ export function updateMonsters(run: RunData, player: Player, dt: number) {
   const spawnedBullets: Bullet[] = [];
   for (const monster of run.monsters) {
     if (!monster.alive) continue;
+
     let desiredFacing = monster.facing;
+    let moveSpeed = monster.speed;
     const playerCenterX = player.x + player.width / 2;
     const monsterCenterX = monster.x + monster.width / 2;
 
-    if (monster.type === 'chaser' && monster.aggroRangeX && Math.abs(playerCenterX - monsterCenterX) <= monster.aggroRangeX) {
-      desiredFacing = playerCenterX < monsterCenterX ? 'left' : 'right';
+    if (monster.type === 'chaser' && monster.aggroRangeX) {
+      const playerInHorizontalRange = playerCenterX >= monster.patrolRange.minX && playerCenterX <= monster.patrolRange.maxX;
+      const playerWithinAggro = Math.abs(playerCenterX - monsterCenterX) <= monster.aggroRangeX;
+
+      if (playerInHorizontalRange && playerWithinAggro) {
+        desiredFacing = playerCenterX < monsterCenterX ? 'left' : 'right';
+        moveSpeed = Math.min(MOVE_SPEED - 36, monster.speed + 42);
+      }
     }
 
-    const vx = desiredFacing === 'left' ? -monster.speed : monster.speed;
+    const vx = desiredFacing === 'left' ? -moveSpeed : moveSpeed;
     let nextX = monster.x + vx * dt;
     if (nextX < monster.patrolRange.minX) {
       nextX = monster.patrolRange.minX;
@@ -72,7 +80,7 @@ export function updateMonsters(run: RunData, player: Player, dt: number) {
     }
 
     monster.x = nextX;
-    monster.vx = desiredFacing === 'left' ? -monster.speed : monster.speed;
+    monster.vx = desiredFacing === 'left' ? -moveSpeed : moveSpeed;
     monster.facing = desiredFacing;
 
     if (monster.type === 'shooter' && monster.shootIntervalMs) {

@@ -1,4 +1,4 @@
-import { STOMP_MIN_VELOCITY } from './constants';
+import { JUMP_VELOCITY, GRAVITY, MOVE_SPEED, STOMP_MIN_VELOCITY } from './constants';
 import type { MonsterRuntime, Player, Rect } from './types';
 
 export function intersects(a: Rect, b: Rect) {
@@ -44,4 +44,18 @@ export function isStompCollision(player: Player, previousBottom: number, monster
   const crossedTop = previousBottom <= monsterTop + 10;
   const feetInside = playerBottom >= monsterTop && player.y < monsterTop;
   return descending && crossedTop && feetInside;
+}
+
+export function canJumpBetween(from: Rect, to: Rect) {
+  const fromTop = from.y;
+  const toTop = to.y;
+  const jumpHeight = (JUMP_VELOCITY * JUMP_VELOCITY) / (2 * GRAVITY);
+  if (fromTop - toTop > jumpHeight + 8) return false;
+
+  const airtime = Math.max(0.35, (-2 * JUMP_VELOCITY) / GRAVITY);
+  const maxDistance = MOVE_SPEED * airtime;
+
+  const fromCenterX = from.x + from.width / 2;
+  const toCenterX = to.x + to.width / 2;
+  return Math.abs(toCenterX - fromCenterX) <= maxDistance + 44;
 }

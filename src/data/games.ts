@@ -32,6 +32,17 @@ export const games: GameItem[] = [
     color: '#d4a017',
   },
   {
+    id: 'chess-plus',
+    title: 'Chinese Chess Plus',
+    description: '融合 vschess 风格界面与现有 AI 引擎，新增走棋记录、局面信息和更完整的对弈侧栏。',
+    url: '/game/chess-plus',
+    tags: ['策略', '棋类', 'AI', '增强版'],
+    icon: '帅',
+    iconVariant: 'seal',
+    status: 'active',
+    color: '#b45309',
+  },
+  {
     id: 'platformer',
     title: 'Pixel Jumper',
     description: '像素风格跳跃游戏，18 个关卡、三类怪物与任务挑战，跨越分段地图冲向终点。',

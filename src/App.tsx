@@ -5,6 +5,8 @@ import { GameList } from './components/GameList';
 import { Footer } from './components/Footer';
 import { SnakeGame } from './pages/SnakeGame';
 import { TetrisGame } from './pages/TetrisGame';
+import { ChessGame } from './pages/ChessGame';
+import { PixelJumperGame } from './pages/PixelJumperGame';
 import { games } from './data/games';
 import './index.css';
 
@@ -37,6 +39,8 @@ function App() {
       <Route path="/" element={<HomePage />} />
       <Route path="/game/snake" element={<SnakeGame />} />
       <Route path="/game/tetris" element={<TetrisGame />} />
+      <Route path="/game/chess" element={<ChessGame />} />
+      <Route path="/game/platformer" element={<PixelJumperGame />} />
     </Routes>
   );
 }

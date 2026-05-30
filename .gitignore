@@ -22,3 +22,8 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+
+# Demo Folder
+gobang-master/
+react_ai_chess/

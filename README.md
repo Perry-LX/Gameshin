@@ -21,6 +21,8 @@
 - **俄罗斯方块** — 内置经典 Tetris，标准 22×10 棋盘，7-bag 随机生成器，旋转墙踢，平滑掉落动画，NEXT 预览
 - **中国象棋** — 内置 Chinese Chess，复用传统棋盘与棋子资源，支持人机对弈、残局挑战、悔棋、重开与棋盘换肤
 - **中国象棋Plus** — 基于 vschess 风格重构的增强版中国象棋界面，支持 AI 对弈、人人对战、残局挑战、右侧顶部走棋记录、下拉设置面板与换肤
+- **Gomoku** — 直接迁移 `gobang-master` 的五子棋界面，当前提供本地双人对战、悔棋、认输与手数编号显示
+- **International Chess** — 标准 8×8 国际象棋小游戏，支持手动走子、自动对弈与黑白视角切换
 - **Pixel Jumper** — 内置横向像素跳跃游戏，包含 18 个关卡、三类怪物、任务目标与分段地图区域切换
 
 ## 项目结构
@@ -42,6 +44,18 @@ Gameshin/
 │   │   │   ├── openings.ts   # 开局库加载
 │   │   │   ├── presets.ts    # 残局挑战数据
 │   │   │   └── types.ts      # 中国象棋类型定义
+│   │   ├── gobang/
+│   │   │   ├── assets/bg.jpg  # 五子棋棋盘底图
+│   │   │   ├── Board.tsx      # 五子棋棋盘组件
+│   │   │   ├── Control.tsx    # 五子棋操作面板
+│   │   │   ├── board.css      # 五子棋棋盘样式
+│   │   │   ├── control.css    # 五子棋面板样式
+│   │   │   ├── engine.ts      # 五子棋本地双人规则
+│   │   │   ├── store.tsx      # 五子棋本地状态容器
+│   │   │   ├── constants.ts   # 五子棋常量
+│   │   │   └── types.ts       # 五子棋类型定义
+│   │   ├── international-chess/
+│   │   │   └── game.ts        # 国际象棋规则、棋盘渲染与自动对弈控制
 │   │   └── pixel-jumper/
 │   │       ├── chunks.ts     # Pixel Jumper 分段区域与视口计算
 │   │       ├── constants.ts  # Pixel Jumper 常量
@@ -61,6 +75,10 @@ Gameshin/
 │   │   ├── ChessGame.css     # 中国象棋游戏样式
 │   │   ├── ChessPlusGame.tsx # 中国象棋Plus 游戏页面
 │   │   ├── ChessPlusGame.css # 中国象棋Plus 游戏样式
+│   │   ├── GomokuGame.tsx    # 五子棋游戏页面
+│   │   ├── GomokuGame.css    # 五子棋游戏样式
+│   │   ├── InternationalChessGame.tsx # 国际象棋游戏页面
+│   │   ├── InternationalChessGame.css # 国际象棋游戏样式
 │   │   ├── PixelJumperGame.tsx # 像素风格跳跃游戏页面
 │   │   └── PixelJumperGame.css # 像素风格跳跃游戏样式
 │   ├── components/
@@ -111,6 +129,19 @@ npm run dev
 - 设置区改为下拉列表，可切换模式、难度、残局与皮肤
 - 保留悔棋、重开、换肤与局面信息面板
 
+### Gomoku
+- 直接迁移 `gobang-master` 的五子棋棋盘与操作布局
+- 当前为本地双人对战版本，不包含 AI 下棋
+- 支持开始、重开、悔棋、认输
+- 支持白棋先手切换与手数编号显示
+
+### International Chess
+- 标准 8×8 国际象棋棋盘与完整棋子初始布局
+- 支持手动点击走子与基础吃子高亮提示
+- 支持为白方或黑方单独开启 AI 自动走子
+- 支持 1 / 2 / 4 APS 自动走子速度切换
+- 支持白方 / 黑方视角切换，保留原始棋盘动画效果
+
 ### Pixel Jumper
 - 横向像素平台跳跃玩法，共 18 个关卡
 - 每关都包含普通巡逻怪、范围追击怪、间歇射击怪
@@ -121,7 +152,7 @@ npm run dev
 
 ## 添加新游戏
 
-编辑 `src/data/games.ts`，添加新条目。内部游戏（`url` 以 `/` 开头）使用 SPA 路由，外部游戏使用新窗口打开：
+编辑 `src/data/games.ts`，添加新条目。内部游戏（`url` 以 `/` 开头）使用 SPA 路由，外部游戏使用新窗口打开；如果是新的内置页面，还需要在 `src/App.tsx` 里注册对应路由：
 
 ```ts
 {

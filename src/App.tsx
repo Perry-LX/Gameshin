@@ -7,6 +7,8 @@ import { SnakeGame } from './pages/SnakeGame';
 import { TetrisGame } from './pages/TetrisGame';
 import { ChessGame } from './pages/ChessGame';
 import { ChessPlusGame } from './pages/ChessPlusGame';
+import { GomokuGame } from './pages/GomokuGame';
+import { InternationalChessGame } from './pages/InternationalChessGame';
 import { PixelJumperGame } from './pages/PixelJumperGame';
 import { games } from './data/games';
 import './index.css';
@@ -42,6 +44,8 @@ function App() {
       <Route path="/game/tetris" element={<TetrisGame />} />
       <Route path="/game/chess" element={<ChessGame />} />
       <Route path="/game/chess-plus" element={<ChessPlusGame />} />
+      <Route path="/game/gomoku" element={<GomokuGame />} />
+      <Route path="/game/international-chess" element={<InternationalChessGame />} />
       <Route path="/game/platformer" element={<PixelJumperGame />} />
     </Routes>
   );

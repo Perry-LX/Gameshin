@@ -151,17 +151,23 @@ export class ChessEngine implements EngineControls {
     });
   }
 
+  private assetUrl(path: string): string {
+    const base = (typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.BASE_URL) || '/';
+    return `${String(base).replace(/\/$/, '')}${path}`;
+  }
+
   private async loadAssets(skin: SkinType): Promise<Assets> {
     const page = SKINS[skin].page;
     const pieceLetters = Object.keys(PIECE_DEFS) as PieceLetter[];
+    const base = this.assetUrl('');
     const pieceEntries = await Promise.all(
-      pieceLetters.map(async (letter) => [letter, await createImage(`/chess/img/${page}/${PIECE_DEFS[letter].img}.png`)] as const),
+      pieceLetters.map(async (letter) => [letter, await createImage(`${base}/chess/img/${page}/${PIECE_DEFS[letter].img}.png`)] as const),
     );
 
     return {
-      board: await createImage(`/chess/img/${page}/bg.png`),
-      dot: await createImage(`/chess/img/${page}/dot.png`),
-      pane: await createImage(`/chess/img/${page}/r_box.png`),
+      board: await createImage(`${base}/chess/img/${page}/bg.png`),
+      dot: await createImage(`${base}/chess/img/${page}/dot.png`),
+      pane: await createImage(`${base}/chess/img/${page}/r_box.png`),
       pieces: Object.fromEntries(pieceEntries) as Record<PieceLetter, HTMLImageElement>,
     };
   }

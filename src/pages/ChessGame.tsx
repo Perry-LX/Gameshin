@@ -5,6 +5,8 @@ import { PRESETS } from '../games/chess/presets';
 import type { ChessStatus, Difficulty } from '../games/chess/types';
 import './ChessGame.css';
 
+const assetBase = ((typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.BASE_URL) || '').replace(/\/$/, '');
+
 const DEFAULT_STATUS: ChessStatus = {
   scoreText: '资源加载中...',
   winner: null,
@@ -56,8 +58,8 @@ export function ChessGame() {
 
   return (
     <div className="chess-page pixel-container">
-      <audio ref={clickAudioRef} src="/chess/audio/click.wav" preload="auto" />
-      <audio ref={selectAudioRef} src="/chess/audio/select.wav" preload="auto" />
+      <audio ref={clickAudioRef} src={`${assetBase}/chess/audio/click.wav`} preload="auto" />
+      <audio ref={selectAudioRef} src={`${assetBase}/chess/audio/select.wav`} preload="auto" />
 
       <div className="chess-top-bar">
         <button type="button" className="chess-back-btn" onClick={() => navigate('/')}>

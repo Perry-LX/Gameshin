@@ -23,7 +23,6 @@ dist-ssr
 *.sln
 *.sw?
 
-
 # Demo Folder
 gobang-master/
 react_ai_chess/

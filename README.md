@@ -1,107 +1,109 @@
 # GAMESHIN GAME HUB
-
-像素风格游戏导航中心 — 一个集成多款小游戏的入口网站。
-
-## 技术栈
-
+A pixel-styled game navigation center — an entry portal integrating multiple mini-games.
+## Tech Stack
 - **React 19** + **TypeScript 6**
-- **Vite 8** 构建工具
-- **React Router v7** 客户端路由（HashRouter）
-- 纯 CSS 像素风格主题设计
-- Canvas 游戏渲染
-
-## 特性
-
-- **像素风格 UI** — 使用 Press Start 2P 像素字体，锐利边框，阶梯动画
-- **蒸汽朋克配色** — 深蓝灰底色 + 琥珀橙主色，配合网格背景和渐变光晕
-- **分类筛选** — 按游戏状态筛选：热玩中 / 试玩版 / 即将上线
-- **响应式布局** — 适配桌面端、平板和手机
-- **游戏卡片** — 每张卡片展示游戏图标、标题、描述、标签和状态
-- **6 款内置游戏** — 贪吃蛇、俄罗斯方块、中国象棋、五子棋、国际象棋、像素跳跃
-
-## 内置游戏
-
+- **Vite 8** build tool
+- **React Router v7** client-side routing (HashRouter)
+- Pure CSS pixel-art theme design
+- Canvas game rendering
+- **i18n** — built-in internationalization (English / Chinese)
+## Features
+- **Pixel-style UI** — Press Start 2P pixel font, crisp borders, stepped animations
+- **Steampunk palette** — deep slate background + amber accent, with grid patterns and gradient glows
+- **Category filtering** — filter games by genre: All / Board / Shooting / Action / Puzzle
+- **Responsive layout** — desktop, tablet, and mobile support
+- **Game cards** — each card shows icon, title, description, tags, and status
+- **Language switching** — dropdown in the homepage header to toggle between English and Chinese
+- **Touch controls** — Snake and Tetris include on-screen D-pad for mobile play
+- **6 built-in games + 1 external — Snake, Tetris, Chinese Chess, Gomoku, International Chess, Pixel Jumper, RightPlace
+## Built-in Games
 ### Snake Classic
-- 经典贪吃蛇玩法
-- 键盘 WASD / 方向键控制
-- 本地最高分持久化存储
-- 支持缩放 50%–200%
+- Classic snake gameplay
+- WASD / Arrow key controls + on-screen D-pad for mobile
+- Local high score persistence via localStorage
+- Zoom from 50% to 200%
 
 ### Tetris Battle
-- 标准 22×10 俄罗斯方块
-- 7-bag 随机方块生成器
-- NEXT 预览窗格
-- 旋转墙踢 + 平滑掉落动画
+- Standard 22x10 Tetris grid
+- 7-bag randomizer
+- NEXT preview panel
+- Wall kick rotation + smooth drop animation
+- On-screen D-pad controls for mobile
 
 ### Chinese Chess
-- 经典中国象棋 Canvas 渲染
-- 人机对弈（支持菜鸟 / 中级 / 高手三档难度）
-- 残局挑战（多套预设残局）
-- 悔棋、重开、棋盘换肤（3 套皮肤）
-- AI 搜索基于 Alpha-Beta 剪枝
+- Classic Chinese Chess rendered on Canvas
+- Play vs AI (Rookie / Intermediate / Expert difficulty)
+- Preset endgame challenges
+- Undo, restart, board skin switching (3 skins)
+- AI search based on Alpha-Beta pruning
 
 ### Chinese Chess Plus
-- 增强版中国象棋界面，复用现有 AI 引擎
-- 支持人机对弈、人人对战、残局挑战三种模式
-- 右侧走棋记录面板 + 下拉设置区
-- 模式、难度、残局、皮肤一体化切换
-- 悔棋、重开、顺切皮肤
+- Enhanced Chinese Chess interface reusing the same AI engine
+- Supports AI duel, Player vs Player, **AI vs AI**, and Preset Challenge modes
+- Move history panel (shows latest 3 records; click "View All" for a scrollable popup)
+- Dropdown-based settings panel for mode, difficulty, preset, and skin
+- Start / Restart buttons positioned at the top-right of the board
+- Undo, restart, and cycle skin
 
 ### Gomoku
-- 五子棋本地双人对战
-- 支持开始、重开、悔棋、认输
-- 白棋先手切换与手数编号显示
+- Local two-player Gomoku (Five-in-a-Row)
+- Start, restart, undo, resign
+- White-first toggle and move index display
 
 ### International Chess
-- 标准 8×8 国际象棋棋盘
-- 手动点击走子 + 吃子高亮
-- 白方 / 黑方可单独开启 AI 自动走子
-- 1 / 2 / 4 APS 走子速度切换
-- 白方 / 黑方视角切换
+- Standard 8x8 chess board
+- Click-to-move with capture highlighting
+- Dropdown-based settings: AI side (None / White / Black / Both), move speed (1/2/4 APS), perspective (White/Black)
+- Unified settings panel with restart button
 
 ### Pixel Jumper
-- 横向像素平台跳跃玩法，共 18 个关卡
-- 普通巡逻怪、范围追击怪、间歇射击怪三种敌人
-- 踩踏击杀 / 侧碰或子弹命中则失败
-- 部分关卡含收集或击杀任务，完成后终点解锁
-- 分段地图区域切换
-- 全程最佳时间记录
+- Horizontal pixel platformer with 18 levels
+- 3 enemy types: patrol, chase, and ranged shooter
+- Stomp to defeat enemies; side-contact or bullet hits = fail
+- Collect/kill task objectives per stage
+- Segmented map region transitions
+- Best-time tracking across full run
 
-## 快速开始
+### RightPlace
+- Position-based reasoning puzzle game
+- Drag or click to swap bottles, use judgment feedback to deduce correct placement
+- Multiple modes: Novice, Level (630 stages), Uniform Challenge, Multiplayer
+- 4 visual themes with 13 real bottle PNG images
+- Opens in the current browser tab from the game hub
 
+## Quick Start
 ```bash
-# 安装依赖
+# Install dependencies
 npm install
-
-# 启动开发服务器
+# Start dev server
 npm run dev
-
-# 构建生产版本
+# Build for production
 npm run build
-
-# 预览生产构建
+# Preview production build
 npm run preview
 ```
-
-## 项目结构
-
+## Project Structure
 ```text
 Gameshin/
 ├── public/
 │   ├── favicon.svg
 │   └── chess/
-│       ├── audio/            # 中国象棋 / 中国象棋Plus 音效资源
-│       ├── data/             # 开局库数据 (gambit.js)
-│       └── img/              # 棋盘、棋子、皮肤资源 (stype_1/2/3)
+│       ├── audio/            # Chinese Chess / Chess Plus sound effects
+│       ├── data/             # Opening book (gambit.js)
+│       └── img/              # Board, piece, skin assets (stype_1/2/3)
 ├── src/
-│   ├── types/index.ts        # 全局类型定义
-│   ├── data/games.ts         # 游戏数据配置
-│   ├── games/                # 各游戏核心逻辑
-│   │   ├── chess/            # 中国象棋引擎、AI、开局库、残局
-│   │   ├── gobang/           # 五子棋本地双人规则与组件
-│   │   ├── international-chess/  # 国际象棋规则与 AI
-│   │   └── pixel-jumper/     # 像素跳跃物理、关卡、渲染
-│   ├── pages/                # 各游戏页面组件与样式
+│   ├── i18n/                 # Internationalization system
+│   │   ├── index.tsx         # LanguageProvider, useLanguage hook, t()
+│   │   ├── en.ts             # English translations
+│   │   └── zh.ts             # Chinese translations
+│   ├── types/index.ts        # Global type definitions
+│   ├── data/games.ts         # Game data configuration (categories + status)
+│   ├── games/                # Game core logic
+│   │   ├── chess/            # Chinese Chess engine, AI, opening book, presets
+│   │   ├── gobang/           # Gomoku local two-player rules & components
+│   │   ├── international-chess/  # International Chess rules & AI
+│   │   └── pixel-jumper/     # Pixel Jumper physics, levels, rendering
+│   ├── pages/                # Game page components & styles
 │   │   ├── SnakeGame.tsx/css
 │   │   ├── TetrisGame.tsx/css
 │   │   ├── ChessGame.tsx/css
@@ -109,98 +111,100 @@ Gameshin/
 │   │   ├── GomokuGame.tsx/css
 │   │   ├── InternationalChessGame.tsx/css
 │   │   └── PixelJumperGame.tsx/css
-│   ├── components/           # 通用 UI 组件
-│   │   ├── Header.tsx        # 页头 + 分类导航
-│   │   ├── GameCard.tsx      # 游戏卡片（内部路由 / 外部链接）
-│   │   ├── GameList.tsx      # 卡片网格列表
-│   │   └── Footer.tsx        # 页脚
-│   ├── App.tsx               # 路由入口
-│   ├── main.tsx              # 应用入口（HashRouter）
-│   └── index.css             # 全局像素风格样式
+│   ├── components/           # Shared UI components
+│   │   ├── Header.tsx        # Header + category nav + language dropdown
+│   │   ├── GameCard.tsx      # Game card (internal route / external link)
+│   │   ├── GameList.tsx      # Card grid list
+│   │   └── Footer.tsx        # Footer
+│   ├── App.tsx               # Route entry
+│   ├── main.tsx              # App bootstrap (HashRouter + LanguageProvider)
+│   └── index.css             # Global pixel-style theme
 ├── index.html
-├── vite.config.ts            # Vite 构建配置
-├── tsconfig.json             # TypeScript 项目引用
-├── tsconfig.app.json         # 应用 TS 配置
-├── tsconfig.node.json        # Node 端 TS 配置
+├── vite.config.ts            # Vite build config
+├── tsconfig.json             # TypeScript project references
+├── tsconfig.app.json         # App TS config
+├── tsconfig.node.json        # Node TS config
 ├── package.json
 └── README.md
 ```
-
-## 构建与部署
-
-### 构建
-
+## Internationalization
+The project includes a built-in i18n system supporting **English** (default) and **Chinese**.
+- **Storage key**: `gameshin:language` (persisted in localStorage)
+- **Toggle location**: homepage header (top-right dropdown)
+- **Scope**: all static UI text across every page and component
+To add a new language:
+1. Create a new translation file in `src/i18n/` (e.g., `ja.ts`)
+2. Import it in `src/i18n/index.tsx` and add it to the `translations` object
+3. Add the language option to the `SupportedLanguage` type
+## Category System
+Games are organized into genre categories:
+| Category | Icon | Includes |
+|----------|------|----------|
+| All | ⭐ | Every game |
+| Board | ♜ | Chinese Chess, Chinese Chess Plus, Gomoku, International Chess |
+| Shooting | 🎯 | Space Shooter |
+| Action | ⚡ | Snake Classic, Pixel Jumper, Dungeon Quest, Retro Racer |
+| Puzzle | 🧩 | Tetris Battle, Match Puzzle |
+Games marked as `coming-soon` (Match Puzzle, Card Wars, Space Shooter, Dungeon Quest, Retro Racer) are shown as disabled placeholder cards.
+## Build & Deploy
+### Build
 ```bash
 npm run build
 ```
-
-构建产物输出到 `dist/` 目录，包含：
-
+Output goes to `dist/`:
 ```
 dist/
 ├── index.html
 ├── favicon.svg
 ├── assets/
-│   ├── index-*.css           # 全局样式
-│   ├── index-*.js            # 应用代码
-│   ├── vendor-*.js           # React / React Router 依赖
-│   └── bg-*.jpg              # 五子棋棋盘图
-└── chess/                    # 棋类静态资源（自动从 public/ 复制）
+│   ├── index-*.css           # Global styles
+│   ├── index-*.js            # App code
+│   ├── vendor-*.js           # React / React Router deps
+│   └── bg-*.jpg              # Gomoku board texture
+└── chess/                    # Chess static assets (auto-copied from public/)
 ```
-
-### 本地预览
-
+### Local Preview
 ```bash
 npm run preview
 ```
-
-Vite 预览服务器自带 SPA 降级，所有路由均可正常访问。
-
-### 部署到子目录
-
-如部署到 `https://example.com/games/`，需修改 `vite.config.ts`：
-
+Vite's preview server handles SPA fallback, so all routes work normally.
+### Deploy to Subdirectory
+To deploy to `https://example.com/games/`, update `vite.config.ts`:
 ```ts
 export default defineConfig({
-  base: '/games/',  // 改为实际子路径
+  base: '/games/',  // your sub-path
   // ...
 })
 ```
-
-`base` 变更后，所有资源路径（JS/CSS/图片/音频/开局库）会自动适配。
-
-### 部署到静态服务器
-
-本项目使用 **HashRouter**，无需服务器端 SPA 降级配置，可直接部署到任意静态文件服务器（nginx、Apache、GitHub Pages、Vercel、Netlify 等）。
-
-## 添加新游戏
-
-编辑 `src/data/games.ts`，添加新条目：
-
+All asset paths (JS, CSS, images, audio, opening books) adapt automatically.
+### Deploy to Static Server
+This project uses **HashRouter**, so no server-side SPA fallback configuration is needed. It can be deployed directly to any static file server (nginx, Apache, GitHub Pages, Vercel, Netlify, etc.).
+## Adding a New Game
+Edit `src/data/games.ts` and add an entry:
 ```ts
 {
-  id: 'game-id',
-  title: '游戏名称',
-  description: '游戏描述',
-  url: '/game/your-game',     // 以 / 开头为内部路由
-  tags: ['标签1', '标签2'],
+  id: 'your-game-id',
+  url: '/game/your-game',     // starts with / for internal routes
   icon: '🎮',
   status: 'active',           // active | beta | coming-soon
   color: '#ff6b1a',
+  category: 'action',         // board | shooting | action | puzzle
 }
 ```
-
-内部游戏还需在 `src/App.tsx` 中注册对应路由：
-
+Then add localized display text in `src/i18n/en.ts` and `src/i18n/zh.ts`:
+```ts
+'game.your-game-id.title': 'Your Game Title',
+'game.your-game-id.description': 'Game description.',
+'game.your-game-id.tags': 'Tag1,Tag2,Tag3',
+```
+For internal games, also register a route in `src/App.tsx`:
 ```tsx
 <Route path="/game/your-game" element={<YourGame />} />
 ```
-
-## 脚本
-
-| 命令 | 说明 |
-|------|------|
-| `npm run dev` | 启动 Vite 开发服务器 |
-| `npm run build` | TypeScript 检查 + Vite 生产构建 |
-| `npm run preview` | 本地预览构建产物 |
-| `npm run lint` | ESLint 代码检查 |
+## Scripts
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Start Vite dev server |
+| `npm run build` | TypeScript check + Vite production build |
+| `npm run preview` | Preview production build locally |
+| `npm run lint` | ESLint code check |

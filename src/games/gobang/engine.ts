@@ -119,18 +119,20 @@ export function isBoardFull(board: BoardMatrix): boolean {
   return board.every((row) => row.every((cell) => cell !== 0));
 }
 
-export function getStatusText(state: GobangState): string {
-  if (state.winner === BLACK) return '黑棋获胜';
-  if (state.winner === WHITE) return '白棋获胜';
-  if (state.status === 'idle' && state.history.length > 0 && isBoardFull(state.board)) return '平局';
-  if (state.status === 'gaming') return state.currentPlayer === BLACK ? '轮到黑棋' : '轮到白棋';
-  return '点击开始';
+export function getStatusText(state: GobangState, t?: (key: string) => string): string {
+  const _t = t || ((k: string) => k);
+  if (state.winner === BLACK) return _t('gomoku.blackWin');
+  if (state.winner === WHITE) return _t('gomoku.whiteWin');
+  if (state.status === 'idle' && state.history.length > 0 && isBoardFull(state.board)) return _t('gomoku.draw');
+  if (state.status === 'gaming') return state.currentPlayer === BLACK ? _t('gomoku.blackTurn') : _t('gomoku.whiteTurn');
+  return _t('gomoku.clickStart');
 }
 
-export function getWinnerLabel(winner: Cell): string {
-  if (winner === BLACK) return '黑棋';
-  if (winner === WHITE) return '白棋';
-  return '未分胜负';
+export function getWinnerLabel(winner: Cell, t?: (key: string) => string): string {
+  const _t = t || ((k: string) => k);
+  if (winner === BLACK) return _t('gomoku.black');
+  if (winner === WHITE) return _t('gomoku.white');
+  return _t('gomoku.noResult');
 }
 
 export function getLastMove(history: MoveRecord[]): MoveRecord | undefined {

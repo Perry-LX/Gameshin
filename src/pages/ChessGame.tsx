@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useLanguage } from '../i18n';
 import { createChessEngine } from '../games/chess/engine';
 import { PRESETS } from '../games/chess/presets';
 import type { ChessStatus, Difficulty } from '../games/chess/types';
@@ -7,26 +8,27 @@ import './ChessGame.css';
 
 const assetBase = ((typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.BASE_URL) || '').replace(/\/$/, '');
 
-const DEFAULT_STATUS: ChessStatus = {
-  scoreText: '资源加载中...',
-  winner: null,
-  thinking: false,
-  mode: 'menu',
-  difficulty: 3,
-  presetIndex: 0,
-  lastMoveText: '',
-  moveNotations: [],
-  currentSkin: 'stype2',
-  isPlaying: false,
-  turn: 1,
-};
-
 export function ChessGame() {
+  const { t } = useLanguage();
   const navigate = useNavigate();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const clickAudioRef = useRef<HTMLAudioElement>(null);
   const selectAudioRef = useRef<HTMLAudioElement>(null);
   const engineRef = useRef<ReturnType<typeof createChessEngine> | null>(null);
+
+  const DEFAULT_STATUS: ChessStatus = {
+    scoreText: t('chess.loading'),
+    winner: null,
+    thinking: false,
+    mode: 'menu',
+    difficulty: 3,
+    presetIndex: 0,
+    lastMoveText: '',
+    moveNotations: [],
+    currentSkin: 'stype2',
+    isPlaying: false,
+    turn: 1,
+  };
 
   const [status, setStatus] = useState<ChessStatus>(DEFAULT_STATUS);
   const [difficulty, setDifficulty] = useState<Difficulty>(3);
@@ -50,26 +52,35 @@ export function ChessGame() {
     };
   }, []);
 
+  // Sync default status text when language changes
+  useEffect(() => {
+    setStatus((prev) => ({
+      ...prev,
+      scoreText: prev.winner === null ? t('chess.loading') : prev.scoreText,
+    }));
+  }, [t]);
+
   const winnerText = useMemo(() => {
-    if (status.winner === 1) return '你赢了';
-    if (status.winner === -1) return 'AI 获胜';
+    if (status.winner === 1) return t('chess.youWin');
+    if (status.winner === -1) return t('chess.aiWins');
     return '';
-  }, [status.winner]);
+  }, [status.winner, t]);
 
   return (
     <div className="chess-page pixel-container">
       <audio ref={clickAudioRef} src={`${assetBase}/chess/audio/click.wav`} preload="auto" />
       <audio ref={selectAudioRef} src={`${assetBase}/chess/audio/select.wav`} preload="auto" />
 
+      <h1 className="chess-title">{t('chess.title')}</h1>
+
       <div className="chess-top-bar">
         <button type="button" className="chess-back-btn" onClick={() => navigate('/')}>
-          ◀ HOME
+          {t('chess.home')}
         </button>
-        <h1 className="chess-title">CHINESE CHESS</h1>
-        <div className="chess-status-chip">{status.thinking ? 'AI THINKING' : 'READY'}</div>
+        <div className="chess-status-chip">{status.thinking ? t('chess.thinking') : t('chess.ready')}</div>
       </div>
 
-      <div className="chess-main-layout">
+<div className="chess-main-layout">
         <section className="chess-board-panel">
           <div className="chess-status-bar">{status.scoreText}</div>
           <div className="chess-canvas-wrap">
@@ -81,34 +92,34 @@ export function ChessGame() {
                   <div className="chess-overlay-title">{winnerText}</div>
                   <p>{status.scoreText}</p>
                   <button type="button" className="chess-action-btn primary" onClick={() => engineRef.current?.restart()}>
-                    ▶ AGAIN
+                    {t('chess.again')}
                   </button>
                 </div>
               </div>
             )}
           </div>
           <div className="chess-controls-hint">
-            <span>点击棋子移动</span>
-            <span>支持人机对弈</span>
-            <span>支持残局挑战</span>
+            <span>{t('chess.hint.click')}</span>
+            <span>{t('chess.hint.ai')}</span>
+            <span>{t('chess.hint.preset')}</span>
           </div>
         </section>
 
         <aside className="chess-side-panel">
           <div className="chess-panel-block">
-            <div className="chess-panel-title">对弈模式</div>
+            <div className="chess-panel-title">{t('chess.panel.mode')}</div>
             <div className="chess-button-group">
               <button type="button" className="chess-action-btn primary" onClick={() => engineRef.current?.startDuel(difficulty)}>
-                开始对弈
+                {t('chess.button.start')}
               </button>
               <button type="button" className="chess-action-btn" onClick={() => engineRef.current?.startPreset(presetIndex)}>
-                挑战残局
+                {t('chess.button.preset')}
               </button>
             </div>
           </div>
 
           <div className="chess-panel-block">
-            <div className="chess-panel-title">难度选择</div>
+            <div className="chess-panel-title">{t('chess.panel.difficulty')}</div>
             <div className="chess-options-grid">
               {([2, 3, 4] as Difficulty[]).map((value) => (
                 <button
@@ -120,14 +131,14 @@ export function ChessGame() {
                     engineRef.current?.setDifficulty(value);
                   }}
                 >
-                  {value === 2 ? '菜鸟' : value === 3 ? '中级' : '高手'}
+                  {value === 2 ? t('chess.difficulty.rookie') : value === 3 ? t('chess.difficulty.mid') : t('chess.difficulty.pro')}
                 </button>
               ))}
             </div>
           </div>
 
           <div className="chess-panel-block">
-            <div className="chess-panel-title">残局选择</div>
+            <div className="chess-panel-title">{t('chess.panel.preset')}</div>
             <div className="chess-preset-list">
               {PRESETS.map((preset, index) => (
                 <button
@@ -146,16 +157,16 @@ export function ChessGame() {
           </div>
 
           <div className="chess-panel-block">
-            <div className="chess-panel-title">棋局操作</div>
+            <div className="chess-panel-title">{t('chess.panel.actions')}</div>
             <div className="chess-button-group">
               <button type="button" className="chess-action-btn" onClick={() => engineRef.current?.regret()}>
-                悔棋
+                {t('chess.button.regret')}
               </button>
               <button type="button" className="chess-action-btn" onClick={() => engineRef.current?.restart()}>
-                重开
+                {t('chess.button.restart')}
               </button>
               <button type="button" className="chess-action-btn" onClick={() => engineRef.current?.cycleSkin()}>
-                换肤
+                {t('chess.button.skin')}
               </button>
             </div>
           </div>

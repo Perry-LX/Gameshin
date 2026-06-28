@@ -6,9 +6,10 @@
 .gomoku-top-bar {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 24px;
   width: 100%;
-  margin-bottom: 12px;
+  margin-bottom: 14px;
+  padding: 4px 0;
 }
 
 .gomoku-back-btn,
@@ -22,8 +23,8 @@
 }
 
 .gomoku-back-btn {
-  font-size: 0.72rem;
-  padding: 12px 16px;
+  font-size: 0.78rem;
+  padding: 14px 18px;
   white-space: nowrap;
 }
 
@@ -36,8 +37,8 @@
 
 .gomoku-action-btn {
   width: 100%;
-  padding: 14px 16px;
-  font-size: 0.68rem;
+  padding: 16px 18px;
+  font-size: 0.78rem;
   text-align: center;
 }
 
@@ -47,18 +48,19 @@
 }
 
 .gomoku-title {
-  flex: 1;
   text-align: center;
   font-family: 'Press Start 2P', monospace;
   font-size: 1.22rem;
   color: var(--accent-gold);
   text-shadow: 0 0 18px rgba(245, 197, 24, 0.3);
+  width: 100%;
+  margin-bottom: 14px;
 }
 
 .gomoku-status-chip {
   font-family: 'Press Start 2P', monospace;
-  font-size: 0.62rem;
-  padding: 12px 14px;
+  font-size: 0.75rem;
+  padding: 14px 18px;
   border: 2px solid rgba(74, 222, 128, 0.35);
   color: var(--accent-green);
   background: rgba(74, 222, 128, 0.08);
@@ -67,8 +69,8 @@
 
 .gomoku-main-layout {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 320px;
-  gap: 20px;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  gap: 24px;
   align-items: start;
 }
 
@@ -80,14 +82,14 @@
 }
 
 .gomoku-board-panel {
-  padding: 16px;
+  padding: 20px;
 }
 
 .gomoku-status-bar {
-  margin-bottom: 14px;
+  margin-bottom: 16px;
   min-height: 28px;
   color: var(--text-secondary);
-  font-size: 1.05rem;
+  font-size: 1.1rem;
   line-height: 1.6;
   text-align: center;
 }
@@ -96,43 +98,43 @@
   display: flex;
   gap: 12px;
   flex-wrap: wrap;
-  margin-top: 16px;
+  margin-top: 18px;
   justify-content: center;
 }
 
 .gomoku-controls-hint span {
   font-family: 'Press Start 2P', monospace;
-  font-size: 0.6rem;
+  font-size: 0.72rem;
   color: var(--text-muted);
   border: 2px solid var(--border-color);
   background: var(--bg-card);
-  padding: 12px 14px;
+  padding: 14px 16px;
 }
 
 .gomoku-side-panel {
-  padding: 16px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 20px;
 }
 
 .gomoku-panel-block {
   border: 2px solid rgba(42, 58, 85, 0.8);
   background: rgba(255, 255, 255, 0.02);
-  padding: 14px;
+  padding: 18px;
 }
 
 .gomoku-panel-title {
   font-family: 'Press Start 2P', monospace;
-  font-size: 0.68rem;
+  font-size: 0.8rem;
   color: var(--accent-cyan);
-  margin-bottom: 12px;
+  margin-bottom: 14px;
 }
 
 .gomoku-zoom-controls {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   flex-wrap: wrap;
 }
 
@@ -147,15 +149,15 @@
 }
 
 .gomoku-zoom-btn {
-  width: 42px;
-  height: 42px;
-  font-size: 1rem;
+  width: 46px;
+  height: 46px;
+  font-size: 1.2rem;
   line-height: 1;
 }
 
 .gomoku-zoom-reset {
-  padding: 12px 14px;
-  font-size: 0.58rem;
+  padding: 14px 16px;
+  font-size: 0.72rem;
 }
 
 .gomoku-zoom-btn:hover:not(:disabled),
@@ -175,7 +177,7 @@
   min-width: 74px;
   text-align: center;
   font-family: 'Press Start 2P', monospace;
-  font-size: 0.68rem;
+  font-size: 0.72rem;
   color: var(--accent-gold);
 }
 
@@ -192,17 +194,15 @@
   }
 
   .gomoku-title {
-    order: -1;
-    width: 100%;
     font-size: 0.92rem;
   }
 
   .gomoku-status-chip {
-    font-size: 0.52rem;
+    font-size: 0.65rem;
   }
 
   .gomoku-controls-hint span,
   .gomoku-action-btn {
-    font-size: 0.56rem;
+    font-size: 0.65rem;
   }
 }

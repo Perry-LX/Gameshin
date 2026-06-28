@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useLanguage } from '../i18n';
 import Board from '../games/gobang/Board';
 import Control from '../games/gobang/Control';
 import { getStatusText } from '../games/gobang/engine';
@@ -12,6 +13,7 @@ const MAX_BOARD_SIZE = 760;
 const BOARD_SIZE_STEP = 40;
 
 function GomokuScreen() {
+  const { t } = useLanguage();
   const navigate = useNavigate();
   const { state } = useGobang();
   const [boardSize, setBoardSize] = useState(DEFAULT_BOARD_SIZE);
@@ -30,32 +32,33 @@ function GomokuScreen() {
 
   return (
     <div className="gomoku-page pixel-container">
+      <h1 className="gomoku-title">{t('gomoku.title')}</h1>
+
       <div className="gomoku-top-bar">
         <button type="button" className="gomoku-back-btn" onClick={() => navigate('/')}>
           ◀ HOME
         </button>
-        <h1 className="gomoku-title">GOMOKU</h1>
-        <div className="gomoku-status-chip">{state.status === 'gaming' ? 'PLAYING' : 'READY'}</div>
+        <div className="gomoku-status-chip">{state.status === 'gaming' ? t('gomoku.playing') : t('gomoku.ready')}</div>
       </div>
 
-      <div className="gomoku-main-layout">
+<div className="gomoku-main-layout">
         <section className="gomoku-board-panel">
-          <div className="gomoku-status-bar">{getStatusText(state)}</div>
+          <div className="gomoku-status-bar">{getStatusText(state, t)}</div>
           <Board boardSize={boardSize} />
           <div className="gomoku-controls-hint">
-            <span>双人对战</span>
-            <span>点击落子</span>
-            <span>五子连珠获胜</span>
+            <span>{t('gomoku.hint.dual')}</span>
+            <span>{t('gomoku.hint.click')}</span>
+            <span>{t('gomoku.hint.win')}</span>
           </div>
         </section>
 
         <aside className="gomoku-side-panel">
           <div className="gomoku-panel-block">
-            <div className="gomoku-panel-title">操作面板</div>
+            <div className="gomoku-panel-title">{t('gomoku.status')}</div>
             <Control />
           </div>
           <div className="gomoku-panel-block">
-            <div className="gomoku-panel-title">棋盘缩放</div>
+            <div className="gomoku-panel-title">{t('zoom.out')}/{t('zoom.in')}</div>
             <div className="gomoku-zoom-controls">
               <button
                 type="button"
@@ -80,7 +83,7 @@ function GomokuScreen() {
                 onClick={zoomReset}
                 disabled={boardSize === DEFAULT_BOARD_SIZE}
               >
-                重置
+                {t('gomoku.zoom.reset')}
               </button>
             </div>
           </div>

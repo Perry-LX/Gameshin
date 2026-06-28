@@ -66,7 +66,7 @@ export interface ChessStatus {
   scoreText: string;
   winner: Side | 0 | null;
   thinking: boolean;
-  mode: 'menu' | 'duel' | 'preset' | 'pvp';
+  mode: 'menu' | 'duel' | 'preset' | 'pvp' | 'ai-vs-ai';
   difficulty: Difficulty;
   presetIndex: number;
   lastMoveText: string;
@@ -84,6 +84,7 @@ export interface EngineOptions extends RuntimeRefs {
 export interface EngineControls {
   startDuel: (difficulty: Difficulty) => void;
   startHumanDuel: () => void;
+  startAIVsAI: (difficulty: Difficulty) => void;
   startPreset: (index: number) => void;
   restart: () => void;
   regret: () => void;

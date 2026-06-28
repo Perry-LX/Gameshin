@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react';
 import { Routes, Route } from 'react-router-dom';
+import { useLanguage } from './i18n';
 import { Header } from './components/Header';
 import { GameList } from './components/GameList';
 import { Footer } from './components/Footer';
@@ -14,17 +15,18 @@ import { games } from './data/games';
 import './index.css';
 
 function HomePage() {
+  const { t } = useLanguage();
   const [activeCategory, setActiveCategory] = useState('all');
 
   const filteredGames = useMemo(() => {
     if (activeCategory === 'all') return games;
-    return games.filter((game) => game.status === activeCategory);
+    return games.filter((game) => game.category === activeCategory);
   }, [activeCategory]);
 
   return (
     <div className="pixel-container">
       <Header
-        title="探索Vibe-Games，开启游戏之旅"
+        title={t('header.title')}
         activeCategory={activeCategory}
         onCategoryChange={setActiveCategory}
       />

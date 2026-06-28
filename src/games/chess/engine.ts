@@ -91,7 +91,7 @@ export class ChessEngine implements EngineControls {
   private winner: Side | 0 | null = null;
   private difficulty: Difficulty = 3;
   private presetIndex = 0;
-  private mode: 'menu' | 'duel' | 'preset' | 'pvp' = 'menu';
+  private mode: 'menu' | 'duel' | 'preset' | 'pvp' | 'ai-vs-ai' = 'menu';
   private skin: SkinType;
   private openings: string[] = [];
   private historyBill: string[] = [];
@@ -333,6 +333,7 @@ export class ChessEngine implements EngineControls {
 
   private handleCanvasClick = (event: MouseEvent) => {
     if (!this.ready || !this.isPlaying || this.thinking || this.winner !== null) return;
+    if (this.mode === 'ai-vs-ai') return; // AI vs AI — no human interaction
     const point = this.getClickPoint(event);
     if (!point) return;
     const [x, y] = point;
@@ -385,7 +386,6 @@ export class ChessEngine implements EngineControls {
         }
         this.finishTurnAfterHumanMove(selected.my);
       }
-      return;
     }
 
     if (piece.my === this.getHumanControlSide()) {
@@ -433,6 +433,14 @@ export class ChessEngine implements EngineControls {
     }
 
     const [x, y, newX, newY] = move;
+    if (typeof x !== 'number' || typeof y !== 'number' || typeof newX !== 'number' || typeof newY !== 'number' ||
+        isNaN(x) || isNaN(y) || isNaN(newX) || isNaN(newY) ||
+        !this.board[y] || this.board[y][x] === undefined) {
+      this.thinking = false;
+      this.emitStatus();
+      return;
+    }
+
     const movingKey = this.board[y][x];
     if (!movingKey) {
       this.thinking = false;
@@ -458,8 +466,8 @@ export class ChessEngine implements EngineControls {
       this.finishGame(1);
       return;
     }
-    if (!this.hasAnyLegalMoves(this.board, 1)) {
-      this.finishGame(-1);
+    if (!this.hasAnyLegalMoves(this.board, this.getCurrentTurnSide())) {
+      this.finishGame((-this.getCurrentTurnSide()) as Side);
       return;
     }
 
@@ -795,12 +803,19 @@ export class ChessEngine implements EngineControls {
         const chosen = matched[Math.floor(Math.random() * matched.length)];
         this.historyBill = matched;
         const digits = chosen.slice(pace.length, pace.length + 4).split('').map((item) => parseInt(item, 10));
-        return [digits[0], digits[1], digits[2], digits[3]];
+        if (digits.length >= 4 && !digits.some(isNaN)) {
+          const [x, y] = digits;
+          // Validate the board position belongs to the current turn side
+          const key = this.board[y]?.[x];
+          if (key && PIECE_DEFS[getPieceLetter(key)].my === this.getCurrentTurnSide()) {
+            return [digits[0], digits[1], digits[2], digits[3]];
+          }
+        }
+        this.historyBill = [];
       }
-      this.historyBill = [];
     }
 
-    const result = this.alphaBeta(MIN_EVAL, MAX_EVAL, this.difficulty, cloneBoard(this.board), -1, this.difficulty, this.checkFoul());
+    const result = this.alphaBeta(MIN_EVAL, MAX_EVAL, this.difficulty, cloneBoard(this.board), this.getCurrentTurnSide(), this.difficulty, this.checkFoul());
     return result.move ?? null;
   }
 
@@ -897,6 +912,46 @@ export class ChessEngine implements EngineControls {
     this.emitStatus();
   }
 
+  startAIVsAI() {
+    if (!this.ready) return;
+    this.versus = 'ai';
+    this.mode = 'ai-vs-ai';
+    this.difficulty = 3;
+    this.startBoard = cloneBoard(INITIAL_BOARD);
+    this.board = cloneBoard(INITIAL_BOARD);
+    this.moveHistory = [];
+    this.historyBill = this.openings.slice();
+    this.selectedKey = null;
+    this.dotMoves = [];
+    this.lastPane.isShow = false;
+    this.thinking = false;
+    this.winner = null;
+    this.lastMoveText = '';
+    this.isPlaying = true;
+    this.syncPiecesFromBoard();
+    this.draw();
+    this.emitStatus();
+    // Kick off AI vs AI sequence
+    if (this.aiTimer) window.clearTimeout(this.aiTimer);
+    this.aiTimer = window.setTimeout(() => this.runAIVsAIMove(), 800);
+  }
+
+  private runAIVsAIMove() {
+    if (!this.isPlaying || this.winner !== null) return;
+    this.thinking = true;
+    this.emitStatus();
+    this.draw();
+    if (this.aiTimer) window.clearTimeout(this.aiTimer);
+    this.aiTimer = window.setTimeout(() => {
+      this.aiTimer = null;
+      this.runAiMove();
+      // After move completes, queue next AI move for opposite side
+      if (this.isPlaying && this.winner === null) {
+        this.aiTimer = window.setTimeout(() => this.runAIVsAIMove(), 600);
+      }
+    }, 350);
+  }
+
   startPreset(index: number) {
     if (!this.ready) return;
     this.versus = 'ai';
@@ -921,10 +976,13 @@ export class ChessEngine implements EngineControls {
 
   restart() {
     if (!this.ready || this.mode === 'menu') return;
+    if (this.aiTimer) window.clearTimeout(this.aiTimer);
     if (this.mode === 'duel') {
       this.startDuel(this.difficulty);
     } else if (this.mode === 'pvp') {
       this.startHumanDuel();
+    } else if (this.mode === 'ai-vs-ai') {
+      this.startAIVsAI();
     } else {
       this.startPreset(this.presetIndex);
     }

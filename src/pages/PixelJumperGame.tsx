@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getCollisionQueryBounds, getVisibleChunkBounds } from '../games/pixel-jumper/chunks';
+import { useLanguage } from '../i18n';
 import {
   collectCollectibles,
   isPlayerHitByBullet,
@@ -41,6 +42,7 @@ const defaultHudSnapshot: HudSnapshot = {
 
 export function PixelJumperGame() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const { t } = useLanguage();
   const frameRef = useRef<number | null>(null);
   const lastFrameRef = useRef<number | null>(null);
   const frameWrapRef = useRef<HTMLDivElement>(null);
@@ -279,67 +281,67 @@ export function PixelJumperGame() {
     if (overlayState === 'idle') {
       return {
         icon: '🏁',
-        title: 'READY TO RUN?',
+        title: t('pixelJumper.readyTitle'),
         className: '',
-        description: 'Cross wide map regions, stomp monsters, finish tasks, and unlock the exit.',
-        hint: 'Press Arrow Keys / WASD to start, Space or ↑ to jump.',
-        action: { label: '▶ START RUN', onClick: startRun },
+        description: t('pixelJumper.readyDesc'),
+        hint: t('pixelJumper.readyHint'),
+        action: { label: t('pixelJumper.startRun'), onClick: startRun },
       };
     }
     if (overlayState === 'failed') {
       return {
         icon: '💥',
-        title: 'LEVEL FAILED',
+        title: t('pixelJumper.failedTitle'),
         className: 'failed',
-        description: 'Bullets, monsters, or hazards took you down.',
-        hint: 'Press Space / Enter to retry.',
-        action: { label: '▶ RETRY', onClick: retryLevel },
+        description: t('pixelJumper.failedDesc'),
+        hint: t('pixelJumper.failedHint'),
+        action: { label: t('pixelJumper.retry'), onClick: retryLevel },
       };
     }
     if (overlayState === 'cleared') {
       return {
         icon: '✨',
-        title: 'LEVEL CLEAR',
+        title: t('pixelJumper.clearedTitle'),
         className: 'clear',
         description: `Stage ${hud.currentLevel} complete. Move into the next region.`,
-        hint: 'Press Space / Enter to continue.',
-        action: { label: '▶ NEXT STAGE', onClick: goToNextLevel },
+        hint: t('pixelJumper.clearedHint'),
+        action: { label: t('pixelJumper.nextStage'), onClick: goToNextLevel },
       };
     }
     if (overlayState === 'completed') {
       return {
         icon: '👑',
-        title: 'RUN COMPLETE',
+        title: t('pixelJumper.completedTitle'),
         className: 'complete',
         description: `You cleared all ${hud.totalLevels} stages in ${formatTime(hud.elapsedMs)}.`,
         hint: '',
-        action: { label: '▶ PLAY AGAIN', onClick: startRun },
+        action: { label: t('pixelJumper.playAgain'), onClick: startRun },
       };
     }
     return null;
-  }, [goToNextLevel, hud.currentLevel, hud.elapsedMs, hud.totalLevels, overlayState, retryLevel, startRun]);
+  }, [goToNextLevel, hud.currentLevel, hud.elapsedMs, hud.totalLevels, overlayState, retryLevel, startRun, t]);
 
   return (
     <div className="pixel-jumper-page">
       <div className="pixel-jumper-top-bar">
-        <button className="pixel-jumper-back-btn" onClick={() => navigate('/')}>◂ BACK</button>
+        <button className="pixel-jumper-back-btn" onClick={() => navigate('/')}>{t('pixelJumper.back')}</button>
         <div className="pixel-jumper-title-wrap">
-          <h1 className="pixel-jumper-title">PIXEL JUMPER</h1>
+          <h1 className="pixel-jumper-title">{t('pixelJumper.title')}</h1>
           <span className="pixel-jumper-stage-name">{hud.levelName}</span>
         </div>
         <div className="pixel-jumper-stats">
-          <span className="pixel-jumper-stat">LEVEL: {hud.currentLevel}/{hud.totalLevels}</span>
-          <span className="pixel-jumper-stat">REGION: {hud.activeChunkIndex + 1}/{hud.totalChunks}</span>
-          <span className="pixel-jumper-stat">DEATHS: {hud.deaths}</span>
-          <span className="pixel-jumper-stat">TIME: {formatTime(hud.elapsedMs)}</span>
-          <span className="pixel-jumper-best">BEST: {hud.bestTime ? formatTime(hud.bestTime) : '--:--.-'}</span>
+          <span className="pixel-jumper-stat">{t('pixelJumper.level')}: {hud.currentLevel}/{hud.totalLevels}</span>
+          <span className="pixel-jumper-stat">{t('pixelJumper.region')}: {hud.activeChunkIndex + 1}/{hud.totalChunks}</span>
+          <span className="pixel-jumper-stat">{t('pixelJumper.deaths')}: {hud.deaths}</span>
+          <span className="pixel-jumper-stat">{t('pixelJumper.time')}: {formatTime(hud.elapsedMs)}</span>
+          <span className="pixel-jumper-best">{t('pixelJumper.best')}: {hud.bestTime ? formatTime(hud.bestTime) : '--:--.-'}</span>
         </div>
       </div>
 
       <div className="pixel-jumper-mission-panel">
-        <div className="pixel-jumper-mission-title">TASKS</div>
+        <div className="pixel-jumper-mission-title">{t('pixelJumper.tasks')}</div>
         {hud.tasks.length === 0 ? (
-          <div className="pixel-jumper-mission-empty">REACH THE EXIT FLAG.</div>
+          <div className="pixel-jumper-mission-empty">{t('pixelJumper.exit')}</div>
         ) : (
           <ul className="pixel-jumper-task-list">
             {hud.tasks.map((task) => (

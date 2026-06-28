@@ -1,6 +1,6 @@
 .intl-chess-page {
   --border-width: calc(var(--diameter-tile) / 60);
-  --diameter-board: min(72vw, 72vh);
+  --diameter-board: min(56vw, 62vh);
   --diameter-tile: calc(var(--diameter-board) / 8);
   --coordinate-band: calc(var(--diameter-tile) * 0.36);
   --coordinate-size: calc(var(--coordinate-band) * 0.42);
@@ -12,16 +12,16 @@
   --color-shadow: #476287;
   --color-shadow-lighter: #7b94b5;
   --color-background: var(--color-black);
-  padding-top: 32px;
+  padding-top: 16px;
   padding-bottom: 40px;
 }
 
 .intl-chess-top-bar {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  margin-bottom: 24px;
+  gap: 24px;
+  margin-bottom: 16px;
+  padding: 4px 0;
 }
 
 .intl-chess-back-btn,
@@ -36,9 +36,10 @@
   border: 2px solid var(--border-color);
   background: rgba(21, 34, 58, 0.92);
   color: var(--text-primary);
-  padding: 12px 14px;
+  padding: 14px 18px;
   cursor: pointer;
   letter-spacing: 1px;
+  font-size: 0.78rem;
 }
 
 .intl-chess-back-btn:hover {
@@ -52,20 +53,22 @@
   color: var(--accent-gold);
   text-align: center;
   line-height: 1.5;
+  width: 100%;
+  margin-bottom: 16px;
 }
 
 .intl-chess-status-chip {
   border: 2px solid rgba(245, 197, 24, 0.35);
   background: rgba(245, 197, 24, 0.08);
   color: var(--accent-gold);
-  padding: 10px 12px;
-  font-size: 0.55rem;
+  padding: 14px 18px;
+  font-size: 0.72rem;
   white-space: nowrap;
 }
 
 .intl-chess-main-layout {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 320px;
+  grid-template-columns: minmax(0, 1fr) 340px;
   gap: 24px;
   align-items: start;
 }
@@ -83,12 +86,12 @@
 }
 
 .intl-chess-status-bar {
-  margin-bottom: 12px;
-  padding: 10px 14px;
+  margin-bottom: 14px;
+  padding: 12px 16px;
   border: 2px solid rgba(71, 98, 135, 0.45);
   background: rgba(12, 18, 31, 0.75);
   color: var(--text-secondary);
-  font-size: 0.92rem;
+  font-size: 1rem;
 }
 
 .intl-chess-stage-card {
@@ -123,16 +126,16 @@
 .intl-chess-hints {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 14px;
+  gap: 12px;
+  margin-top: 16px;
 }
 
 .intl-chess-hints span {
   border: 1px solid rgba(71, 98, 135, 0.42);
   background: rgba(10, 14, 23, 0.55);
   color: var(--text-secondary);
-  font-size: 0.8rem;
-  padding: 6px 10px;
+  font-size: 0.85rem;
+  padding: 10px 14px;
 }
 
 .intl-chess-overlay {
@@ -184,16 +187,17 @@
   margin: 0;
   color: var(--text-secondary);
   line-height: 1.8;
+  font-size: 0.9rem;
 }
 
 .intl-chess-action-btn {
   border: 2px solid var(--border-color);
   background: rgba(21, 34, 58, 0.92);
   color: var(--text-primary);
-  padding: 12px 16px;
+  padding: 14px 18px;
   cursor: pointer;
   letter-spacing: 1px;
-  font-size: 0.62rem;
+  font-size: 0.72rem;
 }
 
 .intl-chess-action-btn:hover {
@@ -208,23 +212,23 @@
 
 .intl-chess-side-panel {
   display: grid;
-  gap: 16px;
+  gap: 20px;
 }
 
 .intl-chess-panel-block {
-  padding: 18px;
+  padding: 20px;
 }
 
 .intl-chess-panel-title {
   color: var(--accent-amber);
-  font-size: 0.62rem;
-  margin-bottom: 14px;
+  font-size: 0.75rem;
+  margin-bottom: 16px;
   line-height: 1.5;
 }
 
 .intl-chess-control-row {
   display: flex;
-  gap: 10px;
+  gap: 12px;
   flex-wrap: wrap;
 }
 
@@ -236,7 +240,7 @@
 .intl-chess-action-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
+  gap: 12px;
 }
 
 .intl-chess-toggle {
@@ -254,12 +258,12 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 52px;
-  padding: 10px 12px;
+  min-height: 56px;
+  padding: 12px 14px;
   border: 2px solid var(--border-color);
   background: rgba(10, 14, 23, 0.7);
   color: var(--text-secondary);
-  font-size: 0.66rem;
+  font-size: 0.78rem;
   line-height: 1.5;
   text-align: center;
 }
@@ -371,6 +375,7 @@
   width: auto;
 }
 
+/* Board colors */
 .intl-chess-page .perspective-black .board .row:nth-child(even) .tile:nth-child(odd),
 .intl-chess-page .perspective-black .board .row:nth-child(odd) .tile:nth-child(even),
 .intl-chess-page .perspective-white .board .row:nth-child(even) .tile:nth-child(even),
@@ -599,23 +604,23 @@
   }
 
   .intl-chess-page {
-    --diameter-board: min(82vw, 82vw);
+    --diameter-board: min(72vw, 72vw);
   }
 }
 
 @media (max-width: 720px) {
   .intl-chess-page {
-    --diameter-board: min(88vw, 88vw);
-    padding-top: 20px;
+    --diameter-board: min(72vw, 72vw);
+    padding-top: 12px;
   }
 
   .intl-chess-top-bar {
-    flex-direction: column;
-    align-items: stretch;
+    flex-direction: row;
+    justify-content: center;
   }
 
   .intl-chess-title {
-    font-size: 0.78rem;
+    font-size: 0.85rem;
   }
 
   .intl-chess-stage-card {
@@ -627,11 +632,12 @@
   }
 
   .intl-chess-overlay-title {
-    font-size: 0.72rem;
+    font-size: 0.78rem;
   }
 
   .intl-chess-action-btn {
     width: 100%;
+    font-size: 0.65rem;
   }
 
   .intl-chess-control-row-wrap {
@@ -645,4 +651,59 @@
   .intl-chess-control-row {
     flex-direction: column;
   }
+
+  .intl-chess-status-chip {
+    font-size: 0.6rem;
+    padding: 10px 14px;
+  }
+}
+
+/* ── Dropdown settings ── */
+.intl-chess-dropdown-group {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.intl-chess-dropdown-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.intl-chess-dropdown-field span {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.65rem;
+  color: var(--accent-amber);
+}
+
+.intl-chess-select {
+  width: 100%;
+  padding: 12px 14px;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.7rem;
+  border: 2px solid var(--border-color);
+  background: rgba(10, 14, 23, 0.7);
+  color: var(--text-primary);
+  cursor: pointer;
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 8 8'%3E%3Cpath fill='%23f0e6d8' d='M0 2l4 4 4-4z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 10px;
+  padding-right: 30px;
+  transition: border-color 0.2s ease;
+}
+
+.intl-chess-select:hover,
+.intl-chess-select:focus {
+  border-color: var(--accent-gold);
+}
+
+.intl-chess-select option {
+  background: #15223a;
+  color: var(--text-primary);
 }

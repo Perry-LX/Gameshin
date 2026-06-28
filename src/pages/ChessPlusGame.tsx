@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useLanguage } from '../i18n';
 import { createChessEngine } from '../games/chess/engine';
 import { PRESETS } from '../games/chess/presets';
 import type { ChessStatus, Difficulty, SkinType } from '../games/chess/types';
@@ -7,44 +8,35 @@ import './ChessPlusGame.css';
 
 const assetBase = ((typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.BASE_URL) || '').replace(/\/$/, '');
 
-const DEFAULT_STATUS: ChessStatus = {
-  scoreText: '资源加载中...',
-  winner: null,
-  thinking: false,
-  mode: 'menu',
-  difficulty: 3,
-  presetIndex: 0,
-  lastMoveText: '',
-  moveNotations: [],
-  currentSkin: 'stype2',
-  isPlaying: false,
-  turn: 1,
-};
-
-const SKIN_LABELS: Record<SkinType, string> = {
-  stype1: 'CLASSIC',
-  stype2: 'WOOD',
-  stype3: 'PRO',
-};
-
-const MODE_LABELS = {
-  duel: '人机对弈',
-  pvp: '人人对战',
-  preset: '残局挑战',
-} as const;
 
 export function ChessPlusGame() {
+  const { t } = useLanguage();
   const navigate = useNavigate();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const clickAudioRef = useRef<HTMLAudioElement>(null);
   const selectAudioRef = useRef<HTMLAudioElement>(null);
   const engineRef = useRef<ReturnType<typeof createChessEngine> | null>(null);
 
+  const DEFAULT_STATUS: ChessStatus = {
+    scoreText: t('chess.loading'),
+    winner: null,
+    thinking: false,
+    mode: 'menu',
+    difficulty: 3,
+    presetIndex: 0,
+    lastMoveText: '',
+    moveNotations: [],
+    currentSkin: 'stype2',
+    isPlaying: false,
+    turn: 1,
+  };
+
   const [status, setStatus] = useState<ChessStatus>(DEFAULT_STATUS);
   const [difficulty, setDifficulty] = useState<Difficulty>(3);
   const [presetIndex, setPresetIndex] = useState(0);
-  const [playMode, setPlayMode] = useState<'duel' | 'pvp' | 'preset'>('duel');
+  const [playMode, setPlayMode] = useState<'duel' | 'pvp' | 'preset' | 'ai-vs-ai'>('duel');
   const [selectedSkin, setSelectedSkin] = useState<SkinType>('stype2');
+  const [showMovesModal, setShowMovesModal] = useState(false);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -69,23 +61,30 @@ export function ChessPlusGame() {
     setSelectedSkin(status.currentSkin);
   }, [status.currentSkin]);
 
+  // Handle language change for default status text
+  useEffect(() => {
+    if (status.winner === null && status.mode === 'menu') {
+      setStatus((prev) => ({ ...prev, scoreText: t('chess.loading') }));
+    }
+  }, [t, status.winner, status.mode]);
+
   const winnerText = useMemo(() => {
-    if (status.winner === 1) return '红方胜';
-    if (status.winner === -1) return '黑方胜';
+    if (status.winner === 1) return t('chessPlus.winner.red');
+    if (status.winner === -1) return t('chessPlus.winner.black');
     return '';
-  }, [status.winner]);
+  }, [status.winner, t]);
 
   const modeText = useMemo(() => {
-    if (status.mode === 'menu') return `待开始 · ${MODE_LABELS[playMode]}`;
-    if (status.mode === 'preset') return `残局挑战 · ${PRESETS[status.presetIndex]?.name ?? '未选择'}`;
-    return MODE_LABELS[status.mode];
-  }, [playMode, status.mode, status.presetIndex]);
+    if (status.mode === 'menu') return `· ${t(`chessPlus.mode.${playMode}`)}`;
+    if (status.mode === 'preset') return `${t('chessPlus.mode.preset')} · ${PRESETS[status.presetIndex]?.name ?? '-'}`;
+    return t(`chessPlus.mode.${status.mode}`);
+  }, [playMode, status.mode, status.presetIndex, t]);
 
   const turnText = useMemo(() => {
     if (status.winner !== null) return winnerText;
-    if (status.thinking) return 'AI 思考中';
-    return status.turn === 1 ? '红方行棋' : '黑方行棋';
-  }, [status.thinking, status.turn, status.winner, winnerText]);
+    if (status.thinking) return t('chessPlus.thinking');
+    return status.turn === 1 ? t('chessPlus.turn.red') : t('chessPlus.turn.black');
+  }, [status.thinking, status.turn, status.winner, winnerText, t]);
 
   const roundRows = useMemo(() => {
     const rows: Array<{ round: number; red?: string; black?: string }> = [];
@@ -103,6 +102,9 @@ export function ChessPlusGame() {
     return rows;
   }, [status.moveNotations]);
 
+  const visibleRows = useMemo(() => roundRows.slice(0, 3), [roundRows]);
+  const hasMoreMoves = roundRows.length > 3;
+
   const handleStartGame = () => {
     const engine = engineRef.current;
     if (!engine) return;
@@ -114,7 +116,15 @@ export function ChessPlusGame() {
       engine.startHumanDuel();
       return;
     }
+    if (playMode === 'ai-vs-ai') {
+      engine.startAIVsAI();
+      return;
+    }
     engine.startPreset(presetIndex);
+  };
+
+  const handleRestart = () => {
+    engineRef.current?.restart();
   };
 
   const handleSkinChange = (value: SkinType) => {
@@ -127,35 +137,47 @@ export function ChessPlusGame() {
       <audio ref={clickAudioRef} src={`${assetBase}/chess/audio/click.wav`} preload="auto" />
       <audio ref={selectAudioRef} src={`${assetBase}/chess/audio/select.wav`} preload="auto" />
 
+      <h1 className="chess-plus-title">
+        Chinese Chess
+        <span className="chess-plus-word">Plus</span>
+      </h1>
+
       <header className="chess-plus-hero">
         <button type="button" className="chess-plus-back-btn" onClick={() => navigate('/')}>
           ◀ HOME
         </button>
         <div className="chess-plus-hero-copy">
-          <p className="chess-plus-kicker">GAMESHIN STRATEGY TABLE</p>
-          <h1>
-            Chinese Chess
-            <span className="chess-plus-word">Plus</span>
-          </h1>
-          <p>加入人人对战、下拉式设置面板与右侧顶部走棋记录的增强版中国象棋界面。</p>
+          <p className="chess-plus-kicker">{t('chessPlus.kicker')}</p>
+          <p>{t('chessPlus.description')}</p>
         </div>
         <div className="chess-plus-hero-badges">
           <span>{modeText}</span>
           <span>{turnText}</span>
-          <span>{SKIN_LABELS[status.currentSkin]}</span>
+          <span>{t(`chessPlus.skin.${status.currentSkin}`)}</span>
         </div>
       </header>
 
       <section className="chess-plus-shell">
         <div className="chess-plus-board-card">
           <div className="chess-plus-board-header">
-            <div>
-              <p className="chess-plus-board-label">当前状态</p>
-              <h2>{status.scoreText}</h2>
+            <div className="chess-plus-board-info">
+              <div>
+                <p className="chess-plus-board-label">{t('chessPlus.label.status')}</p>
+                <h2 className="chess-plus-board-score">{status.scoreText}</h2>
+              </div>
+              <div className="chess-plus-board-meta">
+                <span className="chess-plus-badge">{status.isPlaying ? t('chessPlus.status.inProgress') : t('chessPlus.status.notStarted')}</span>
+                <span className="chess-plus-badge">{playMode === 'duel' ? `${t('chessPlus.difficulty')} ${difficulty}` : t(`chessPlus.mode.${playMode}`)}</span>
+              </div>
             </div>
-            <div className="chess-plus-board-meta">
-              <span>{status.isPlaying ? '对局中' : '未开局'}</span>
-              <span>{playMode === 'duel' ? `难度 ${difficulty}` : MODE_LABELS[playMode]}</span>
+            {/* Start / Restart buttons moved to board top-right */}
+            <div className="chess-plus-board-actions">
+              <button type="button" className="chess-plus-board-action-btn primary" onClick={handleStartGame}>
+                {t('chessPlus.button.start')}
+              </button>
+              <button type="button" className="chess-plus-board-action-btn" onClick={handleRestart}>
+                {t('chessPlus.button.restart')}
+              </button>
             </div>
           </div>
 
@@ -169,7 +191,7 @@ export function ChessPlusGame() {
                     <h3>{winnerText}</h3>
                     <p>{status.lastMoveText || status.scoreText}</p>
                     <button type="button" className="chess-plus-primary-btn" onClick={() => engineRef.current?.restart()}>
-                      再来一局
+                      {t('chessPlus.button.again')}
                     </button>
                   </div>
                 </div>
@@ -178,69 +200,83 @@ export function ChessPlusGame() {
           </div>
 
           <div className="chess-plus-footer-hints">
-            <span>点击棋子选中并落子</span>
-            <span>支持 AI 对弈 / 人人对战 / 残局模式</span>
-            <span>设置区已改为下拉列表</span>
+            <span>{t('chessPlus.hint.click')}</span>
+            <span>{t('chessPlus.hint.modes')}</span>
+            <span>{t('chessPlus.hint.settings')}</span>
           </div>
         </div>
 
         <aside className="chess-plus-sidebar">
+          {/* Move history — max 3 visible rows */}
           <section className="chess-plus-panel chess-plus-moves-panel">
-            <div className="chess-plus-panel-title">走棋记录</div>
+            <div className="chess-plus-panel-title-lg">{t('chessPlus.panel.moves')}</div>
             {roundRows.length ? (
-              <div className="chess-plus-moves-table">
-                <div className="chess-plus-moves-head">
-                  <span>回合</span>
-                  <span>红方</span>
-                  <span>黑方</span>
+              <>
+                <div className="chess-plus-moves-table">
+                  <div className="chess-plus-moves-head">
+                    <span>{t('chessPlus.moves.round')}</span>
+                    <span>{t('chessPlus.moves.red')}</span>
+                    <span>{t('chessPlus.moves.black')}</span>
+                  </div>
+                  <div className="chess-plus-moves-body">
+                    {visibleRows.map((row) => (
+                      <div key={row.round} className="chess-plus-moves-row">
+                        <span className="chess-plus-moves-round">{row.round}</span>
+                        <span className="chess-plus-moves-cell">{row.red ?? '—'}</span>
+                        <span className="chess-plus-moves-cell">{row.black ?? '—'}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-                <div className="chess-plus-moves-body">
-                  {roundRows.map((row) => (
-                    <div key={row.round} className="chess-plus-moves-row">
-                      <span>{row.round}</span>
-                      <span>{row.red ?? '—'}</span>
-                      <span>{row.black ?? '—'}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
+                {hasMoreMoves && (
+                  <button
+                    type="button"
+                    className="chess-plus-view-all-btn"
+                    onClick={() => setShowMovesModal(true)}
+                  >
+                    {t('chessPlus.moves.viewAll')} ({roundRows.length})
+                  </button>
+                )}
+              </>
             ) : (
-              <div className="chess-plus-empty-state">开局后会在这里显示完整着法记录。</div>
+              <div className="chess-plus-empty-state">{t('chessPlus.moves.empty')}</div>
             )}
           </section>
 
+          {/* Settings panel */}
           <section className="chess-plus-panel">
-            <div className="chess-plus-panel-title">对局设置</div>
+            <div className="chess-plus-panel-title-lg">{t('chessPlus.panel.settings')}</div>
             <div className="chess-plus-form-grid">
               <label className="chess-plus-field">
-                <span>模式</span>
-                <select className="chess-plus-select" value={playMode} onChange={(event) => setPlayMode(event.target.value as 'duel' | 'pvp' | 'preset')}>
-                  <option value="duel">人机对弈</option>
-                  <option value="pvp">人人对战</option>
-                  <option value="preset">残局挑战</option>
+                <span className="chess-plus-field-label">{t('chessPlus.modeLabel')}</span>
+                <select className="chess-plus-select" value={playMode} onChange={(event) => setPlayMode(event.target.value as 'duel' | 'pvp' | 'preset' | 'ai-vs-ai')}>
+                  <option value="duel">{t('chessPlus.mode.duel')}</option>
+                  <option value="pvp">{t('chessPlus.mode.pvp')}</option>
+                  <option value="ai-vs-ai">{t('chessPlus.mode.ai-vs-ai')}</option>
+                  <option value="preset">{t('chessPlus.mode.preset')}</option>
                 </select>
               </label>
 
               <label className="chess-plus-field">
-                <span>难度</span>
+                <span className="chess-plus-field-label">{t('chessPlus.difficultyLabel')}</span>
                 <select
                   className="chess-plus-select"
                   value={difficulty}
-                  disabled={playMode !== 'duel'}
+                  disabled={playMode === 'pvp' || playMode === 'preset'}
                   onChange={(event) => {
                     const value = Number(event.target.value) as Difficulty;
                     setDifficulty(value);
                     engineRef.current?.setDifficulty(value);
                   }}
                 >
-                  <option value={2}>菜鸟</option>
-                  <option value={3}>中级</option>
-                  <option value={4}>高手</option>
+                  <option value={2}>{t('chess.difficulty.rookie')}</option>
+                  <option value={3}>{t('chess.difficulty.mid')}</option>
+                  <option value={4}>{t('chess.difficulty.pro')}</option>
                 </select>
               </label>
 
               <label className="chess-plus-field">
-                <span>残局</span>
+                <span className="chess-plus-field-label">{t('chessPlus.presetLabel')}</span>
                 <select
                   className="chess-plus-select"
                   value={presetIndex}
@@ -260,62 +296,85 @@ export function ChessPlusGame() {
               </label>
 
               <label className="chess-plus-field">
-                <span>皮肤</span>
+                <span className="chess-plus-field-label">{t('chessPlus.skinLabel')}</span>
                 <select className="chess-plus-select" value={selectedSkin} onChange={(event) => handleSkinChange(event.target.value as SkinType)}>
-                  {Object.entries(SKIN_LABELS).map(([value, label]) => (
+                  {["stype1","stype2","stype3"].map(([value]) => (
                     <option key={value} value={value}>
-                      {label}
+                      {t(`chessPlus.skin.${value}`)}
                     </option>
                   ))}
                 </select>
               </label>
             </div>
-
-            <div className="chess-plus-panel-actions two-col">
-              <button type="button" className="chess-plus-primary-btn" onClick={handleStartGame}>
-                开始对局
-              </button>
-              <button type="button" className="chess-plus-secondary-btn" onClick={() => engineRef.current?.restart()}>
-                重新开始
-              </button>
-            </div>
           </section>
 
+          {/* Actions panel */}
           <section className="chess-plus-panel">
-            <div className="chess-plus-panel-title">棋局操作</div>
+            <div className="chess-plus-panel-title-lg">{t('chessPlus.panel.actions')}</div>
             <div className="chess-plus-panel-actions two-col">
-              <button type="button" className="chess-plus-secondary-btn" onClick={() => engineRef.current?.regret()}>
-                悔棋
+              <button type="button" className="chess-plus-secondary-btn" onClick={() => engineRef.current?.regret()} disabled={playMode === 'ai-vs-ai'}>
+                {t('chessPlus.button.regret')}
               </button>
               <button type="button" className="chess-plus-secondary-btn" onClick={() => engineRef.current?.cycleSkin()}>
-                顺切皮肤
+                {t('chessPlus.button.cycleSkin')}
               </button>
             </div>
           </section>
 
+          {/* Info panel */}
           <section className="chess-plus-panel chess-plus-panel-stats">
-            <div className="chess-plus-panel-title">局面信息</div>
+            <div className="chess-plus-panel-title-lg">{t('chessPlus.panel.info')}</div>
             <div className="chess-plus-stats-grid">
               <article>
-                <span>模式</span>
-                <strong>{modeText}</strong>
+                <span className="chess-plus-stat-label">{t('chessPlus.modeLabel')}</span>
+                <strong className="chess-plus-stat-value">{modeText}</strong>
               </article>
               <article>
-                <span>先手</span>
-                <strong>红方</strong>
+                <span className="chess-plus-stat-label">{t('chessPlus.info.hand')}</span>
+                <strong className="chess-plus-stat-value">{t('chessPlus.moves.red')}</strong>
               </article>
               <article>
-                <span>当前皮肤</span>
-                <strong>{SKIN_LABELS[status.currentSkin]}</strong>
+                <span className="chess-plus-stat-label">{t('chessPlus.info.skin')}</span>
+                <strong className="chess-plus-stat-value">{t(`chessPlus.skin.${status.currentSkin}`)}</strong>
               </article>
               <article>
-                <span>回合数</span>
-                <strong>{Math.ceil(status.moveNotations.length / 2)}</strong>
+                <span className="chess-plus-stat-label">{t('chessPlus.info.rounds')}</span>
+                <strong className="chess-plus-stat-value">{Math.ceil(status.moveNotations.length / 2)}</strong>
               </article>
             </div>
           </section>
         </aside>
       </section>
+
+      {/* Move history modal */}
+      {showMovesModal && (
+        <div className="chess-plus-modal-backdrop" onClick={() => setShowMovesModal(false)}>
+          <div className="chess-plus-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="chess-plus-modal-header">
+              <span className="chess-plus-modal-title">{t('chessPlus.panel.moves')}</span>
+              <button className="chess-plus-modal-close" onClick={() => setShowMovesModal(false)}>✕</button>
+            </div>
+            <div className="chess-plus-modal-body">
+              <div className="chess-plus-moves-table">
+                <div className="chess-plus-moves-head">
+                  <span>{t('chessPlus.moves.round')}</span>
+                  <span>{t('chessPlus.moves.red')}</span>
+                  <span>{t('chessPlus.moves.black')}</span>
+                </div>
+                <div className="chess-plus-modal-moves-body">
+                  {roundRows.map((row) => (
+                    <div key={row.round} className="chess-plus-moves-row">
+                      <span className="chess-plus-moves-round">{row.round}</span>
+                      <span className="chess-plus-moves-cell">{row.red ?? '—'}</span>
+                      <span className="chess-plus-moves-cell">{row.black ?? '—'}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

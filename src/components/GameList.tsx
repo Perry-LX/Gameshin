@@ -1,3 +1,4 @@
+import { useLanguage } from '../i18n';
 import type { GameItem } from '../types';
 import { GameCard } from './GameCard';
 
@@ -6,14 +7,16 @@ interface GameListProps {
 }
 
 export function GameList({ games }: GameListProps) {
+  const { t } = useLanguage();
+
   if (games.length === 0) {
     return (
       <div className="empty-state">
         <div className="empty-pixel-art">
           <span>◢</span><span>■</span><span>◤</span>
         </div>
-        <p className="empty-text">没有找到匹配的游戏</p>
-        <p className="empty-hint">试试其他分类标签</p>
+        <p className="empty-text">{t('gameList.empty')}</p>
+        <p className="empty-hint">{t('gameList.emptyHint')}</p>
       </div>
     );
   }

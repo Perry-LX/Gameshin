@@ -1,4 +1,8 @@
+import { useLanguage } from '../i18n';
+
 export function Footer() {
+  const { t } = useLanguage();
+
   return (
     <footer className="pixel-footer">
       <div className="footer-divider">
@@ -10,9 +14,9 @@ export function Footer() {
       </div>
       <div className="footer-content">
         <p className="footer-text">
-          <span className="pixel-heart">♥</span> 更多精彩游戏正在开发中...
+          ♥ {t('footer.text')}
         </p>
-        <p className="footer-copy">© 2026 GAMESHIN GAME HUB · ALL RIGHTS RESERVED</p>
+        <p className="footer-copy">{t('footer.copyright')}</p>
       </div>
     </footer>
   );

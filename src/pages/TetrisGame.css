@@ -3,23 +3,25 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 16px 20px;
+  padding: 12px 16px;
 }
 
-/* ── Top Bar ── */
-.tetris-top-bar {
+/* ── Top Row: back button + stats ── */
+.tetris-top-row {
   display: flex;
   align-items: center;
-  gap: 16px;
-  margin-bottom: 8px;
+  justify-content: space-between;
+  gap: 12px;
   width: 100%;
   max-width: 700px;
+  margin-bottom: 8px;
+  padding: 4px 0;
 }
 
 .tetris-back-btn {
   font-family: 'Press Start 2P', monospace;
-  font-size: 0.6rem;
-  padding: 10px 14px;
+  font-size: 0.75rem;
+  padding: 14px 18px;
   background: var(--bg-card);
   border: 2px solid var(--border-color);
   color: var(--text-secondary);
@@ -34,47 +36,50 @@
   box-shadow: 0 0 20px rgba(255, 107, 26, 0.1);
 }
 
+.tetris-stats {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.tetris-stat {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.65rem;
+  color: var(--text-secondary);
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  padding: 8px 12px;
+  white-space: nowrap;
+}
+
+.tetris-stat b {
+  color: var(--accent-gold);
+}
+
 .tetris-title {
   font-family: 'Press Start 2P', monospace;
   font-size: 1rem;
   color: var(--accent-gold);
   text-shadow: 0 0 20px rgba(245, 197, 24, 0.3);
-  flex: 1;
   text-align: center;
-}
-
-.tetris-scores {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 3px;
-}
-
-.tetris-score-val {
-  font-family: 'Press Start 2P', monospace;
-  font-size: 0.6rem;
-  color: var(--accent-gold);
-}
-
-.tetris-best-val {
-  font-family: 'Press Start 2P', monospace;
-  font-size: 0.5rem;
-  color: var(--text-muted);
+  margin-bottom: 8px;
+  width: 100%;
 }
 
 /* ── Zoom Bar ── */
 .tetris-zoom-bar {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 12px;
+  gap: 10px;
+  margin-bottom: 10px;
 }
 
 .tetris-zoom-btn {
   font-family: 'Press Start 2P', monospace;
-  font-size: 1rem;
-  width: 34px;
-  height: 34px;
+  font-size: 1.2rem;
+  width: 40px;
+  height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -97,7 +102,7 @@
 
 .tetris-zoom-label {
   font-family: 'Press Start 2P', monospace;
-  font-size: 0.55rem;
+  font-size: 0.7rem;
   color: var(--text-muted);
   min-width: 48px;
   text-align: center;
@@ -105,9 +110,9 @@
 
 .tetris-zoom-reset {
   font-family: 'Press Start 2P', monospace;
-  font-size: 0.85rem;
-  width: 34px;
-  height: 34px;
+  font-size: 1rem;
+  width: 40px;
+  height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -126,8 +131,8 @@
 /* ── Play Area ── */
 .tetris-play-area {
   display: flex;
-  gap: 16px;
-  align-items: flex-start;
+  justify-content: center;
+  width: 100%;
 }
 
 .tetris-canvas-wrap {
@@ -136,42 +141,34 @@
   box-shadow:
     0 0 40px rgba(245, 197, 24, 0.06),
     inset 0 0 20px rgba(0, 0, 0, 0.3);
-  flex-shrink: 0;
+  max-width: min(100%, 700px);
 }
 
 .tetris-canvas {
   display: block;
   image-rendering: pixelated;
+  max-width: 100%;
+  height: auto;
 }
 
-/* ── Sidebar ── */
-.tetris-sidebar {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  min-width: 120px;
-}
-
-.tetris-panel {
+/* ── NEXT preview overlay (top-right of canvas) ── */
+.tetris-next-overlay {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: rgba(10, 14, 23, 0.88);
+  border: 2px solid var(--border-color);
+  padding: 8px;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 6px;
-  padding: 14px 12px;
-  background: var(--bg-card);
-  border: 2px solid var(--border-color);
 }
 
-.tetris-panel-label {
+.tetris-next-label {
   font-family: 'Press Start 2P', monospace;
-  font-size: 0.5rem;
+  font-size: 0.6rem;
   color: var(--text-muted);
-}
-
-.tetris-panel-value {
-  font-family: 'Press Start 2P', monospace;
-  font-size: 0.85rem;
-  color: var(--accent-gold);
 }
 
 .tetris-next-canvas {
@@ -190,12 +187,23 @@
   backdrop-filter: blur(2px);
 }
 
+.tetris-overlay-abs {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(10, 14, 23, 0.88);
+  backdrop-filter: blur(2px);
+  z-index: 10;
+}
+
 .tetris-overlay-body {
   text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
+  gap: 14px;
 }
 
 .tetris-overlay-icon {
@@ -205,21 +213,21 @@
 
 .tetris-overlay-body p {
   font-family: 'Press Start 2P', monospace;
-  font-size: 0.55rem;
+  font-size: 0.72rem;
   color: var(--text-secondary);
   line-height: 2;
 }
 
 .tetris-hint {
-  font-size: 0.4rem !important;
+  font-size: 0.55rem !important;
   color: var(--text-muted) !important;
-  max-width: 280px;
+  max-width: 320px;
   line-height: 1.6 !important;
 }
 
 .tetris-gameover-title {
   font-family: 'Press Start 2P', monospace;
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   color: var(--accent-magenta);
   text-shadow: 0 0 20px rgba(212, 56, 156, 0.4);
 }
@@ -233,78 +241,125 @@
   animation: blink 1s steps(2) infinite;
 }
 
-.tetris-restart-btn {
+.tetris-restart-btn,
+.tetris-start-btn {
   font-family: 'Press Start 2P', monospace;
-  font-size: 0.6rem;
-  padding: 12px 24px;
+  font-size: 0.75rem;
+  padding: 14px 28px;
   background: var(--accent-green);
   border: none;
   color: var(--bg-primary);
   cursor: pointer;
-  margin-top: 6px;
+  margin-top: 4px;
   transition: all 0.15s steps(3);
 }
 
-.tetris-restart-btn:hover {
+.tetris-restart-btn:hover,
+.tetris-start-btn:hover {
   background: var(--text-primary);
   transform: scale(1.05);
 }
 
-/* ── Controls hint ── */
-.tetris-controls-hint {
+/* ── Touch D-Pad ── */
+.tetris-dpad {
   display: flex;
-  gap: 10px;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
   margin-top: 16px;
-  flex-wrap: wrap;
-  justify-content: center;
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
-.tetris-controls-hint span {
-  font-family: 'Press Start 2P', monospace;
-  font-size: 0.55rem;
-  color: var(--text-muted);
-  padding: 8px 12px;
+.tetris-dpad-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.tetris-dpad-btn {
+  width: 64px;
+  height: 56px;
   border: 2px solid var(--border-color);
   background: var(--bg-card);
+  color: var(--text-secondary);
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition: all 0.1s ease;
+  border-radius: 8px;
+  font-family: 'Press Start 2P', monospace;
+}
+
+.tetris-dpad-wide {
+  width: 80px;
+}
+
+.tetris-dpad-drop {
+  width: 100%;
+  min-width: 90px;
+  font-size: 0.65rem;
+  color: var(--accent-green);
+  border-color: var(--accent-green);
+}
+
+.tetris-dpad-btn:active {
+  background: var(--accent-gold);
+  border-color: var(--accent-gold);
+  color: var(--bg-primary);
+  transform: scale(0.92);
+}
+
+.tetris-dpad-drop:active {
+  background: var(--accent-green);
+  color: var(--bg-primary);
+}
+
+@media (hover: hover) {
+  .tetris-dpad-btn:hover {
+    border-color: var(--accent-gold);
+    color: var(--accent-gold);
+  }
+  .tetris-dpad-drop:hover {
+    border-color: var(--accent-green);
+    color: var(--accent-green);
+  }
 }
 
 /* ── Responsive ── */
 @media (max-width: 640px) {
-  .tetris-top-bar {
+  .tetris-top-row {
     flex-wrap: wrap;
     justify-content: center;
-    gap: 10px;
+    gap: 8px;
   }
 
   .tetris-title {
     font-size: 0.75rem;
-    order: -1;
-    width: 100%;
   }
 
-  .tetris-scores {
-    flex-direction: row;
-    gap: 10px;
+  .tetris-stat {
+    font-size: 0.55rem;
+    padding: 6px 10px;
   }
 
-  .tetris-play-area {
-    flex-direction: column;
-    align-items: center;
+  .tetris-dpad-btn {
+    width: 56px;
+    height: 50px;
+    font-size: 1rem;
   }
 
-  .tetris-sidebar {
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
-    min-width: unset;
+  .tetris-dpad-wide {
+    width: 68px;
   }
 
-  .tetris-panel {
-    min-width: 90px;
-  }
-
-  .tetris-controls-hint span {
-    font-size: 0.45rem;
-    padding: 6px 8px;
+  .tetris-dpad-drop {
+    min-width: 76px;
+    font-size: 0.55rem;
   }
 }

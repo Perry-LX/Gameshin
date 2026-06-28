@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useLanguage } from '../i18n';
 import './SnakeGame.css';
 
 const GRID_SIZE = 20;
@@ -104,6 +105,7 @@ function createGameData(): GameData {
 }
 
 export function SnakeGame() {
+  const { t } = useLanguage();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const gameRef = useRef<GameData>(createGameData());
   const navigate = useNavigate();
@@ -246,9 +248,21 @@ export function SnakeGame() {
     setTimeout(() => gameLoop(), g.speed);
   }, [gameLoop]);
 
+  useEffect(() => { draw(); }, [draw]);
+
+  // ── Touch / click direction handler ──
+  const handleDirection = useCallback((dir: Direction) => {
+    const g = gameRef.current;
+    if (g.running) {
+      const opp: Record<Direction, Direction> = { UP: 'DOWN', DOWN: 'UP', LEFT: 'RIGHT', RIGHT: 'LEFT' };
+      if (opp[g.direction] !== dir) g.nextDirection = dir;
+    } else {
+      startGame();
+    }
+  }, [startGame]);
+
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
-      const g = gameRef.current;
       const map: Record<string, Direction> = {
         ArrowUp: 'UP', w: 'UP', W: 'UP',
         ArrowDown: 'DOWN', s: 'DOWN', S: 'DOWN',
@@ -258,19 +272,11 @@ export function SnakeGame() {
       const dir = map[e.key];
       if (!dir) return;
       e.preventDefault();
-
-      if (g.running) {
-        const opp: Record<Direction, Direction> = { UP: 'DOWN', DOWN: 'UP', LEFT: 'RIGHT', RIGHT: 'LEFT' };
-        if (opp[g.direction] !== dir) g.nextDirection = dir;
-      } else {
-        startGame();
-      }
+      handleDirection(dir);
     };
     window.addEventListener('keydown', handler);
     return () => window.removeEventListener('keydown', handler);
-  }, [startGame]);
-
-  useEffect(() => { draw(); }, [draw]);
+  }, [handleDirection]);
 
   const zoomIn = () => setCellSize((s) => Math.min(MAX_CELL_SIZE, s + 4));
   const zoomOut = () => setCellSize((s) => Math.max(MIN_CELL_SIZE, s - 4));
@@ -278,22 +284,24 @@ export function SnakeGame() {
 
   return (
     <div className="snake-page">
-      {/* Top bar */}
-      <div className="snake-top-bar">
-        <button className="snake-back-btn" onClick={() => navigate('/')}>◂ BACK</button>
-        <h1 className="snake-title">SNAKE CLASSIC</h1>
+      {/* Title - at the very top */}
+      <h1 className="snake-title">{t('snake.title')}</h1>
+
+      {/* Top row: back button + scores on same line */}
+      <div className="snake-top-row">
+        <button className="snake-back-btn" onClick={() => navigate('/')}>{t('snake.back')}</button>
         <div className="snake-scores">
-          <span className="snake-score">SCORE: {score}</span>
-          <span className="snake-highscore">BEST: {highScore}</span>
+          <span className="snake-score">{t('snake.scoreLabel')}: {score}</span>
+          <span className="snake-highscore">{t('snake.bestLabel')}: {highScore}</span>
         </div>
       </div>
 
       {/* Zoom controls */}
       <div className="snake-zoom-bar">
-        <button className="snake-zoom-btn" onClick={zoomOut} disabled={cellSize <= MIN_CELL_SIZE} title="缩小">−</button>
+        <button className="snake-zoom-btn" onClick={zoomOut} disabled={cellSize <= MIN_CELL_SIZE} title={t('zoom.out')}>−</button>
         <span className="snake-zoom-label">{Math.round((cellSize / BASE_CELL_SIZE) * 100)}%</span>
-        <button className="snake-zoom-btn" onClick={zoomIn} disabled={cellSize >= MAX_CELL_SIZE} title="放大">+</button>
-        <button className="snake-zoom-reset" onClick={zoomReset} title="重置缩放">⟲</button>
+        <button className="snake-zoom-btn" onClick={zoomIn} disabled={cellSize >= MAX_CELL_SIZE} title={t('zoom.in')}>+</button>
+        <button className="snake-zoom-reset" onClick={zoomReset} title={t('zoom.reset')}>⟲</button>
       </div>
 
       {/* Canvas */}
@@ -304,8 +312,8 @@ export function SnakeGame() {
           <div className="snake-overlay">
             <div className="snake-overlay-body">
               <span className="snake-overlay-icon">🐍</span>
-              <p>Press any arrow key to start</p>
-              <p className="snake-hint">WASD / Arrow Keys to move</p>
+              <p>{t('snake.pressStart')}</p>
+              <p className="snake-hint">{t('snake.hint')}</p>
             </div>
           </div>
         )}
@@ -314,19 +322,29 @@ export function SnakeGame() {
           <div className="snake-overlay">
             <div className="snake-overlay-body">
               <span className="snake-overlay-icon">💀</span>
-              <h2 className="snake-gameover-title">GAME OVER</h2>
-              <p className="snake-final-score">Score: {score}</p>
-              {score >= highScore && score > 0 && <p className="snake-new-record">★ NEW RECORD! ★</p>}
-              <button className="snake-restart-btn" onClick={startGame}>▶ PLAY AGAIN</button>
-              <p className="snake-hint">Or press any arrow key</p>
+              <h2 className="snake-gameover-title">{t('snake.gameOver')}</h2>
+              <p className="snake-final-score">{t('snake.score')}: {score}</p>
+              {score >= highScore && score > 0 && <p className="snake-new-record">{t('snake.newRecord')}</p>}
+              <button className="snake-restart-btn" onClick={startGame}>{t('snake.playAgain')}</button>
+              <p className="snake-hint">{t('snake.orPressKey')}</p>
             </div>
           </div>
         )}
       </div>
 
-      <div className="snake-controls-hint">
-        <span>←↑↓→</span>
-        <span>WASD</span>
+      {/* Touch D-Pad */}
+      <div className="snake-dpad">
+        <div className="snake-dpad-row">
+          <button className="snake-dpad-btn" onPointerDown={() => handleDirection('UP')} aria-label="Up">▲</button>
+        </div>
+        <div className="snake-dpad-row">
+          <button className="snake-dpad-btn" onPointerDown={() => handleDirection('LEFT')} aria-label="Left">◀</button>
+          <button className="snake-dpad-btn snake-dpad-blank" disabled />
+          <button className="snake-dpad-btn" onPointerDown={() => handleDirection('RIGHT')} aria-label="Right">▶</button>
+        </div>
+        <div className="snake-dpad-row">
+          <button className="snake-dpad-btn" onPointerDown={() => handleDirection('DOWN')} aria-label="Down">▼</button>
+        </div>
       </div>
     </div>
   );

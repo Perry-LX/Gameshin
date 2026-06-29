@@ -716,7 +716,13 @@ class Board {
     if (king.moves.length) {
       return castles
     }
+    // ── Rule 2.2(3): King cannot castle while in check ──
     const kingIsWhite = king.playerWhite()
+    const enemy = kingIsWhite ? "BLACK" : "WHITE"
+    const row = kingIsWhite ? "1" : "8"
+    if (this.isSquareAttackedBy("E", row, enemy)) {
+      return castles
+    }
     const moves = kingIsWhite
       ? this.tilesPiecesBlackMoves
       : this.tilesPiecesWhiteMoves
@@ -742,7 +748,6 @@ class Board {
         }
       }
     }
-    const row = kingIsWhite ? "1" : "8"
     if (!this.pieces[`A${row}`].moves.length) {
       checkPositions(row, "A", castles)
     }
@@ -757,6 +762,67 @@ class Board {
     return captures[row][col]
       .map(id => piecePositions[id])
       .filter(pos => pos.active)
+  }
+
+  // Check if a square is attacked by any piece of the given color.
+  // Used for castling validation (rule 2.2(3): cannot castle out of check).
+  isSquareAttackedBy(col, row, byPlayer) {
+    const pieceIds = byPlayer === "WHITE" ? this.pieceIdsWhite : this.pieceIdsBlack
+    const orientation = byPlayer === "WHITE" ? 1 : -1
+    const tr = Utils.rowToInt(row)
+    const tc = Utils.colToInt(col)
+
+    for (const id of pieceIds) {
+      const pos = this.piecePositions[id]
+      if (!pos?.active) continue
+      const piece = this.pieces[id]
+      const pr = Utils.rowToInt(pos.row)
+      const pc = Utils.colToInt(pos.col)
+      const dr = (tr - pr) * orientation
+      const dc = (tc - pc) * orientation
+      const adr = Math.abs(dr)
+      const adc = Math.abs(dc)
+
+      switch (piece.data.type) {
+        case "PAWN":
+          // Pawn attacks one square diagonally forward
+          if (dr === 1 && adc === 1) return true
+          break
+        case "KNIGHT":
+          if ((adr === 2 && adc === 1) || (adr === 1 && adc === 2)) return true
+          break
+        case "BISHOP":
+          if (adr > 0 && adr === adc && this.isPathClear(pr, pc, tr, tc)) return true
+          break
+        case "ROOK":
+          if (adr > 0 && (dr === 0 || dc === 0) && this.isPathClear(pr, pc, tr, tc)) return true
+          break
+        case "QUEEN":
+          if (adr > 0 && (adr === adc || dr === 0 || dc === 0)) {
+            if (this.isPathClear(pr, pc, tr, tc)) return true
+          }
+          break
+        case "KING":
+          if (adr <= 1 && adc <= 1) return true
+          break
+      }
+    }
+    return false
+  }
+
+  // Check if the path between two squares (integer indices) is clear of pieces.
+  // Used by isSquareAttackedBy for sliding piece attack validation.
+  isPathClear(r1, c1, r2, c2) {
+    const dr = r2 === r1 ? 0 : (r2 > r1 ? 1 : -1)
+    const dc = c2 === c1 ? 0 : (c2 > c1 ? 1 : -1)
+    let r = r1 + dr
+    let c = c1 + dc
+    while (r !== r2 || c !== c2) {
+      if (this.state[Utils.intToRow(r)]?.[Utils.intToCol(c)]) return false
+      r += dr
+      c += dc
+    }
+    return true
   }
 
   pieceCalculateMoves(

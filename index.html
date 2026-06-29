@@ -2,11 +2,274 @@
 <html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>PIXEL GAME HUB - 像素游戏中心</title>
+
+    <!-- Primary Meta Tags -->
+    <title>Gameshin - Free Online Browser Games | Chinese Chess, Snake, Tetris & More</title>
+    <meta name="title" content="Gameshin - Free Online Browser Games | Chinese Chess, Snake, Tetris & More" />
+    <meta name="description" content="Play 7+ free online browser games at Gameshin Game Hub: Chinese Chess, Snake Classic, Tetris Battle, Gomoku, International Chess, Pixel Jumper and more. No download required, play instantly!" />
+    <meta name="keywords" content="free online games, browser games, Chinese chess online, snake game, tetris, gomoku, international chess, pixel jumper, 中国象棋, 贪吃蛇, 俄罗斯方块, 五子棋, 国际象棋, online board games, pixel games" />
+    <meta name="robots" content="index, follow" />
+    <meta name="author" content="Gameshin" />
+    <meta name="language" content="zh-CN, en" />
+    <meta name="revisit-after" content="7 days" />
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://gameshin.com/" />
+
+    <!-- Favicon / Icons -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/favicon.png" />
+    <meta name="theme-color" content="#1a1a2e" />
+
+    <!-- Open Graph / Facebook / WhatsApp / LinkedIn -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://gameshin.com/" />
+    <meta property="og:title" content="Gameshin - Free Online Browser Games Hub" />
+    <meta property="og:description" content="Play 7+ free online browser games: Chinese Chess, Snake, Tetris, Gomoku, International Chess, Pixel Jumper and more. No download, play instantly!" />
+    <meta property="og:image" content="https://gameshin.com/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Gameshin Game Hub - Free Online Games" />
+    <meta property="og:site_name" content="Gameshin" />
+    <meta property="og:locale" content="zh_CN" />
+
+    <!-- Twitter Cards -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Gameshin - Free Online Browser Games Hub" />
+    <meta name="twitter:description" content="Play 7+ free online browser games: Chinese Chess, Snake, Tetris, Gomoku, International Chess and more!" />
+    <meta name="twitter:image" content="https://gameshin.com/og-image.png" />
+    <meta name="twitter:image:alt" content="Gameshin Game Hub - Free Online Games" />
+
+    <!-- Hreflang (Internationalization) -->
+    <link rel="alternate" href="https://gameshin.com/" hreflang="zh-CN" />
+    <link rel="alternate" href="https://gameshin.com/" hreflang="x-default" />
+
+    <!-- Preconnect / Preload -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- JSON-LD Structured Data: WebSite -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "@id": "https://gameshin.com/#website",
+      "name": "Gameshin Game Hub",
+      "alternateName": ["Gameshin", "Gameshin 游戏中心", "GAMESHIN"],
+      "url": "https://gameshin.com/",
+      "description": "Free online browser games including Chinese Chess, Snake, Tetris, Gomoku, International Chess, Pixel Jumper, and more.",
+      "inLanguage": ["zh-CN", "en"],
+      "applicationCategory": "GameApplication",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://gameshin.com/?q={search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
+
+    <!-- JSON-LD Structured Data: Organization -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "@id": "https://gameshin.com/#organization",
+      "name": "Gameshin",
+      "alternateName": "Gameshin Game Hub",
+      "url": "https://gameshin.com/",
+      "description": "A free online browser game hub offering Chinese Chess, Snake, Tetris, Gomoku, International Chess, Pixel Jumper and more classic games.",
+      "foundingDate": "2025"
+    }
+    </script>
+
+    <!-- JSON-LD Structured Data: CollectionPage + ItemList (Game Catalog) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      "@id": "https://gameshin.com/#collection",
+      "name": "Gameshin Game Collection",
+      "description": "A curated collection of 7+ free browser-based games spanning board, action, puzzle, and shooting genres.",
+      "url": "https://gameshin.com/",
+      "isPartOf": { "@id": "https://gameshin.com/#website" },
+      "mainEntity": {
+        "@type": "ItemList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "item": {
+              "@type": "VideoGame",
+              "name": "Snake Classic",
+              "description": "Classic snake game. Control the snake, eat food, and grow. Chase the highest score!",
+              "applicationCategory": "GameApplication",
+              "operatingSystem": "Any",
+              "browserRequirements": "HTML5",
+              "genre": ["Arcade", "Classic"],
+              "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+            }
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "item": {
+              "@type": "VideoGame",
+              "name": "Tetris Battle",
+              "description": "Competitive Tetris. Clear more lines for higher scores. A timeless puzzle classic.",
+              "applicationCategory": "GameApplication",
+              "operatingSystem": "Any",
+              "browserRequirements": "HTML5",
+              "genre": ["Puzzle", "Classic"],
+              "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+            }
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "item": {
+              "@type": "VideoGame",
+              "name": "Chinese Chess",
+              "description": "Classic Chinese Chess. Play against AI, tackle preset endgames, and switch board skins.",
+              "applicationCategory": "GameApplication",
+              "operatingSystem": "Any",
+              "browserRequirements": "HTML5",
+              "genre": ["Strategy", "Board Game"],
+              "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+            }
+          },
+          {
+            "@type": "ListItem",
+            "position": 4,
+            "item": {
+              "@type": "VideoGame",
+              "name": "Chinese Chess Plus",
+              "description": "Enhanced Chinese Chess with a refined interface, move history, game info, and a complete sidebar.",
+              "applicationCategory": "GameApplication",
+              "operatingSystem": "Any",
+              "browserRequirements": "HTML5",
+              "genre": ["Strategy", "Board Game"],
+              "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+            }
+          },
+          {
+            "@type": "ListItem",
+            "position": 5,
+            "item": {
+              "@type": "VideoGame",
+              "name": "Gomoku",
+              "description": "Classic Five-in-a-Row. Local two-player battle with undo and move counter.",
+              "applicationCategory": "GameApplication",
+              "operatingSystem": "Any",
+              "browserRequirements": "HTML5",
+              "genre": ["Strategy", "Board Game"],
+              "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+            }
+          },
+          {
+            "@type": "ListItem",
+            "position": 6,
+            "item": {
+              "@type": "VideoGame",
+              "name": "International Chess",
+              "description": "Standard 8x8 chess. Manual moves, AI auto-play, and White/Black perspective switching.",
+              "applicationCategory": "GameApplication",
+              "operatingSystem": "Any",
+              "browserRequirements": "HTML5",
+              "genre": ["Strategy", "Chess"],
+              "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+            }
+          },
+          {
+            "@type": "ListItem",
+            "position": 7,
+            "item": {
+              "@type": "VideoGame",
+              "name": "Pixel Jumper",
+              "description": "Pixel-art platformer. 18 levels, 3 monster types, task challenges. Race across segmented maps to the finish.",
+              "applicationCategory": "GameApplication",
+              "operatingSystem": "Any",
+              "browserRequirements": "HTML5",
+              "genre": ["Action", "Platformer"],
+              "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+            }
+          }
+        ]
+      }
+    }
+    </script>
+
+    <!-- JSON-LD Structured Data: FAQPage (GEO Boost +40%) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "@id": "https://gameshin.com/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is Gameshin?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Gameshin is a free online browser game hub that offers 7+ games including Chinese Chess, Snake Classic, Tetris Battle, Gomoku, International Chess, and Pixel Jumper. All games are playable instantly in your browser with no download required."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is Gameshin free to use?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, Gameshin is completely free. All games are available at no cost with no subscriptions or hidden fees. Simply visit the website and start playing."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What games are available on Gameshin?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Gameshin offers 7+ games across multiple genres: Snake Classic (arcade), Tetris Battle (puzzle), Chinese Chess (strategy board game), Chinese Chess Plus (enhanced with PvP and move history), Gomoku (Five-in-a-Row), International Chess (standard 8x8 chess), and Pixel Jumper (action platformer with 18 levels)."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is Gameshin in Chinese?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Gameshin 是一个免费的在线浏览器游戏平台，提供中国象棋、贪吃蛇、俄罗斯方块、五子棋、国际象棋、像素跳跃等 7 款以上经典游戏，无需下载即可在浏览器中直接游玩。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do I need to download anything to play Gameshin games?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No download or installation is required. All Gameshin games run directly in your browser using HTML5 technology, making them accessible on any device with a modern web browser."
+          }
+        }
+      ]
+    }
+    </script>
+
+    <!-- JSON-LD Structured Data: BreadcrumbList -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "@id": "https://gameshin.com/#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://gameshin.com/"
+        }
+      ]
+    }
+    </script>
   </head>
   <body>
     <div id="root"></div>

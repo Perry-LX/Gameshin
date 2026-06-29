@@ -276,4 +276,7 @@ export const zh: Record<string, string> = {
   'game.rightplace.title': '摆瓶子游戏',
   'game.rightplace.description': '基于位置推理的休闲益智游戏。玩家通过拖拽或点击交换瓶子位置，利用判定反馈推理出每个瓶子的正确摆放位置。',
   'game.rightplace.tags': '益智,休闲,推理',
+  'game.kitten-quest.title': '小猫寻踪',
+  'game.kitten-quest.description': '基于颜色推理的寻猫小游戏。在彩色网格中找出所有隐藏的小猫，灵感来自扫雷！',
+  'game.kitten-quest.tags': '益智,休闲,推理',
 };

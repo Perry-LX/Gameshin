@@ -269,4 +269,7 @@ export const en: Record<string, string> = {
   'game.rightplace.title': 'RightPlace',
   'game.rightplace.description': 'Position-based reasoning puzzle game. Players drag or click to swap bottle positions and use judgment feedback to deduce the correct placement for each bottle.',
   'game.rightplace.tags': 'Puzzle,Casual,Logic',
+  'game.kitten-quest.title': 'Kitten Quest',
+  'game.kitten-quest.description': 'A color-based deduction puzzle. Find hidden kittens on a colorful grid, inspired by Minesweeper!',
+  'game.kitten-quest.tags': 'Puzzle,Casual,Logic',
 };

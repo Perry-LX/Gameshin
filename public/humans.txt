@@ -1,0 +1,23 @@
+# humans.txt - Gameshin Game Hub
+# Learn more: https://humanstxt.org/
+
+/* TEAM */
+    Developer: Gameshin Dev Team
+    Site: https://gameshin.com
+    Language: English, 中文
+
+/* THANKS */
+    Built with React, TypeScript, Vite
+    Powered by open source community
+
+/* SITE */
+    Last update: 2026-06-29
+    Standards: HTML5, CSS3, ES2024
+    Components: React 19, React Router 7
+    Build system: Vite 8
+    IDE: VS Code
+
+/* PRIVACY */
+    Gameshin does not collect personal data.
+    All games run client-side in the browser.
+    No tracking cookies are used.

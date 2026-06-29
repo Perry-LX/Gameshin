@@ -79,7 +79,7 @@ a {
 /* ── Header ── */
 .pixel-header {
   text-align: center;
-  padding: 48px 20px 32px;
+  padding: 80px 20px 32px;
   position: relative;
 }
 
@@ -160,8 +160,8 @@ a {
 
 .lang-dropdown-wrap {
   position: absolute;
-  top: 0;
   right: 0;
+  top: 0;
 }
 
 .lang-dropdown {
@@ -278,8 +278,8 @@ a {
   content: '';
   position: absolute;
   top: 0;
-  left: 0;
   right: 0;
+  left: 0;
   height: 3px;
   background: var(--card-accent, var(--accent-amber));
   opacity: 0.8;
@@ -295,8 +295,38 @@ a {
 }
 
 .game-card.disabled {
-  opacity: 0.55;
   cursor: not-allowed;
+}
+
+.game-card.disabled .card-icon {
+  opacity: 0.5;
+  filter: grayscale(0.5);
+}
+
+.game-card.disabled .card-title {
+  opacity: 0.7;
+}
+
+.game-card.disabled .card-play-btn {
+  display: none;
+}
+
+.game-card.disabled .card-status {
+  /* coming-soon has its own readable color, no opacity needed */
+}
+
+.game-card.disabled::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    -45deg,
+    transparent,
+    transparent 8px,
+    rgba(0, 0, 0, 0.03) 8px,
+    rgba(0, 0, 0, 0.03) 16px
+  );
+  pointer-events: none;
 }
 
 .game-card.disabled:hover {
@@ -402,13 +432,16 @@ a {
 }
 
 .pixel-tag {
-  font-size: 0.7rem;
-  color: var(--text-muted);
-  font-family: 'Courier New', monospace;
-  letter-spacing: 0.5px;
-  padding: 2px 6px;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  font-family: 'Courier New', 'Consolas', 'Source Code Pro', monospace;
+  letter-spacing: 0.3px;
+  padding: 3px 8px;
   border: 1px solid var(--border-color);
-  background: rgba(255, 255, 255, 0.02);
+  background: rgba(255, 255, 255, 0.04);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 .card-status {
@@ -424,6 +457,11 @@ a {
 
 .card-status[data-status='beta'] {
   color: var(--accent-cyan);
+}
+
+.card-status[data-status='coming-soon'] {
+  color: #b08860;
+  font-weight: 600;
 }
 
 .card-play-btn {

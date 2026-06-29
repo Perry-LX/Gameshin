@@ -26,3 +26,9 @@ dist-ssr
 # Demo Folder
 gobang-master/
 react_ai_chess/
+
+# agent
+.claude
+
+# Vite dev deps cache
+.vite

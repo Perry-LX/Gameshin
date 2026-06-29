@@ -106,6 +106,14 @@ export const games: GameItem[] = [
     color: "#8b5cf6",
     category: "puzzle",
   },
+  {
+    id: "kitten-quest",
+    url: "https://kittenquest.gameshin.com/",
+    icon: "🐱",
+    status: "active",
+    color: "#f97316",
+    category: "puzzle",
+  },
 ];
 
 export const categories = [

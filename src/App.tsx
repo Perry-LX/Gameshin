@@ -1,6 +1,7 @@
 import { useState, useMemo } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { useLanguage } from './i18n';
+import { usePageTitle } from './hooks/usePageTitle';
 import { Header } from './components/Header';
 import { GameList } from './components/GameList';
 import { Footer } from './components/Footer';
@@ -19,8 +20,14 @@ function HomePage() {
   const [activeCategory, setActiveCategory] = useState('all');
 
   const filteredGames = useMemo(() => {
-    if (activeCategory === 'all') return games;
-    return games.filter((game) => game.category === activeCategory);
+    const filtered = activeCategory === 'all'
+      ? games
+      : games.filter((game) => game.category === activeCategory);
+
+    return [...filtered].sort((a, b) => {
+      const priority = { active: 0, beta: 1, 'coming-soon': 2 };
+      return (priority[a.status] ?? 2) - (priority[b.status] ?? 2);
+    });
   }, [activeCategory]);
 
   return (
@@ -39,6 +46,8 @@ function HomePage() {
 }
 
 function App() {
+  usePageTitle();
+
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />

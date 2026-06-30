@@ -367,6 +367,13 @@ a {
   filter: drop-shadow(0 0 10px color-mix(in srgb, var(--card-accent, var(--accent-amber)) 25%, transparent));
 }
 
+.card-icon-image {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+  image-rendering: auto;
+}
+
 .card-icon-seal {
   display: inline-flex;
   align-items: center;

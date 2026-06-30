@@ -114,6 +114,15 @@ export const games: GameItem[] = [
     color: "#f97316",
     category: "puzzle",
   },
+  {
+    id: "magic-cube",
+    url: "/game/magic-cube",
+    icon: "🧊",
+    iconImage: "/magic-cube/magic-cube-icon.png",
+    status: "active",
+    color: "#009e60",
+    category: "puzzle",
+  },
 ];
 
 export const categories = [

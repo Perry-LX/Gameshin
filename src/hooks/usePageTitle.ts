@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 
 type PagePath = '/' | '/game/snake' | '/game/tetris' | '/game/chess'
-  | '/game/chess-plus' | '/game/gomoku' | '/game/international-chess' | '/game/platformer';
+  | '/game/chess-plus' | '/game/gomoku' | '/game/international-chess' | '/game/platformer' | '/game/magic-cube';
 
 const TITLES: Record<PagePath, string> = {
   '/': 'GAMESHIN',
@@ -13,6 +13,7 @@ const TITLES: Record<PagePath, string> = {
   '/game/gomoku': 'Gomoku',
   '/game/international-chess': 'International Chess',
   '/game/platformer': 'Pixel Jumper',
+  '/game/magic-cube': 'Magic Cube',
 };
 
 const CATEGORIES = 'Board, Action, Puzzle & Shooting Games';

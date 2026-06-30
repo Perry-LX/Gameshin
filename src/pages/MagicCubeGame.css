@@ -1,0 +1,133 @@
+/* ── Magic Cube (Three.js) page layout ── */
+
+.magic-cube-page {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+  user-select: none;
+  color: #1f2933;
+  font-family: "Segoe UI", "Microsoft YaHei", system-ui, sans-serif;
+  background:
+    radial-gradient(circle at 20% 18%, rgba(255, 255, 255, 0.95), transparent 34%),
+    radial-gradient(circle at 78% 74%, rgba(125, 154, 190, 0.26), transparent 36%),
+    linear-gradient(135deg, #e9eef4 0%, #cfd9e5 100%);
+}
+
+.magic-cube-back-btn {
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  z-index: 20;
+  padding: 8px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.66);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.82);
+  color: #1f2933;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.6rem;
+  cursor: pointer;
+  backdrop-filter: blur(14px);
+  box-shadow: 0 4px 12px rgba(31, 41, 51, 0.10);
+  transition: transform 0.12s ease, background 0.12s ease;
+}
+
+.magic-cube-back-btn:hover {
+  background: #e4e9f0;
+  transform: translateY(-1px);
+}
+
+.mc-three-wrap {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  pointer-events: auto;
+  cursor: grab;
+  touch-action: none;
+}
+
+.mc-three-wrap:active { cursor: grabbing; }
+.mc-three-wrap canvas { display: block; width: 100% !important; height: 100% !important; }
+
+/* Status bar */
+#mc-status {
+  position: fixed;
+  top: 18px;
+  left: 50%;
+  z-index: 10;
+  transform: translateX(-50%);
+  padding: 7px 18px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.82);
+  color: #374151;
+  box-shadow: 0 10px 30px rgba(31, 41, 51, 0.10);
+  backdrop-filter: blur(10px);
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+#mc-status .count { color: #7b8492; font-weight: 500; }
+
+/* Controls */
+#mc-controls {
+  position: fixed;
+  left: 50%;
+  bottom: 26px;
+  z-index: 10;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 9px;
+  min-width: min(94vw, 620px);
+  padding: 15px 20px;
+  border: 1px solid rgba(255, 255, 255, 0.66);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.82);
+  box-shadow: 0 18px 45px rgba(31, 41, 51, 0.14);
+  backdrop-filter: blur(14px);
+}
+
+.mc-control-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.mc-control-label { margin-right: 4px; color: #6b7280; font-size: 12px; font-weight: 700; letter-spacing: 0.08em; }
+.mc-divider { color: #c9ced6; margin: 0 2px; }
+
+.mc-btn {
+  border: 0; border-radius: 8px; cursor: pointer; font: inherit; font-weight: 700;
+  transition: transform 120ms ease, box-shadow 120ms ease, background 120ms ease;
+}
+.mc-btn:disabled { cursor: not-allowed; opacity: 0.5; transform: none !important; }
+
+.mc-btn-face {
+  width: 38px; height: 36px; color: #202734; background: #f1f4f8; box-shadow: 0 2px 8px rgba(31, 41, 51, 0.12);
+}
+.mc-btn-face:hover:not(:disabled) { background: #e4e9f0; transform: translateY(-1px); box-shadow: 0 5px 12px rgba(31, 41, 51, 0.14); }
+.mc-btn-face.prime::after { content: "'"; font-size: 10px; vertical-align: super; }
+
+.mc-btn-action { padding: 8px 18px; color: white; }
+.mc-btn-scramble { background: #dc7c20; }
+.mc-btn-solve { background: #229b5a; }
+.mc-btn-reset { background: #64717b; }
+.mc-btn-action:hover:not(:disabled) { transform: translateY(-1px); filter: brightness(0.96); }
+
+#mc-hint {
+  width: 100%; padding: 2px 10px 5px; border-radius: 999px;
+  color: #7b8492; font-size: 12px; font-weight: 600; text-align: center; white-space: nowrap;
+}
+
+@media (max-width: 680px) {
+  #mc-controls { bottom: 14px; width: 94vw; padding: 11px 12px; border-radius: 14px; }
+  #mc-hint { font-size: 11px; white-space: normal; }
+  .mc-btn-face { width: 33px; height: 32px; font-size: 12px; }
+  .mc-btn-action { padding: 7px 13px; font-size: 13px; }
+  .mc-control-label { width: 100%; text-align: center; margin: 1px 0; }
+}

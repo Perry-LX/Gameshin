@@ -30,7 +30,11 @@ export function GameCard({ game }: GameCardProps) {
         </div>
 
         <div className="card-icon-wrapper">
-          <span className={`card-icon ${game.iconVariant === 'seal' ? 'card-icon-seal' : ''}`}>{game.icon}</span>
+          {game.iconImage ? (
+            <img className="card-icon card-icon-image" src={game.iconImage} alt={title} />
+          ) : (
+            <span className={`card-icon ${game.iconVariant === 'seal' ? 'card-icon-seal' : ''}`}>{game.icon}</span>
+          )}
         </div>
 
         <div className="card-body">
@@ -52,6 +56,12 @@ export function GameCard({ game }: GameCardProps) {
     );
   }
 
+  const iconContent = game.iconImage ? (
+    <img className="card-icon card-icon-image" src={game.iconImage} alt={title} />
+  ) : (
+    <span className={`card-icon ${game.iconVariant === 'seal' ? 'card-icon-seal' : ''}`}>{game.icon}</span>
+  );
+
   const content = (
     <>
       <div className="pixel-corners">
@@ -62,7 +72,7 @@ export function GameCard({ game }: GameCardProps) {
       </div>
 
       <div className="card-icon-wrapper">
-        <span className={`card-icon ${game.iconVariant === 'seal' ? 'card-icon-seal' : ''}`}>{game.icon}</span>
+        {iconContent}
       </div>
 
       <div className="card-body">

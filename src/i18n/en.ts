@@ -272,4 +272,21 @@ export const en: Record<string, string> = {
   'game.kitten-quest.title': 'Kitten Quest',
   'game.kitten-quest.description': 'A color-based deduction puzzle. Find hidden kittens on a colorful grid, inspired by Minesweeper!',
   'game.kitten-quest.tags': 'Puzzle,Casual,Logic',
+
+  // ── Magic Cube ──
+  'game.magic-cube.title': 'Magic Cube',
+  'game.magic-cube.description': '3D Rubik\'s Cube. Drag to rotate, click faces to twist, or use keyboard controls.',
+  'game.magic-cube.tags': 'Puzzle,3D,Logic',
+  'magicCube.back': 'BACK',
+  'magicCube.title': 'Magic Cube 3D',
+  'magicCube.status': 'Status',
+  'magicCube.solved': 'Solved',
+  'magicCube.scrambled': 'Scrambled',
+  'magicCube.moves': 'Moves',
+  'magicCube.hint': 'Drag to rotate · Keys: U D R L F B · Shift+key for inverse',
+  'magicCube.faces': 'Faces',
+  'magicCube.actions': 'Actions',
+  'magicCube.scramble': 'Scramble',
+  'magicCube.solve': 'Solve',
+  'magicCube.reset': 'Reset',
 };

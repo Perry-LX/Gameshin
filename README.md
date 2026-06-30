@@ -9,6 +9,7 @@ A pixel-styled game navigation center — an entry portal integrating multiple m
 - **React Router v7** client-side routing (HashRouter)
 - Pure CSS pixel-art theme design
 - Canvas game rendering
+- **Three.js** — WebGL 3D rendering (Magic Cube)
 - **i18n** — built-in internationalization (English / Chinese)
 
 ## Features
@@ -21,7 +22,7 @@ A pixel-styled game navigation center — an entry portal integrating multiple m
 - **Card sorting** — active games appear first, then beta, then coming-soon (disabled) cards last
 - **Language switching** — dropdown in the homepage header to toggle between English and Chinese
 - **Touch controls** — Snake and Tetris include on-screen D-pad for mobile play
-- **7 built-in games + 2 external** — Snake, Tetris, Chinese Chess, Gomoku, International Chess, Pixel Jumper, RightPlace, Kitten Quest
+- **8 built-in games + 2 external** — Snake, Tetris, Chinese Chess, Gomoku, International Chess, Pixel Jumper, Magic Cube, RightPlace, Kitten Quest
 
 ## Built-in Games
 
@@ -71,6 +72,15 @@ A pixel-styled game navigation center — an entry portal integrating multiple m
 - Collect/kill task objectives per stage
 - Segmented map region transitions
 - Best-time tracking across full run
+
+### Magic Cube
+- 3D Rubik's Cube rendered with **Three.js (WebGL)** — no CSS 3D rendering issues
+- Full U, D, R, L, F, B face rotation with quaternion-based smooth animation
+- Drag to orbit the camera, scroll to zoom
+- Glossy sticker finish with clearcoat effect and rounded corners
+- Scramble (22 moves), auto-solve (reverse history), and reset
+- Keyboard controls: U/D/R/L/F/B for moves, S/Z/X for scramble/solve/reset
+- Responsive sizing — always fits viewport without overflow
 
 ### Kitten Quest
 - Color-based deduction puzzle inspired by Minesweeper
@@ -140,12 +150,17 @@ npm run preview
 
 ```text
 Gameshin/
+├── docs/
+│   └── international-chess-rules.md  # FIDE chess rules reference
 ├── public/
 │   ├── favicon.svg / favicon.png     # Site icons
 │   ├── og-image.png                  # Open Graph share image
 │   ├── robots.txt                    # Crawler & AI bot access rules
 │   ├── sitemap.xml                   # Search engine sitemap
 │   ├── humans.txt                    # Site authorship info
+│   ├── magic-cube-favicon.svg/png    # Magic Cube game icon
+│   ├── magic-cube/
+│   │   └── magic-cube-icon.png       # Magic Cube card icon
 │   └── chess/
 │       ├── audio/                    # Chinese Chess / Chess Plus sound effects
 │       ├── data/                     # Opening book (gambit.js)
@@ -163,6 +178,7 @@ Gameshin/
 │   │   ├── chess/                    # Chinese Chess engine, AI, opening book, presets
 │   │   ├── gobang/                   # Gomoku local two-player rules & components
 │   │   ├── international-chess/      # International Chess rules & AI
+│   │   ├── magic-cube/               # Three.js Rubik's Cube engine
 │   │   └── pixel-jumper/             # Pixel Jumper physics, levels, rendering
 │   ├── pages/                        # Game page components & styles
 │   │   ├── SnakeGame.tsx/css
@@ -171,6 +187,7 @@ Gameshin/
 │   │   ├── ChessPlusGame.tsx/css
 │   │   ├── GomokuGame.tsx/css
 │   │   ├── InternationalChessGame.tsx/css
+│   │   ├── MagicCubeGame.tsx/css
 │   │   └── PixelJumperGame.tsx/css
 │   ├── components/                   # Shared UI components
 │   │   ├── Header.tsx                # Header + category nav + language dropdown
@@ -211,7 +228,7 @@ Games are organized into genre categories:
 | Board | ♜ | Chinese Chess, Chinese Chess Plus, Gomoku, International Chess |
 | Shooting | 🎯 | Space Shooter |
 | Action | ⚡ | Snake Classic, Pixel Jumper, Dungeon Quest, Retro Racer |
-| Puzzle | 🧩 | Tetris Battle, Match Puzzle, RightPlace, Kitten Quest |
+| Puzzle | 🧩 | Tetris Battle, Match Puzzle, Magic Cube, RightPlace, Kitten Quest |
 
 Games marked as `coming-soon` are shown as disabled placeholder cards, sorted after all active and beta games. Disabled cards display a dimmed icon + subtle diagonal pattern overlay while keeping text fully readable.
 

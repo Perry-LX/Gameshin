@@ -279,4 +279,21 @@ export const zh: Record<string, string> = {
   'game.kitten-quest.title': '小猫寻踪',
   'game.kitten-quest.description': '基于颜色推理的寻猫小游戏。在彩色网格中找出所有隐藏的小猫，灵感来自扫雷！',
   'game.kitten-quest.tags': '益智,休闲,推理',
+
+  // ── Magic Cube ──
+  'game.magic-cube.title': '魔方',
+  'game.magic-cube.description': '3D 魔方。拖拽旋转视角，点击面块转动，也支持键盘操作。',
+  'game.magic-cube.tags': '益智,3D,逻辑',
+  'magicCube.back': '返回',
+  'magicCube.title': '魔方 3D',
+  'magicCube.status': '状态',
+  'magicCube.solved': '已还原',
+  'magicCube.scrambled': '已打乱',
+  'magicCube.moves': '步数',
+  'magicCube.hint': '拖拽旋转视角 · 键盘 U D R L F B 操作面 · Shift+按键反向',
+  'magicCube.faces': '面操作',
+  'magicCube.actions': '操作',
+  'magicCube.scramble': '随机打乱',
+  'magicCube.solve': '自动还原',
+  'magicCube.reset': '重置',
 };

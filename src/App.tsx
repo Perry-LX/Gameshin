@@ -12,6 +12,7 @@ import { ChessPlusGame } from './pages/ChessPlusGame';
 import { GomokuGame } from './pages/GomokuGame';
 import { InternationalChessGame } from './pages/InternationalChessGame';
 import { PixelJumperGame } from './pages/PixelJumperGame';
+import { MagicCubeGame } from './pages/MagicCubeGame';
 import { games } from './data/games';
 import './index.css';
 
@@ -58,6 +59,7 @@ function App() {
       <Route path="/game/gomoku" element={<GomokuGame />} />
       <Route path="/game/international-chess" element={<InternationalChessGame />} />
       <Route path="/game/platformer" element={<PixelJumperGame />} />
+      <Route path="/game/magic-cube" element={<MagicCubeGame />} />
     </Routes>
   );
 }

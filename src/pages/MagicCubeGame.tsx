@@ -38,7 +38,7 @@ export function MagicCubeGame() {
     const engine = new ThreeRubiksCube(wrapRef.current);
     engineRef.current = engine;
 
-    engine.onUpdate(({ moveCount, isSolved }) => {
+    engine.onUpdate(({ moveCount, isSolved }: { moveCount: number; isSolved: boolean }) => {
       if (statusRef.current) {
         statusRef.current.innerHTML =
           `${t('magicCube.status')}: ${isSolved ? t('magicCube.solved') : t('magicCube.scrambled')} <span class="count">| ${t('magicCube.moves')}: ${moveCount}</span>`;
@@ -54,7 +54,7 @@ export function MagicCubeGame() {
 
   useEffect(() => { if (hintRef.current) hintRef.current.textContent = t('magicCube.hint'); }, [t]);
 
-  const doMove = (m) => engineRef.current?.do(m);
+  const doMove = (m: string) => engineRef.current?.do(m);
   const scramble = () => engineRef.current?.scramble(22);
   const solve = () => engineRef.current?.solve();
   const reset = () => engineRef.current?.reset();

@@ -6,8 +6,8 @@ import './TetrisGame.css';
 const GRID_ROWS = 22;
 const GRID_COLS = 10;
 const VISIBLE_TOP = 2;
-const BASE_CELL = 36;
-const MIN_CELL = 24;
+const BASE_CELL = 24;
+const MIN_CELL = 18;
 const MAX_CELL = 52;
 
 function intToRGB(v: number): string {
@@ -154,25 +154,19 @@ function createStopwatch(cb: (elapsed: number) => void) {
   return { stop: () => { stopped = true; } };
 }
 
+// Simple interval-based timer for game gravity
+// Using setInterval avoids rAF closure issues in production builds
 function createTimer(cb: () => void, delay: number) {
-  let lastUpdate: number | null = null, running = false, currentDelay = delay, destroyed = false;
-  const loop = () => {
-    if (destroyed) return;
-    requestAnimationFrame(() => {
-      if (destroyed) return;
-      const now = Date.now();
-      if (!running) { lastUpdate = now; loop(); return; }
-      if (lastUpdate === null) lastUpdate = now;
-      if (now - lastUpdate > currentDelay) { cb(); lastUpdate = now - ((now - lastUpdate) % currentDelay); }
-      loop();
-    });
-  };
-  loop();
+  let id: ReturnType<typeof setInterval> | null = null;
   return {
-    start() { if (running) return; lastUpdate = Date.now(); running = true; },
-    stop() { running = false; },
-    destroy() { destroyed = true; running = false; },
-    resetForward(newDelay: number) { cb(); currentDelay = newDelay; lastUpdate = Date.now(); running = true; },
+    start() { if (id !== null) return; id = setInterval(cb, delay); },
+    stop() { if (id !== null) { clearInterval(id); id = null; } },
+    destroy() { this.stop(); },
+    resetForward(newDelay: number) {
+      this.stop();
+      cb();
+      id = setInterval(cb, newDelay);
+    },
   };
 }
 
@@ -388,9 +382,9 @@ function TetrisBoard({ cellSize, onGameOver, onScoreChange }: {
   };
 
   const startTurn = () => {
-    for (let i = 0; i < workingPiecesRef.current.length - 1; i++)
-      workingPiecesRef.current[i] = workingPiecesRef.current[i + 1];
-    workingPiecesRef.current[workingPiecesRef.current.length - 1] = pieceFromIndex(bagNext());
+    // Shift queue: fill index 0 (active) from index 1 (preview), or generate if first call
+    workingPiecesRef.current[0] = workingPiecesRef.current[1] || pieceFromIndex(bagNext());
+    workingPiecesRef.current[1] = pieceFromIndex(bagNext());
     workingPieceRef.current = workingPiecesRef.current[0];
     const nc = nextCanvasRef.current;
     if (nc) { const sz = 3 * csRef.current; nc.width = sz; nc.height = sz; }

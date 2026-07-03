@@ -32,3 +32,10 @@ react_ai_chess/
 
 # Vite dev deps cache
 .vite
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
+.env*
+!.env.example

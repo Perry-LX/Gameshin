@@ -25,7 +25,19 @@ function HomePage() {
       ? games
       : games.filter((game) => game.category === activeCategory);
 
+    // Featured games to show first (in this order)
+    const featured: Record<string, number> = {
+      'international-chess': 1,
+      'kitten-quest': 2,
+      'chess-plus': 3,
+      'rightplace': 4,
+      'magic-cube': 5,
+    };
+
     return [...filtered].sort((a, b) => {
+      const aFeatured = featured[a.id] ?? 99;
+      const bFeatured = featured[b.id] ?? 99;
+      if (aFeatured !== bFeatured) return aFeatured - bFeatured;
       const priority = { active: 0, beta: 1, 'coming-soon': 2 };
       return (priority[a.status] ?? 2) - (priority[b.status] ?? 2);
     });

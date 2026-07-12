@@ -110,7 +110,7 @@ The site has been optimized for both traditional search engines (Google, Bing) a
 | `public/sitemap.xml` | Indexes all game pages and subdomain games |
 | `public/og-image.png` | 1200×630 Open Graph image for social sharing |
 | `public/humans.txt` | Site authorship and tech-stack information |
-| `public/_redirects` | SPA fallback rules for language routes on static hosts and Cloudflare Workers |
+| `wrangler.jsonc` | Cloudflare Workers static asset config with SPA fallback |
 
 ### Meta Tags (in `index.html`)
 - **Title** - `Gameshin - Free Online Browser Games`
@@ -285,11 +285,22 @@ export default defineConfig({
 
 All asset paths (JS, CSS, images, audio, opening books) adapt automatically.
 
-### Deploy to Static Server
+### Deploy to Cloudflare Workers
 
 This project uses **BrowserRouter** with real paths such as `/en/`, `/zh/`, `/ja/`, and `/en/game/snake`. Static hosts must route those app paths back to `index.html`.
 
-`public/_redirects` intentionally lists only the language routes and legacy `/game/*` route. Do not replace it with `/* /index.html 200`: Cloudflare Workers rejects that catch-all rule as an infinite rewrite loop because `/index.html` would also match the same rule. Vercel uses `vercel.json`.
+Cloudflare Workers is configured through `wrangler.jsonc`:
+
+```jsonc
+{
+  "assets": {
+    "directory": "./dist",
+    "not_found_handling": "single-page-application"
+  }
+}
+```
+
+Do not add `public/_redirects` for Workers deployments. Cloudflare Workers rejects `_redirects` SPA rules such as `/* /index.html 200` or `/en/* /index.html 200` as infinite rewrite loops because `/index.html` can match the same rule after extension/index normalization. Vercel uses `vercel.json`.
 
 ## Adding a New Game
 

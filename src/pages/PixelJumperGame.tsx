@@ -42,7 +42,7 @@ const defaultHudSnapshot: HudSnapshot = {
 
 export function PixelJumperGame() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const { t } = useLanguage();
+  const { t, homePath } = useLanguage();
   const frameRef = useRef<number | null>(null);
   const lastFrameRef = useRef<number | null>(null);
   const frameWrapRef = useRef<HTMLDivElement>(null);
@@ -75,7 +75,7 @@ export function PixelJumperGame() {
     if (run.state !== 'playing') return;
     run.state = 'failed';
     run.deaths += 1;
-    run.statusMessage = 'YOU WERE TAKEN OUT. RETRY THE STAGE.';
+    run.statusMessage = t('pixelJumper.status.takenOut');
     syncHud();
     draw();
   }, [draw, syncHud]);
@@ -83,7 +83,7 @@ export function PixelJumperGame() {
   const completeRun = useCallback(() => {
     const run = runRef.current;
     run.state = 'completed';
-    run.statusMessage = 'ALL 18 STAGES CLEARED.';
+    run.statusMessage = t('pixelJumper.status.allClear');
     const finalTime = Math.floor(run.elapsedMs);
     if (bestTime === 0 || finalTime < bestTime) {
       localStorage.setItem('pixel-jumper-best-time', finalTime.toString());
@@ -96,7 +96,7 @@ export function PixelJumperGame() {
   const clearLevel = useCallback(() => {
     const run = runRef.current;
     if (!areTasksComplete(run.tasks)) {
-      run.statusMessage = 'GOAL LOCKED: FINISH ALL TASKS FIRST.';
+      run.statusMessage = t('pixelJumper.status.goalLocked');
       syncHud();
       return;
     }
@@ -186,8 +186,12 @@ export function PixelJumperGame() {
 
     const activeRegion = visibleBounds.chunk.index + 1;
     run.statusMessage = areTasksComplete(run.tasks)
-      ? `REGION ${activeRegion}/${hud.totalChunks || 1} CLEAR. EXIT IS OPEN.`
-      : `REGION ${activeRegion}/${Math.max(1, Math.ceil(level.worldWidth / run.camera.chunkWidth))} ACTIVE.`;
+      ? t('pixelJumper.status.regionClear')
+        .replace('{current}', String(activeRegion))
+        .replace('{total}', String(hud.totalChunks || 1))
+      : t('pixelJumper.status.regionActive')
+        .replace('{current}', String(activeRegion))
+        .replace('{total}', String(Math.max(1, Math.ceil(level.worldWidth / run.camera.chunkWidth))));
 
     const nextCenterX = playerCenterX + run.player.vx * dt;
     if (Math.abs(nextCenterX - playerCenterX) > 0) {
@@ -303,7 +307,7 @@ export function PixelJumperGame() {
         icon: '✨',
         title: t('pixelJumper.clearedTitle'),
         className: 'clear',
-        description: `Stage ${hud.currentLevel} complete. Move into the next region.`,
+        description: t('pixelJumper.stageComplete').replace('{level}', String(hud.currentLevel)),
         hint: t('pixelJumper.clearedHint'),
         action: { label: t('pixelJumper.nextStage'), onClick: goToNextLevel },
       };
@@ -313,7 +317,9 @@ export function PixelJumperGame() {
         icon: '👑',
         title: t('pixelJumper.completedTitle'),
         className: 'complete',
-        description: `You cleared all ${hud.totalLevels} stages in ${formatTime(hud.elapsedMs)}.`,
+        description: t('pixelJumper.runComplete')
+          .replace('{total}', String(hud.totalLevels))
+          .replace('{time}', formatTime(hud.elapsedMs)),
         hint: '',
         action: { label: t('pixelJumper.playAgain'), onClick: startRun },
       };
@@ -324,7 +330,7 @@ export function PixelJumperGame() {
   return (
     <div className="pixel-jumper-page">
       <div className="pixel-jumper-top-bar">
-        <button className="pixel-jumper-back-btn" onClick={() => navigate('/')}>{t('pixelJumper.back')}</button>
+        <button className="pixel-jumper-back-btn" onClick={() => navigate(homePath)}>{t('pixelJumper.back')}</button>
         <div className="pixel-jumper-title-wrap">
           <h1 className="pixel-jumper-title">{t('pixelJumper.title')}</h1>
           <span className="pixel-jumper-stage-name">{hud.levelName}</span>
@@ -365,7 +371,7 @@ export function PixelJumperGame() {
               <h2 className={`pixel-jumper-overlay-title ${overlay.className}`.trim()}>{overlay.title}</h2>
               <p>{overlay.description}</p>
               {overlayState === 'completed' && hud.bestTime > 0 && hud.bestTime === Math.floor(hud.elapsedMs) && (
-                <p className="pixel-jumper-record">★ NEW RECORD! ★</p>
+                <p className="pixel-jumper-record">{t('pixelJumper.newRecord')}</p>
               )}
               <button className="pixel-jumper-action-btn" onClick={overlay.action.onClick}>{overlay.action.label}</button>
               {overlay.hint && <p className="pixel-jumper-hint">{overlay.hint}</p>}
@@ -375,10 +381,10 @@ export function PixelJumperGame() {
       </div>
 
       <div className="pixel-jumper-controls-hint">
-        <span>MOVE: A / D</span>
-        <span>JUMP: W / ↑ / SPACE</span>
-        <span>ATTACK: STOMP FROM ABOVE</span>
-        <span>EXIT: TASKS + FLAG</span>
+        <span>{t('pixelJumper.control.move')}</span>
+        <span>{t('pixelJumper.control.jump')}</span>
+        <span>{t('pixelJumper.control.attack')}</span>
+        <span>{t('pixelJumper.control.exit')}</span>
       </div>
     </div>
   );

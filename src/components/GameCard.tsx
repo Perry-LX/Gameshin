@@ -7,7 +7,7 @@ interface GameCardProps {
 }
 
 export function GameCard({ game }: GameCardProps) {
-  const { t } = useLanguage();
+  const { t, pathFor } = useLanguage();
   const isDisabled = game.status === 'coming-soon';
   const isInternal = game.url.startsWith('/');
 
@@ -98,7 +98,7 @@ export function GameCard({ game }: GameCardProps) {
   if (isInternal) {
     return (
       <Link
-        to={game.url}
+        to={pathFor(game.url)}
         className="game-card"
         style={{ '--card-accent': game.color } as React.CSSProperties}
       >

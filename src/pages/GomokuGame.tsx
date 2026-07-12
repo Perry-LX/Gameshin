@@ -13,7 +13,7 @@ const MAX_BOARD_SIZE = 760;
 const BOARD_SIZE_STEP = 40;
 
 function GomokuScreen() {
-  const { t } = useLanguage();
+  const { t, homePath } = useLanguage();
   const navigate = useNavigate();
   const { state } = useGobang();
   const [boardSize, setBoardSize] = useState(DEFAULT_BOARD_SIZE);
@@ -35,8 +35,8 @@ function GomokuScreen() {
       <h1 className="gomoku-title">{t('gomoku.title')}</h1>
 
       <div className="gomoku-top-bar">
-        <button type="button" className="gomoku-back-btn" onClick={() => navigate('/')}>
-          ◀ HOME
+        <button type="button" className="gomoku-back-btn" onClick={() => navigate(homePath)}>
+          {t('gomoku.home')}
         </button>
         <div className="gomoku-status-chip">{state.status === 'gaming' ? t('gomoku.playing') : t('gomoku.ready')}</div>
       </div>

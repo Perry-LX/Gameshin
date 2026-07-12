@@ -10,7 +10,7 @@ const assetBase = ((typeof import.meta !== 'undefined' && import.meta.env && imp
 
 
 export function ChessPlusGame() {
-  const { t } = useLanguage();
+  const { t, homePath } = useLanguage();
   const navigate = useNavigate();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const clickAudioRef = useRef<HTMLAudioElement>(null);
@@ -37,6 +37,20 @@ export function ChessPlusGame() {
   const [playMode, setPlayMode] = useState<'duel' | 'pvp' | 'preset' | 'ai-vs-ai'>('duel');
   const [selectedSkin, setSelectedSkin] = useState<SkinType>('stype2');
   const [showMovesModal, setShowMovesModal] = useState(false);
+  const engineLabels = useMemo(() => ({
+    loading: t('chess.loading'),
+    redWin: t('chess.redWin'),
+    blackWin: t('chess.blackWin'),
+    youWin: t('chess.youWin'),
+    aiWins: t('chess.aiWins'),
+    menu: t('chess.menu'),
+    duel: t('chessPlus.mode.duel'),
+    pvp: t('chessPlus.mode.pvp'),
+    preset: t('chessPlus.mode.preset'),
+    thinking: t('chessPlus.thinking'),
+    difficulty: t('chess.status.difficulty'),
+    presetNames: PRESETS.map((_, index) => t(`chess.preset.${index}`)),
+  }), [t]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -47,6 +61,7 @@ export function ChessPlusGame() {
       clickAudio: clickAudioRef.current,
       selectAudio: selectAudioRef.current,
       onStatusChange: setStatus,
+      labels: engineLabels,
     });
 
     engineRef.current = engine;
@@ -55,7 +70,7 @@ export function ChessPlusGame() {
       engine.destroy();
       engineRef.current = null;
     };
-  }, []);
+  }, [engineLabels]);
 
   useEffect(() => {
     setSelectedSkin(status.currentSkin);
@@ -76,7 +91,7 @@ export function ChessPlusGame() {
 
   const modeText = useMemo(() => {
     if (status.mode === 'menu') return `· ${t(`chessPlus.mode.${playMode}`)}`;
-    if (status.mode === 'preset') return `${t('chessPlus.mode.preset')} · ${PRESETS[status.presetIndex]?.name ?? '-'}`;
+    if (status.mode === 'preset') return `${t('chessPlus.mode.preset')} · ${t(`chess.preset.${status.presetIndex}`)}`;
     return t(`chessPlus.mode.${status.mode}`);
   }, [playMode, status.mode, status.presetIndex, t]);
 
@@ -138,13 +153,13 @@ export function ChessPlusGame() {
       <audio ref={selectAudioRef} src={`${assetBase}/chess/audio/select.wav`} preload="auto" />
 
       <h1 className="chess-plus-title">
-        Chinese Chess
+        {t('chessPlus.heroTitle')}
         <span className="chess-plus-word">Plus</span>
       </h1>
 
       <header className="chess-plus-hero">
-        <button type="button" className="chess-plus-back-btn" onClick={() => navigate('/')}>
-          ◀ HOME
+        <button type="button" className="chess-plus-back-btn" onClick={() => navigate(homePath)}>
+          {t('chessPlus.home')}
         </button>
         <div className="chess-plus-hero-copy">
           <p className="chess-plus-kicker">{t('chessPlus.kicker')}</p>
@@ -289,7 +304,7 @@ export function ChessPlusGame() {
                 >
                   {PRESETS.map((preset, index) => (
                     <option key={preset.name} value={index}>
-                      {String(index + 1).padStart(2, '0')} · {preset.name}
+                      {String(index + 1).padStart(2, '0')} · {t(`chess.preset.${index}`)}
                     </option>
                   ))}
                 </select>
@@ -298,7 +313,7 @@ export function ChessPlusGame() {
               <label className="chess-plus-field">
                 <span className="chess-plus-field-label">{t('chessPlus.skinLabel')}</span>
                 <select className="chess-plus-select" value={selectedSkin} onChange={(event) => handleSkinChange(event.target.value as SkinType)}>
-                  {["stype1","stype2","stype3"].map(([value]) => (
+                  {(['stype1', 'stype2', 'stype3'] as SkinType[]).map((value) => (
                     <option key={value} value={value}>
                       {t(`chessPlus.skin.${value}`)}
                     </option>
@@ -352,7 +367,7 @@ export function ChessPlusGame() {
           <div className="chess-plus-modal" onClick={(e) => e.stopPropagation()}>
             <div className="chess-plus-modal-header">
               <span className="chess-plus-modal-title">{t('chessPlus.panel.moves')}</span>
-              <button className="chess-plus-modal-close" onClick={() => setShowMovesModal(false)}>✕</button>
+              <button className="chess-plus-modal-close" onClick={() => setShowMovesModal(false)} aria-label={t('control.close')}>✕</button>
             </div>
             <div className="chess-plus-modal-body">
               <div className="chess-plus-moves-table">

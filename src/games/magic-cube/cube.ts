@@ -45,8 +45,13 @@ function rr(w, h, r) {
 const STICK_GEO = new THREE.ShapeGeometry(rr(STICK, STICK, 0.10));
 
 export class ThreeRubiksCube {
-  constructor(container) {
+  constructor(container, labels = {}) {
     this.c = container;
+    this.labels = {
+      webglDisabledTitle: 'WebGL is disabled',
+      webglDisabledBody: 'Please enable WebGL / hardware acceleration in your browser settings, or open this page in a browser that supports WebGL.',
+      ...labels,
+    };
     this.seq = []; this.moves = 0; this.busy = false; this.solved = true; this._cb = null;
     this._webglError = false;
     try {
@@ -57,7 +62,7 @@ export class ThreeRubiksCube {
     } catch (e) {
       this._webglError = true;
       console.warn('ThreeRubiksCube: WebGL unavailable, cube disabled.');
-      this.c.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:#6b7280;font-size:14px;text-align:center;padding:20px;flex-direction:column;gap:12px"><div style="font-size:32px">🧊</div><div><strong>WebGL is disabled</strong><br>Please enable WebGL / hardware acceleration in your browser settings,<br>or open this page in a browser that supports WebGL.</div></div>';
+      this.c.innerHTML = `<div style="display:flex;align-items:center;justify-content:center;height:100%;color:#6b7280;font-size:14px;text-align:center;padding:20px;flex-direction:column;gap:12px"><div style="font-size:32px">🧊</div><div><strong>${this.labels.webglDisabledTitle}</strong><br>${this.labels.webglDisabledBody}</div></div>`;
     }
   }
 

@@ -70,6 +70,7 @@ export class ChessEngine implements EngineControls {
   private readonly clickAudio?: HTMLAudioElement | null;
   private readonly selectAudio?: HTMLAudioElement | null;
   private readonly onStatusChange?: (status: ChessStatus) => void;
+  private readonly labels: NonNullable<EngineOptions['labels']>;
 
   private assets: Assets | null = null;
   private pieces = {} as Record<PieceKey, PieceState>;
@@ -108,6 +109,20 @@ export class ChessEngine implements EngineControls {
     this.clickAudio = options.clickAudio;
     this.selectAudio = options.selectAudio;
     this.onStatusChange = options.onStatusChange;
+    this.labels = options.labels ?? {
+      loading: '资源加载中...',
+      redWin: '红方胜',
+      blackWin: '黑方胜',
+      youWin: '你赢了',
+      aiWins: 'AI 获胜',
+      menu: '选择模式后开始对弈',
+      duel: '人机对弈',
+      pvp: '人人对战',
+      preset: '残局挑战',
+      thinking: 'AI 思考中...',
+      difficulty: '难度',
+      presetNames: PRESETS.map((preset) => preset.name),
+    };
     this.skin = options.skin ?? DEFAULT_SKIN;
     this.createPieces();
     void this.bootstrap();
@@ -203,17 +218,17 @@ export class ChessEngine implements EngineControls {
   }
 
   private buildStatusText() {
-    if (!this.ready) return '资源加载中...';
-    if (this.winner === 1) return `${this.mode === 'pvp' ? '红方胜' : '你赢了'}${this.lastMoveText ? ` · ${this.lastMoveText}` : ''}`;
-    if (this.winner === -1) return `${this.mode === 'pvp' ? '黑方胜' : 'AI 获胜'}${this.lastMoveText ? ` · ${this.lastMoveText}` : ''}`;
-    if (this.mode === 'menu') return '选择模式后开始对弈';
+    if (!this.ready) return this.labels.loading;
+    if (this.winner === 1) return `${this.mode === 'pvp' ? this.labels.redWin : this.labels.youWin}${this.lastMoveText ? ` · ${this.lastMoveText}` : ''}`;
+    if (this.winner === -1) return `${this.mode === 'pvp' ? this.labels.blackWin : this.labels.aiWins}${this.lastMoveText ? ` · ${this.lastMoveText}` : ''}`;
+    if (this.mode === 'menu') return this.labels.menu;
     const prefix = this.mode === 'duel'
-      ? '人机对弈'
+      ? this.labels.duel
       : this.mode === 'pvp'
-        ? '人人对战'
-        : `残局挑战 · ${PRESETS[this.presetIndex]?.name ?? ''}`;
-    if (this.thinking) return `${prefix} · AI 思考中...`;
-    return `${prefix}${this.mode === 'pvp' ? '' : ` · 难度 ${this.difficulty}`}${this.lastMoveText ? ` · ${this.lastMoveText}` : ''}`;
+        ? this.labels.pvp
+        : `${this.labels.preset} · ${this.labels.presetNames[this.presetIndex] ?? PRESETS[this.presetIndex]?.name ?? ''}`;
+    if (this.thinking) return `${prefix} · ${this.labels.thinking}`;
+    return `${prefix}${this.mode === 'pvp' ? '' : ` · ${this.labels.difficulty} ${this.difficulty}`}${this.lastMoveText ? ` · ${this.lastMoveText}` : ''}`;
   }
 
   private buildMoveNotations() {

@@ -13,7 +13,7 @@ type InternationalChessResult = {
 };
 
 export function InternationalChessGame() {
-  const { t } = useLanguage();
+  const { t, homePath } = useLanguage();
   const navigate = useNavigate();
   const viewRef = useRef<HTMLDivElement>(null);
   const boardRef = useRef<HTMLDivElement>(null);
@@ -75,7 +75,7 @@ export function InternationalChessGame() {
 
   const overlayTitle = gameResult?.stalemate
     ? t('intlChess.stalemate')
-    : `${gameResult?.winner === 'WHITE' ? t('intlChess.white') : t('intlChess.black')} WINS`;
+    : `${gameResult?.winner === 'WHITE' ? t('intlChess.white') : t('intlChess.black')} ${t('intlChess.wins')}`;
   const overlayMark = gameResult?.stalemate ? '½' : gameResult?.winner === 'WHITE' ? '♔' : '♚';
   const overlayDescription = gameResult?.stalemate
     ? t('intlChess.stalemate.desc')
@@ -93,7 +93,7 @@ export function InternationalChessGame() {
       <h1 className="intl-chess-title">{t('intlChess.title')}</h1>
 
       <div className="intl-chess-top-bar">
-        <button type="button" className="intl-chess-back-btn" onClick={() => navigate('/')}>
+        <button type="button" className="intl-chess-back-btn" onClick={() => navigate(homePath)}>
           {t('intlChess.home')}
         </button>
         <div className="intl-chess-status-chip">{t('intlChess.chip')}</div>

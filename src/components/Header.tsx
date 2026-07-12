@@ -1,5 +1,5 @@
 import { categories } from '../data/games';
-import { useLanguage, type SupportedLanguage } from '../i18n';
+import { useLanguage } from '../i18n';
 
 interface HeaderProps {
   activeCategory: string;
@@ -8,29 +8,38 @@ interface HeaderProps {
 }
 
 export function Header({ activeCategory, onCategoryChange, title }: HeaderProps) {
-  const { lang, setLang, t } = useLanguage();
-
-  const handleLanguageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setLang(e.target.value as SupportedLanguage);
-  };
+  const { t } = useLanguage();
 
   return (
     <header className="pixel-header">
-      <div className="lang-dropdown-wrap">
-        <select
-          className="lang-dropdown"
-          value={lang}
-          onChange={handleLanguageChange}
-          aria-label="Language"
-        >
-          <option value="en">English</option>
-          <option value="zh">中文</option>
-        </select>
-      </div>
       <div className="header-top">
         <div className="pixel-logo">
           <span className="logo-pixel">GAMESHIN</span>
           <span className="logo-sub">GAME HUB</span>
+        </div>
+        <h1 className="home-hero-title">{t('home.heroTitle')}</h1>
+        <p className="home-hero-lead">{t('home.heroLead')}</p>
+        <div className="home-hero-actions">
+          <button type="button" className="home-cta primary" onClick={() => onCategoryChange('all')}>
+            {t('home.primaryCta')}
+          </button>
+          <button type="button" className="home-cta secondary" onClick={() => onCategoryChange('board')}>
+            {t('home.secondaryCta')}
+          </button>
+        </div>
+        <div className="home-stats" aria-label={title}>
+          <div className="home-stat">
+            <strong>{t('home.stat.games')}</strong>
+            <span>{t('home.stat.gamesLabel')}</span>
+          </div>
+          <div className="home-stat">
+            <strong>{t('home.stat.download')}</strong>
+            <span>{t('home.stat.downloadLabel')}</span>
+          </div>
+          <div className="home-stat">
+            <strong>{t('home.stat.languages')}</strong>
+            <span>{t('home.stat.languagesLabel')}</span>
+          </div>
         </div>
         <p className="header-desc">{title}</p>
       </div>

@@ -1,6 +1,27 @@
 export const zh: Record<string, string> = {
   // ── Homepage ──
   'header.title': '探索 Vibe-Games，开启游戏之旅',
+  'home.eyebrow': '免费浏览器游戏中心',
+  'home.heroTitle': '打开即玩的经典游戏',
+  'home.heroLead': '在 Gameshin 直接游玩益智、休闲、策略、棋类、动作、闯关、射击、竞速、卡牌、RPG、3D 和推理类浏览器游戏，无需下载。',
+  'home.primaryCta': '浏览游戏',
+  'home.secondaryCta': '策略游戏',
+  'home.stat.games': '10 款游戏',
+  'home.stat.gamesLabel': '内置与外部游戏入口',
+  'home.stat.download': '无需下载',
+  'home.stat.downloadLabel': '直接在浏览器中游玩',
+  'home.stat.languages': '3 种语言',
+  'home.stat.languagesLabel': '中文、英文与日文',
+  'home.catalogTitle': '选择游戏并立即开始',
+  'home.catalogLead': '按类型筛选，点击卡片，几秒内启动免费的 HTML5 游戏。',
+  'home.featuredLabel': '优先推荐',
+  'home.faqTitle': '关于 Gameshin',
+  'home.faq.1.q': 'Gameshin 是什么？',
+  'home.faq.1.a': 'Gameshin 是一个免费的在线浏览器游戏中心，收录经典棋类、益智、动作和街机游戏。',
+  'home.faq.2.q': '需要安装内容吗？',
+  'home.faq.2.a': '不需要。Gameshin 游戏直接运行在现代浏览器中，按需使用 HTML5、Canvas 和 WebGL。',
+  'home.faq.3.q': '支持哪些语言？',
+  'home.faq.3.a': '网站界面支持中文、英文和日文，并覆盖游戏页面与控制提示。',
 
   // ── Categories ──
   'category.all': '全部',
@@ -106,6 +127,7 @@ export const zh: Record<string, string> = {
   'tetris.newRecord': '★ 新纪录! ★',
   'tetris.playAgain': '▶ 再来一局',
   'tetris.orPressKey': '或按任意键',
+  'tetris.next': '下一个',
 
   // ── Chinese Chess ──
   'chess.loading': '资源加载中...',
@@ -138,6 +160,11 @@ export const zh: Record<string, string> = {
   'chess.scoreText': '局面评分',
   'chess.redWin': '红方胜',
   'chess.blackWin': '黑方胜',
+  'chess.menu': '选择模式后开始对弈',
+  'chess.status.difficulty': '难度',
+  'chess.preset.0': '八卦阵法',
+  'chess.preset.1': '很二棋局',
+  'chess.preset.2': '七星会阵',
 
   // ── Chinese Chess Plus ──
   'chessPlus.kicker': 'GAMESHIN 策略桌',
@@ -234,6 +261,7 @@ export const zh: Record<string, string> = {
   'intlChess.title': '国际象棋',
   'intlChess.chip': '8×8 标准棋盘',
   'intlChess.again': '▶ 再来一局',
+  'intlChess.wins': '获胜',
 
 
   // ── Chess Game ──
@@ -272,6 +300,30 @@ export const zh: Record<string, string> = {
   'pixelJumper.nextStage': '▶ 下一关',
   'pixelJumper.completedTitle': '全部通关',
   'pixelJumper.playAgain': '▶ 再来一次',
+  'pixelJumper.stageComplete': '第 {level} 关完成。进入下一个区域。',
+  'pixelJumper.runComplete': '你用 {time} 通关了全部 {total} 个关卡。',
+  'pixelJumper.newRecord': '★ 新纪录! ★',
+  'pixelJumper.status.takenOut': '你被击败了。重试当前关卡。',
+  'pixelJumper.status.allClear': '全部 18 个关卡已通关。',
+  'pixelJumper.status.goalLocked': '终点未解锁：请先完成全部任务。',
+  'pixelJumper.status.regionClear': '区域 {current}/{total} 已清理。出口已开启。',
+  'pixelJumper.status.regionActive': '区域 {current}/{total} 进行中。',
+  'pixelJumper.control.move': '移动：A / D',
+  'pixelJumper.control.jump': '跳跃：W / ↑ / 空格',
+  'pixelJumper.control.attack': '攻击：从上方踩踏',
+  'pixelJumper.control.exit': '出口：任务 + 旗帜',
+
+  // ── Shared controls ──
+  'control.up': '上',
+  'control.down': '下',
+  'control.left': '左',
+  'control.right': '右',
+  'control.rotate': '旋转',
+  'control.softDrop': '软降',
+  'control.hardDrop': '硬降',
+  'control.drop': '落下',
+  'control.close': '关闭',
+
   // ── RightPlace ──
   'game.rightplace.title': '摆瓶子游戏',
   'game.rightplace.description': '基于位置推理的休闲益智游戏。玩家通过拖拽或点击交换瓶子位置，利用判定反馈推理出每个瓶子的正确摆放位置。',
@@ -296,4 +348,18 @@ export const zh: Record<string, string> = {
   'magicCube.scramble': '随机打乱',
   'magicCube.solve': '自动还原',
   'magicCube.reset': '重置',
+  'magicCube.webglDisabledTitle': 'WebGL 已禁用',
+  'magicCube.webglDisabledBody': '请在浏览器设置中启用 WebGL / 硬件加速，或使用支持 WebGL 的浏览器打开本页面。',
+
+  // ── Settings ──
+  'settings.button': '设置',
+  'settings.title': '设置',
+  'settings.language': '语言',
+  'settings.languageHint': '选择 Gameshin 的显示语言。',
+  'settings.close': '关闭设置',
+
+  // ── SEO content ──
+  'seo.title.home': 'Gameshin - 免费在线浏览器游戏',
+  'seo.description.home': '在 Gameshin 免费游玩中国象棋、贪吃蛇、俄罗斯方块、五子棋、国际象棋、像素跳跃、魔方等浏览器游戏。',
+  'seo.categories': '棋类、动作、益智与射击游戏',
 };

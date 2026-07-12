@@ -1,42 +1,26 @@
 # robots.txt for Gameshin.com
-# Last updated: 2026-06-29
-#
-# Gameshin - Free Online Browser Game Hub
-# All games are free and playable in browser. No download required.
+# Last updated: 2026-07-12
 
-# ── Allow All Well-Behaved Crawlers ──
 User-agent: *
 Allow: /
 Disallow: /*?*
-Disallow: /#*
 
-# ── Traditional Search Engines ──
 User-agent: Googlebot
 Allow: /
-Crawl-delay: 1
-
-User-agent: Googlebot-Image
-Allow: /favicon.png
 
 User-agent: Bingbot
 Allow: /
-Crawl-delay: 1
 
 User-agent: Baiduspider
 Allow: /
-Crawl-delay: 1
-
-User-agent: YandexBot
-Allow: /
-Crawl-delay: 2
-
-# ── AI Search Engines & Bots (GEO Optimization) ──
-# All AI bots are explicitly allowed to maximize citation visibility
 
 User-agent: GPTBot
 Allow: /
 
 User-agent: ChatGPT-User
+Allow: /
+
+User-agent: OAI-SearchBot
 Allow: /
 
 User-agent: PerplexityBot
@@ -54,31 +38,10 @@ Allow: /
 User-agent: CCBot
 Allow: /
 
-User-agent: FacebookBot
-Allow: /
-
-# ── Social Media Crawlers ──
-User-agent: Twitterbot
-Allow: /
-
-User-agent: facebookexternalhit
-Allow: /
-
-User-agent: LinkedInBot
-Allow: /
-
-User-agent: Pinterestbot
-Allow: /
-
-# ── Other Bots ──
 User-agent: Applebot
 Allow: /
 
 User-agent: DuckDuckBot
 Allow: /
 
-User-agent: archive.org_bot
-Allow: /
-
-# ── Sitemap ──
 Sitemap: https://gameshin.com/sitemap.xml

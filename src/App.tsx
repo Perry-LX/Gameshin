@@ -1,10 +1,11 @@
-import { useState, useMemo } from 'react';
-import { Routes, Route } from 'react-router-dom';
-import { useLanguage } from './i18n';
+import { useState, useMemo, type ReactNode } from 'react';
+import { Navigate, Routes, Route, useLocation, useParams } from 'react-router-dom';
+import { DEFAULT_LANGUAGE, SUPPORTED_LANGUAGES, useLanguage, type SupportedLanguage } from './i18n';
 import { usePageTitle } from './hooks/usePageTitle';
 import { Header } from './components/Header';
 import { GameList } from './components/GameList';
 import { Footer } from './components/Footer';
+import { SettingsFloatingBall } from './components/SettingsFloatingBall';
 import { SnakeGame } from './pages/SnakeGame';
 import { TetrisGame } from './pages/TetrisGame';
 import { ChessGame } from './pages/ChessGame';
@@ -51,11 +52,52 @@ function HomePage() {
         onCategoryChange={setActiveCategory}
       />
       <main>
-        <GameList games={filteredGames} />
+        <section className="catalog-section" aria-labelledby="catalog-title">
+          <div className="catalog-heading">
+            <span className="catalog-kicker">{t('home.featuredLabel')}</span>
+            <h2 id="catalog-title">{t('home.catalogTitle')}</h2>
+            <p>{t('home.catalogLead')}</p>
+          </div>
+          <GameList games={filteredGames} />
+        </section>
+        <section className="home-faq-section" aria-labelledby="home-faq-title">
+          <h2 id="home-faq-title">{t('home.faqTitle')}</h2>
+          <div className="home-faq-grid">
+            {[1, 2, 3].map((item) => (
+              <article className="home-faq-item" key={item}>
+                <h3>{t(`home.faq.${item}.q`)}</h3>
+                <p>{t(`home.faq.${item}.a`)}</p>
+              </article>
+            ))}
+          </div>
+        </section>
       </main>
       <Footer />
+      <SettingsFloatingBall />
     </div>
   );
+}
+
+function LanguageRoute({ children }: { children: ReactNode }) {
+  const { lang } = useParams();
+  const location = useLocation();
+  if (!SUPPORTED_LANGUAGES.includes(lang as SupportedLanguage)) {
+    return <Navigate to={`/${DEFAULT_LANGUAGE}${location.pathname}${location.search}`} replace />;
+  }
+  return children;
+}
+
+function RootRedirect() {
+  const fallback = (() => {
+    try {
+      const stored = localStorage.getItem('gameshin:language');
+      if (SUPPORTED_LANGUAGES.includes(stored as SupportedLanguage)) return stored as SupportedLanguage;
+    } catch {
+      // localStorage unavailable
+    }
+    return DEFAULT_LANGUAGE;
+  })();
+  return <Navigate to={`/${fallback}/`} replace />;
 }
 
 function App() {
@@ -63,15 +105,18 @@ function App() {
 
   return (
     <Routes>
-      <Route path="/" element={<HomePage />} />
-      <Route path="/game/snake" element={<SnakeGame />} />
-      <Route path="/game/tetris" element={<TetrisGame />} />
-      <Route path="/game/chess" element={<ChessGame />} />
-      <Route path="/game/chess-plus" element={<ChessPlusGame />} />
-      <Route path="/game/gomoku" element={<GomokuGame />} />
-      <Route path="/game/international-chess" element={<InternationalChessGame />} />
-      <Route path="/game/platformer" element={<PixelJumperGame />} />
-      <Route path="/game/magic-cube" element={<MagicCubeGame />} />
+      <Route path="/" element={<RootRedirect />} />
+      <Route path="/:lang/" element={<LanguageRoute><HomePage /></LanguageRoute>} />
+      <Route path="/:lang/game/snake" element={<LanguageRoute><SnakeGame /></LanguageRoute>} />
+      <Route path="/:lang/game/tetris" element={<LanguageRoute><TetrisGame /></LanguageRoute>} />
+      <Route path="/:lang/game/chess" element={<LanguageRoute><ChessGame /></LanguageRoute>} />
+      <Route path="/:lang/game/chess-plus" element={<LanguageRoute><ChessPlusGame /></LanguageRoute>} />
+      <Route path="/:lang/game/gomoku" element={<LanguageRoute><GomokuGame /></LanguageRoute>} />
+      <Route path="/:lang/game/international-chess" element={<LanguageRoute><InternationalChessGame /></LanguageRoute>} />
+      <Route path="/:lang/game/platformer" element={<LanguageRoute><PixelJumperGame /></LanguageRoute>} />
+      <Route path="/:lang/game/magic-cube" element={<LanguageRoute><MagicCubeGame /></LanguageRoute>} />
+      <Route path="/game/:slug" element={<Navigate to={`/${DEFAULT_LANGUAGE}${window.location.pathname}`} replace />} />
+      <Route path="*" element={<RootRedirect />} />
     </Routes>
   );
 }

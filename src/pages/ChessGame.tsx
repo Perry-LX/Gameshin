@@ -9,7 +9,7 @@ import './ChessGame.css';
 const assetBase = ((typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.BASE_URL) || '').replace(/\/$/, '');
 
 export function ChessGame() {
-  const { t } = useLanguage();
+  const { t, homePath } = useLanguage();
   const navigate = useNavigate();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const clickAudioRef = useRef<HTMLAudioElement>(null);
@@ -33,6 +33,20 @@ export function ChessGame() {
   const [status, setStatus] = useState<ChessStatus>(DEFAULT_STATUS);
   const [difficulty, setDifficulty] = useState<Difficulty>(3);
   const [presetIndex, setPresetIndex] = useState(0);
+  const engineLabels = useMemo(() => ({
+    loading: t('chess.loading'),
+    redWin: t('chess.redWin'),
+    blackWin: t('chess.blackWin'),
+    youWin: t('chess.youWin'),
+    aiWins: t('chess.aiWins'),
+    menu: t('chess.menu'),
+    duel: t('chess.mode.duel'),
+    pvp: t('chess.mode.pvp'),
+    preset: t('chess.mode.preset'),
+    thinking: t('chess.thinking'),
+    difficulty: t('chess.status.difficulty'),
+    presetNames: PRESETS.map((_, index) => t(`chess.preset.${index}`)),
+  }), [t]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -43,6 +57,7 @@ export function ChessGame() {
       clickAudio: clickAudioRef.current,
       selectAudio: selectAudioRef.current,
       onStatusChange: setStatus,
+      labels: engineLabels,
     });
 
     engineRef.current = engine;
@@ -50,7 +65,7 @@ export function ChessGame() {
       engine.destroy();
       engineRef.current = null;
     };
-  }, []);
+  }, [engineLabels]);
 
   // Sync default status text when language changes
   useEffect(() => {
@@ -74,7 +89,7 @@ export function ChessGame() {
       <h1 className="chess-title">{t('chess.title')}</h1>
 
       <div className="chess-top-bar">
-        <button type="button" className="chess-back-btn" onClick={() => navigate('/')}>
+        <button type="button" className="chess-back-btn" onClick={() => navigate(homePath)}>
           {t('chess.home')}
         </button>
         <div className="chess-status-chip">{status.thinking ? t('chess.thinking') : t('chess.ready')}</div>
@@ -150,7 +165,7 @@ export function ChessGame() {
                     engineRef.current?.setPresetIndex(index);
                   }}
                 >
-                  {preset.name}
+                  {t(`chess.preset.${index}`)}
                 </button>
               ))}
             </div>

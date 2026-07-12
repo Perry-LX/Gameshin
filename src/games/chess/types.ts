@@ -79,6 +79,20 @@ export interface ChessStatus {
 export interface EngineOptions extends RuntimeRefs {
   skin?: SkinType;
   onStatusChange?: (status: ChessStatus) => void;
+  labels?: {
+    loading: string;
+    redWin: string;
+    blackWin: string;
+    youWin: string;
+    aiWins: string;
+    menu: string;
+    duel: string;
+    pvp: string;
+    preset: string;
+    thinking: string;
+    difficulty: string;
+    presetNames: string[];
+  };
 }
 
 export interface EngineControls {

@@ -5,7 +5,7 @@ import { ThreeRubiksCube } from '../games/magic-cube/cube';
 import './MagicCubeGame.css';
 
 export function MagicCubeGame() {
-  const { t } = useLanguage();
+  const { t, homePath } = useLanguage();
   const navigate = useNavigate();
   const wrapRef = useRef<HTMLDivElement>(null);
   const controlsRef = useRef<HTMLDivElement>(null);
@@ -35,7 +35,10 @@ export function MagicCubeGame() {
   useEffect(() => {
     if (!wrapRef.current) return;
 
-    const engine = new ThreeRubiksCube(wrapRef.current);
+    const engine = new ThreeRubiksCube(wrapRef.current, {
+      webglDisabledTitle: t('magicCube.webglDisabledTitle'),
+      webglDisabledBody: t('magicCube.webglDisabledBody'),
+    });
     engineRef.current = engine;
 
     engine.onUpdate(({ moveCount, isSolved }: { moveCount: number; isSolved: boolean }) => {
@@ -63,7 +66,7 @@ export function MagicCubeGame() {
 
   return (
     <div className="magic-cube-page">
-      <button type="button" className="magic-cube-back-btn" onClick={() => navigate('/')}>
+      <button type="button" className="magic-cube-back-btn" onClick={() => navigate(homePath)}>
         ◂ {t('magicCube.back')}
       </button>
 

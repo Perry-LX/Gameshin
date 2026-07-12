@@ -203,7 +203,7 @@ function drawPreview(ctx: CanvasRenderingContext2D, p: PieceType, cs: number, w:
 // ── Main game component ──
 export function TetrisGame() {
   const navigate = useNavigate();
-  const { t } = useLanguage();
+  const { t, homePath } = useLanguage();
   const [score, setScore] = useState(0);
   const [hi, setHi] = useState(() => parseInt(localStorage.getItem('tetris-hi') || '0', 10));
   const [gameState, setGameState] = useState<'idle' | 'playing' | 'over'>('idle');
@@ -235,11 +235,11 @@ export function TetrisGame() {
     <div className="tetris-page">
       <h1 className="tetris-title">{t('tetris.title')}</h1>
       <div className="tetris-top-row">
-        <button className="tetris-back-btn" onClick={() => navigate('/')}>{t('tetris.back')}</button>
+        <button className="tetris-back-btn" onClick={() => navigate(homePath)}>{t('tetris.back')}</button>
         <div className="tetris-stats">
           <span className="tetris-stat">{t('tetris.lines')}: <b>{score}</b></span>
           <span className="tetris-stat">{t('tetris.best')}: <b>{hi}</b></span>
-          <span className="tetris-stat">SCORE: <b>{score}</b></span>
+          <span className="tetris-stat">{t('snake.scoreLabel')}: <b>{score}</b></span>
         </div>
       </div>
       <div className="tetris-zoom-bar">
@@ -325,6 +325,7 @@ function TetrisBoardIdle({ cellSize, onStart }: { cellSize: number; onStart: () 
 function TetrisBoard({ cellSize, onGameOver, onScoreChange }: {
   cellSize: number; onGameOver: (score: number) => void; onScoreChange: (score: number) => void;
 }) {
+  const { t } = useLanguage();
   const cs = cellSize;
   const gridW = GRID_COLS * cs;
   const gridH = (GRID_ROWS - VISIBLE_TOP) * cs;
@@ -489,20 +490,20 @@ function TetrisBoard({ cellSize, onGameOver, onScoreChange }: {
         <div className="tetris-canvas-wrap" style={{ maxWidth: gridW }}>
           <canvas ref={gridCanvasRef} width={gridW} height={gridH} className="tetris-canvas" style={{ width: gridW, height: gridH }} />
           <div className="tetris-next-overlay">
-            <span className="tetris-next-label">NEXT</span>
+            <span className="tetris-next-label">{t('tetris.next')}</span>
             <canvas ref={nextCanvasRef} width={nextSz} height={nextSz} className="tetris-next-canvas" style={{ width: nextSz, height: nextSz }} />
           </div>
         </div>
       </div>
       <div className="tetris-dpad">
         <div className="tetris-dpad-row">
-          <button className="tetris-dpad-btn tetris-dpad-wide" onPointerDown={() => handleTouchAction(onLeft)} aria-label="Left">◀</button>
-          <button className="tetris-dpad-btn" onPointerDown={() => handleTouchAction(onUp)} aria-label="Rotate">▲</button>
-          <button className="tetris-dpad-btn tetris-dpad-wide" onPointerDown={() => handleTouchAction(onRight)} aria-label="Right">▶</button>
+          <button className="tetris-dpad-btn tetris-dpad-wide" onPointerDown={() => handleTouchAction(onLeft)} aria-label={t('control.left')}>◀</button>
+          <button className="tetris-dpad-btn" onPointerDown={() => handleTouchAction(onUp)} aria-label={t('control.rotate')}>▲</button>
+          <button className="tetris-dpad-btn tetris-dpad-wide" onPointerDown={() => handleTouchAction(onRight)} aria-label={t('control.right')}>▶</button>
         </div>
         <div className="tetris-dpad-row">
-          <button className="tetris-dpad-btn tetris-dpad-wide" onPointerDown={() => handleTouchAction(onDown)} aria-label="Soft drop">▼</button>
-          <button className="tetris-dpad-btn tetris-dpad-drop" onPointerDown={() => handleTouchAction(onSpace)} aria-label="Hard drop">DROP</button>
+          <button className="tetris-dpad-btn tetris-dpad-wide" onPointerDown={() => handleTouchAction(onDown)} aria-label={t('control.softDrop')}>▼</button>
+          <button className="tetris-dpad-btn tetris-dpad-drop" onPointerDown={() => handleTouchAction(onSpace)} aria-label={t('control.hardDrop')}>{t('control.drop')}</button>
         </div>
       </div>
     </div>

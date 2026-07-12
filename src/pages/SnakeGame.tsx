@@ -105,7 +105,7 @@ function createGameData(): GameData {
 }
 
 export function SnakeGame() {
-  const { t } = useLanguage();
+  const { t, homePath } = useLanguage();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const gameRef = useRef<GameData>(createGameData());
   const navigate = useNavigate();
@@ -289,7 +289,7 @@ export function SnakeGame() {
 
       {/* Top row: back button + scores on same line */}
       <div className="snake-top-row">
-        <button className="snake-back-btn" onClick={() => navigate('/')}>{t('snake.back')}</button>
+        <button className="snake-back-btn" onClick={() => navigate(homePath)}>{t('snake.back')}</button>
         <div className="snake-scores">
           <span className="snake-score">{t('snake.scoreLabel')}: {score}</span>
           <span className="snake-highscore">{t('snake.bestLabel')}: {highScore}</span>
@@ -335,15 +335,15 @@ export function SnakeGame() {
       {/* Touch D-Pad */}
       <div className="snake-dpad">
         <div className="snake-dpad-row">
-          <button className="snake-dpad-btn" onPointerDown={() => handleDirection('UP')} aria-label="Up">▲</button>
+          <button className="snake-dpad-btn" onPointerDown={() => handleDirection('UP')} aria-label={t('control.up')}>▲</button>
         </div>
         <div className="snake-dpad-row">
-          <button className="snake-dpad-btn" onPointerDown={() => handleDirection('LEFT')} aria-label="Left">◀</button>
+          <button className="snake-dpad-btn" onPointerDown={() => handleDirection('LEFT')} aria-label={t('control.left')}>◀</button>
           <button className="snake-dpad-btn snake-dpad-blank" disabled />
-          <button className="snake-dpad-btn" onPointerDown={() => handleDirection('RIGHT')} aria-label="Right">▶</button>
+          <button className="snake-dpad-btn" onPointerDown={() => handleDirection('RIGHT')} aria-label={t('control.right')}>▶</button>
         </div>
         <div className="snake-dpad-row">
-          <button className="snake-dpad-btn" onPointerDown={() => handleDirection('DOWN')} aria-label="Down">▼</button>
+          <button className="snake-dpad-btn" onPointerDown={() => handleDirection('DOWN')} aria-label={t('control.down')}>▼</button>
         </div>
       </div>
     </div>

@@ -3,6 +3,7 @@ import bg from './assets/bg.jpg';
 import { BOARD_SIZE } from './constants';
 import { getLastMove } from './engine';
 import { useGobang } from './store';
+import { useLanguage } from '../../i18n';
 import './board.css';
 
 interface BoardProps {
@@ -11,13 +12,14 @@ interface BoardProps {
 
 export default function Board({ boardSize }: BoardProps) {
   const { state, placePiece } = useGobang();
+  const { t } = useLanguage();
   const { board, history, status, winner, index } = state;
 
   useEffect(() => {
     if (winner === 1 || winner === -1) {
-      window.alert(winner === 1 ? '黑棋获胜' : '白棋获胜');
+      window.alert(winner === 1 ? t('gomoku.blackWin') : t('gomoku.whiteWin'));
     }
-  }, [winner]);
+  }, [t, winner]);
 
   const handleClick = (i: number, j: number) => {
     if (status !== 'gaming') return;

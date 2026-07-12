@@ -6,11 +6,11 @@ A pixel-styled game navigation center — an entry portal integrating multiple m
 
 - **React 19** + **TypeScript 6**
 - **Vite 8** build tool
-- **React Router v7** client-side routing (HashRouter)
+- **React Router v7** client-side routing (BrowserRouter with language-prefixed routes)
 - Pure CSS pixel-art theme design
 - Canvas game rendering
 - **Three.js** — WebGL 3D rendering (Magic Cube)
-- **i18n** — built-in internationalization (English / Chinese)
+- **i18n** — built-in internationalization (English / Chinese / Japanese)
 
 ## Features
 
@@ -20,7 +20,7 @@ A pixel-styled game navigation center — an entry portal integrating multiple m
 - **Responsive layout** — desktop, tablet, and mobile support
 - **Game cards** — each card shows icon, title, description, tags, and status (active / beta / coming-soon)
 - **Card sorting** — active games appear first, then beta, then coming-soon (disabled) cards last
-- **Language switching** — dropdown in the homepage header to toggle between English and Chinese
+- **Language switching** — draggable homepage settings ball with English, Chinese, and Japanese options
 - **Touch controls** — Snake and Tetris include on-screen D-pad for mobile play
 - **8 built-in games + 2 external** — Snake, Tetris, Chinese Chess, Gomoku, International Chess, Pixel Jumper, Magic Cube, RightPlace, Kitten Quest
 
@@ -171,7 +171,8 @@ Gameshin/
 │   ├── i18n/                         # Internationalization system
 │   │   ├── index.tsx                 # LanguageProvider, useLanguage hook, t()
 │   │   ├── en.ts                     # English translations
-│   │   └── zh.ts                     # Chinese translations
+│   │   ├── zh.ts                     # Chinese translations
+│   │   └── ja.ts                     # Japanese translations
 │   ├── types/index.ts                # Global type definitions
 │   ├── data/games.ts                 # Game data configuration (categories + status)
 │   ├── games/                        # Game core logic
@@ -190,12 +191,13 @@ Gameshin/
 │   │   ├── MagicCubeGame.tsx/css
 │   │   └── PixelJumperGame.tsx/css
 │   ├── components/                   # Shared UI components
-│   │   ├── Header.tsx                # Header + category nav + language dropdown
+│   │   ├── Header.tsx                # Header + category nav
+│   │   ├── SettingsFloatingBall.tsx  # Homepage settings ball + language modal
 │   │   ├── GameCard.tsx              # Game card (internal route / external link)
 │   │   ├── GameList.tsx              # Card grid list
 │   │   └── Footer.tsx                # Footer
 │   ├── App.tsx                       # Route entry + conditional game sorting
-│   ├── main.tsx                      # App bootstrap (HashRouter + LanguageProvider)
+│   ├── main.tsx                      # App bootstrap (BrowserRouter + LanguageProvider)
 │   └── index.css                     # Global pixel-style theme
 ├── index.html
 ├── vite.config.ts                    # Vite build config
@@ -281,7 +283,7 @@ All asset paths (JS, CSS, images, audio, opening books) adapt automatically.
 
 ### Deploy to Static Server
 
-This project uses **HashRouter**, so no server-side SPA fallback configuration is needed. It can be deployed directly to any static file server (nginx, Apache, GitHub Pages, Vercel, Netlify, etc.).
+This project uses **BrowserRouter** with real paths such as `/en/`, `/zh/`, `/ja/`, and `/en/game/snake`. Static hosts must route unknown paths back to `index.html`. Netlify uses `public/_redirects`; Vercel uses `vercel.json`.
 
 ## Adding a New Game
 
@@ -298,7 +300,7 @@ Edit `src/data/games.ts` and add an entry:
 }
 ```
 
-Then add localized display text in `src/i18n/en.ts` and `src/i18n/zh.ts`:
+Then add localized display text in `src/i18n/en.ts`, `src/i18n/zh.ts`, and `src/i18n/ja.ts`:
 
 ```ts
 'game.your-game-id.title': 'Your Game Title',

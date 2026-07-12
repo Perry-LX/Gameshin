@@ -1,6 +1,27 @@
 export const en: Record<string, string> = {
   // ── Homepage ──
   'header.title': 'Explore Vibe-Games, Start Your Journey',
+  'home.eyebrow': 'Free browser game hub',
+  'home.heroTitle': 'Play classic games instantly',
+  'home.heroLead': 'Open Gameshin for puzzle, casual, strategy, board, action, level-based, shooter, racing, card, RPG, 3D and logic browser games with no downloads.',
+  'home.primaryCta': 'Browse games',
+  'home.secondaryCta': 'Strategy games',
+  'home.stat.games': '10 games',
+  'home.stat.gamesLabel': 'built-in and external games',
+  'home.stat.download': 'No download',
+  'home.stat.downloadLabel': 'play directly in your browser',
+  'home.stat.languages': '3 languages',
+  'home.stat.languagesLabel': 'English, Chinese and Japanese',
+  'home.catalogTitle': 'Choose a game and start playing',
+  'home.catalogLead': 'Filter by genre, pick a card, and launch a free HTML5 game in seconds.',
+  'home.featuredLabel': 'Featured first',
+  'home.faqTitle': 'About Gameshin',
+  'home.faq.1.q': 'What is Gameshin?',
+  'home.faq.1.a': 'Gameshin is a free online browser game hub for classic board, puzzle, action and arcade games.',
+  'home.faq.2.q': 'Do I need to install anything?',
+  'home.faq.2.a': 'No. Gameshin games run in modern browsers with HTML5, Canvas and WebGL where needed.',
+  'home.faq.3.q': 'Which languages are supported?',
+  'home.faq.3.a': 'The site interface supports English, Chinese and Japanese, including the game pages and controls.',
 
   // ── Categories ──
   'category.all': 'All',
@@ -106,6 +127,7 @@ export const en: Record<string, string> = {
   'tetris.newRecord': '★ NEW RECORD! ★',
   'tetris.playAgain': '▶ PLAY AGAIN',
   'tetris.orPressKey': 'Or press any key',
+  'tetris.next': 'NEXT',
 
   // ── Chinese Chess ──
   'chess.loading': 'Loading resources...',
@@ -138,6 +160,11 @@ export const en: Record<string, string> = {
   'chess.scoreText': 'Score',
   'chess.redWin': 'Red Wins',
   'chess.blackWin': 'Black Wins',
+  'chess.menu': 'Choose a mode to start',
+  'chess.status.difficulty': 'Difficulty',
+  'chess.preset.0': 'Eight Trigrams Formation',
+  'chess.preset.1': 'Odd Endgame',
+  'chess.preset.2': 'Seven Stars Gathering',
 
   // ── Chinese Chess Plus ──
   'chessPlus.kicker': 'GAMESHIN STRATEGY TABLE',
@@ -234,6 +261,7 @@ export const en: Record<string, string> = {
   'intlChess.title': 'INTERNATIONAL CHESS',
   'intlChess.chip': '8×8 CLASSIC',
   'intlChess.again': '▶ AGAIN',
+  'intlChess.wins': 'WINS',
 
 
   // ── Chess Game ──
@@ -265,6 +293,37 @@ export const en: Record<string, string> = {
   'pixelJumper.startRun': '▶ START RUN',
   'pixelJumper.failedTitle': 'LEVEL FAILED',
   'pixelJumper.failedDesc': 'Bullets, monsters, or hazards took you down.',
+  'pixelJumper.failedHint': 'Press Space / Enter to retry.',
+  'pixelJumper.retry': '▶ RETRY',
+  'pixelJumper.clearedTitle': 'LEVEL CLEARED',
+  'pixelJumper.clearedHint': 'Press Space / Enter to continue.',
+  'pixelJumper.nextStage': '▶ NEXT STAGE',
+  'pixelJumper.completedTitle': 'RUN COMPLETE',
+  'pixelJumper.playAgain': '▶ PLAY AGAIN',
+  'pixelJumper.stageComplete': 'Stage {level} complete. Move into the next region.',
+  'pixelJumper.runComplete': 'You cleared all {total} stages in {time}.',
+  'pixelJumper.newRecord': '★ NEW RECORD! ★',
+  'pixelJumper.status.takenOut': 'YOU WERE TAKEN OUT. RETRY THE STAGE.',
+  'pixelJumper.status.allClear': 'ALL 18 STAGES CLEARED.',
+  'pixelJumper.status.goalLocked': 'GOAL LOCKED: FINISH ALL TASKS FIRST.',
+  'pixelJumper.status.regionClear': 'REGION {current}/{total} CLEAR. EXIT IS OPEN.',
+  'pixelJumper.status.regionActive': 'REGION {current}/{total} ACTIVE.',
+  'pixelJumper.control.move': 'MOVE: A / D',
+  'pixelJumper.control.jump': 'JUMP: W / ↑ / SPACE',
+  'pixelJumper.control.attack': 'ATTACK: STOMP FROM ABOVE',
+  'pixelJumper.control.exit': 'EXIT: TASKS + FLAG',
+
+  // ── Shared controls ──
+  'control.up': 'Up',
+  'control.down': 'Down',
+  'control.left': 'Left',
+  'control.right': 'Right',
+  'control.rotate': 'Rotate',
+  'control.softDrop': 'Soft drop',
+  'control.hardDrop': 'Hard drop',
+  'control.drop': 'DROP',
+  'control.close': 'Close',
+
   // ── RightPlace ──
   'game.rightplace.title': 'RightPlace',
   'game.rightplace.description': 'Position-based reasoning puzzle game. Players drag or click to swap bottle positions and use judgment feedback to deduce the correct placement for each bottle.',
@@ -289,4 +348,18 @@ export const en: Record<string, string> = {
   'magicCube.scramble': 'Scramble',
   'magicCube.solve': 'Solve',
   'magicCube.reset': 'Reset',
+  'magicCube.webglDisabledTitle': 'WebGL is disabled',
+  'magicCube.webglDisabledBody': 'Please enable WebGL / hardware acceleration in your browser settings, or open this page in a browser that supports WebGL.',
+
+  // ── Settings ──
+  'settings.button': 'Settings',
+  'settings.title': 'Settings',
+  'settings.language': 'Language',
+  'settings.languageHint': 'Choose the display language for Gameshin.',
+  'settings.close': 'Close settings',
+
+  // ── SEO content ──
+  'seo.title.home': 'Gameshin - Free Online Browser Games',
+  'seo.description.home': 'Play free browser games on Gameshin: Chinese Chess, Snake, Tetris, Gomoku, International Chess, Pixel Jumper, Magic Cube and more.',
+  'seo.categories': 'Board, Action, Puzzle & Shooting Games',
 };

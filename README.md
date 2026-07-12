@@ -22,9 +22,11 @@ A pixel-styled game navigation center — an entry portal integrating multiple m
 - **Card sorting** — active games appear first, then beta, then coming-soon (disabled) cards last
 - **Language switching** — draggable homepage settings ball with English, Chinese, and Japanese options
 - **Touch controls** — Snake and Tetris include on-screen D-pad for mobile play
-- **8 built-in games + 2 external** — Snake, Tetris, Chinese Chess, Gomoku, International Chess, Pixel Jumper, Magic Cube, RightPlace, Kitten Quest
+- **10 playable game entries + 5 coming-soon cards** - Snake, Tetris, Chinese Chess, Chinese Chess Plus, Gomoku, International Chess, Pixel Jumper, Magic Cube, RightPlace, Kitten Quest
 
-## Built-in Games
+## Playable Games
+
+Internal games run under language-prefixed routes such as `/en/game/snake`, `/zh/game/chess-plus`, and `/ja/game/magic-cube`. RightPlace and Kitten Quest are external Gameshin subdomain games that open in the current browser tab.
 
 ### Snake Classic
 - Classic snake gameplay
@@ -108,15 +110,16 @@ The site has been optimized for both traditional search engines (Google, Bing) a
 | `public/sitemap.xml` | Indexes all game pages and subdomain games |
 | `public/og-image.png` | 1200×630 Open Graph image for social sharing |
 | `public/humans.txt` | Site authorship and tech-stack information |
+| `public/_redirects` | SPA fallback rules for language routes on static hosts and Cloudflare Workers |
 
 ### Meta Tags (in `index.html`)
-- **Title** — `Gameshin - Free Online Browser Games | Chinese Chess, Snake, Tetris & More`
+- **Title** - `Gameshin - Free Online Browser Games`
 - **Description** — 155-character optimized description with key game keywords
-- **Keywords** — bilingual (English + Chinese) game-related keywords
+- **Keywords** - multilingual game-related keywords
 - **Open Graph** — 10 tags including og:title, og:description, og:image, og:url, og:site_name
 - **Twitter Cards** — summary_large_image format
 - **Canonical URL** — prevents duplicate content issues
-- **Hreflang** — zh-CN and x-default language tags
+- **Hreflang** - en, zh-CN, ja, and x-default language tags
 - **Theme Color** — matches site design (#1a1a2e)
 
 ### JSON-LD Structured Data (5 schemas)
@@ -125,7 +128,7 @@ The site has been optimized for both traditional search engines (Google, Bing) a
 |--------|------|---------------------|
 | WebSite | Site metadata + search action | Base SEO |
 | Organization | Brand identity | Base SEO |
-| CollectionPage + ItemList | 7 VideoGame entries with descriptions | +25% |
+| CollectionPage + ItemList | 10 game entries with descriptions | +25% |
 | FAQPage | 5 questions covering site, games, languages | **+40%** |
 | BreadcrumbList | Navigation hierarchy | Base SEO |
 
@@ -210,10 +213,11 @@ Gameshin/
 
 ## Internationalization
 
-The project includes a built-in i18n system supporting **English** (default) and **Chinese**.
+The project includes a built-in i18n system supporting **English** (default), **Chinese**, and **Japanese**.
 - **Storage key**: `gameshin:language` (persisted in localStorage)
-- **Toggle location**: homepage header (top-right dropdown)
+- **Toggle location**: draggable homepage-only settings ball, which opens a settings modal with a language dropdown
 - **Scope**: all static UI text across every page and component
+- **Routes**: each locale uses a real path prefix: `/en/`, `/zh/`, and `/ja/`
 
 To add a new language:
 1. Create a new translation file in `src/i18n/` (e.g., `ja.ts`)
@@ -224,13 +228,13 @@ To add a new language:
 
 Games are organized into genre categories:
 
-| Category | Icon | Includes |
+| Category | Category key | Includes |
 |----------|------|----------|
-| All | ⭐ | Every game |
-| Board | ♜ | Chinese Chess, Chinese Chess Plus, Gomoku, International Chess |
-| Shooting | 🎯 | Space Shooter |
-| Action | ⚡ | Snake Classic, Pixel Jumper, Dungeon Quest, Retro Racer |
-| Puzzle | 🧩 | Tetris Battle, Match Puzzle, Magic Cube, RightPlace, Kitten Quest |
+| All | all | Every game |
+| Board | board | Chinese Chess, Chinese Chess Plus, Gomoku, International Chess, Card Wars |
+| Shooting | shooting | Space Shooter |
+| Action | action | Snake Classic, Pixel Jumper, Dungeon Quest, Retro Racer |
+| Puzzle | puzzle | Tetris Battle, Match Puzzle, Magic Cube, RightPlace, Kitten Quest |
 
 Games marked as `coming-soon` are shown as disabled placeholder cards, sorted after all active and beta games. Disabled cards display a dimmed icon + subtle diagonal pattern overlay while keeping text fully readable.
 
@@ -283,7 +287,9 @@ All asset paths (JS, CSS, images, audio, opening books) adapt automatically.
 
 ### Deploy to Static Server
 
-This project uses **BrowserRouter** with real paths such as `/en/`, `/zh/`, `/ja/`, and `/en/game/snake`. Static hosts must route unknown paths back to `index.html`. Netlify uses `public/_redirects`; Vercel uses `vercel.json`.
+This project uses **BrowserRouter** with real paths such as `/en/`, `/zh/`, `/ja/`, and `/en/game/snake`. Static hosts must route those app paths back to `index.html`.
+
+`public/_redirects` intentionally lists only the language routes and legacy `/game/*` route. Do not replace it with `/* /index.html 200`: Cloudflare Workers rejects that catch-all rule as an infinite rewrite loop because `/index.html` would also match the same rule. Vercel uses `vercel.json`.
 
 ## Adding a New Game
 
@@ -311,7 +317,7 @@ Then add localized display text in `src/i18n/en.ts`, `src/i18n/zh.ts`, and `src/
 For internal games, also register a route in `src/App.tsx`:
 
 ```tsx
-<Route path="/game/your-game" element={<YourGame />} />
+<Route path="/:lang/game/your-game" element={<LanguageRoute><YourGame /></LanguageRoute>} />
 ```
 
 ## Scripts

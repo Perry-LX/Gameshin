@@ -6,5 +6,5 @@ export interface GameItem {
   iconVariant?: 'default' | 'seal';
   status: 'active' | 'coming-soon' | 'beta';
   color: string; // accent color for the card
-  category?: 'board' | 'shooting' | 'action' | 'puzzle'; // genre category
+  category?: 'board' | 'shooting' | 'action' | 'puzzle' | 'cozy'; // genre category
 }

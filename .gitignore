@@ -29,6 +29,8 @@ react_ai_chess/
 
 # agent
 .claude
+.agents
+.codex
 
 # Vite dev deps cache
 .vite

@@ -2,6 +2,15 @@ import type { GameItem } from '../types';
 
 export const games: GameItem[] = [
   {
+    id: 'cat-painter',
+    url: 'https://catpainter.gameshin.com/',
+    icon: '🐱',
+    iconImage: '/cat-painter/favicon.webp',
+    status: 'active',
+    color: '#e879a9',
+    category: 'cozy',
+  },
+  {
     id: 'snake',
     url: '/game/snake',
     icon: '🐍',
@@ -29,7 +38,7 @@ export const games: GameItem[] = [
     id: 'chess-plus',
     url: '/game/chess-plus',
     icon: '帅',
-    iconImage: '/chess/favicon.png',
+    iconImage: '/chess/favicon.webp',
     iconVariant: 'seal',
     status: 'active',
     color: '#b45309',
@@ -111,16 +120,16 @@ export const games: GameItem[] = [
     id: "kitten-quest",
     url: "https://kittenquest.gameshin.com/",
     icon: "🐱",
-    iconImage: "/kitten-quest/favicon.png",
+    iconImage: "/kitten-quest/favicon.webp",
     status: "active",
     color: "#f97316",
-    category: "puzzle",
+    category: "cozy",
   },
   {
     id: "magic-cube",
     url: "/game/magic-cube",
     icon: "🧊",
-    iconImage: "/magic-cube/magic-cube-icon.png",
+    iconImage: "/magic-cube/magic-cube-icon.webp",
     status: "active",
     color: "#009e60",
     category: "puzzle",
@@ -133,4 +142,5 @@ export const categories = [
   { id: 'shooting', icon: '🎯' },
   { id: 'action', icon: '⚡' },
   { id: 'puzzle', icon: '🧩' },
+  { id: 'cozy', icon: '☕' },
 ];

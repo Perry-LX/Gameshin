@@ -3,15 +3,43 @@ import { useLanguage, type SupportedLanguage } from '../i18n';
 
 const POSITION_KEY = 'gameshin:settings-ball-position';
 const DEFAULT_POSITION = { x: 24, y: 120 };
+const DESKTOP_SIZE = 52;
+const MOBILE_SIZE = 48;
+const MOBILE_BREAKPOINT = 768;
+const EDGE_INSET = 0;
+const SNAP_DISTANCE = 48;
 
 type Position = typeof DEFAULT_POSITION;
 
+function getBallSize(): number {
+  return window.innerWidth <= MOBILE_BREAKPOINT ? MOBILE_SIZE : DESKTOP_SIZE;
+}
+
 function clampPosition(position: Position): Position {
-  const size = 80;
-  const padding = 12;
+  const size = getBallSize();
   return {
-    x: Math.min(Math.max(position.x, padding), Math.max(padding, window.innerWidth - size - padding)),
-    y: Math.min(Math.max(position.y, padding), Math.max(padding, window.innerHeight - size - padding)),
+    x: Math.min(Math.max(position.x, EDGE_INSET), Math.max(EDGE_INSET, window.innerWidth - size - EDGE_INSET)),
+    y: Math.min(Math.max(position.y, EDGE_INSET), Math.max(EDGE_INSET, window.innerHeight - size - EDGE_INSET)),
+  };
+}
+
+function snapPosition(position: Position): Position {
+  const clamped = clampPosition(position);
+  const size = getBallSize();
+  const maxX = Math.max(EDGE_INSET, window.innerWidth - size - EDGE_INSET);
+  const maxY = Math.max(EDGE_INSET, window.innerHeight - size - EDGE_INSET);
+
+  return {
+    x: clamped.x - EDGE_INSET <= SNAP_DISTANCE
+      ? EDGE_INSET
+      : maxX - clamped.x <= SNAP_DISTANCE
+        ? maxX
+        : clamped.x,
+    y: clamped.y - EDGE_INSET <= SNAP_DISTANCE
+      ? EDGE_INSET
+      : maxY - clamped.y <= SNAP_DISTANCE
+        ? maxY
+        : clamped.y,
   };
 }
 
@@ -31,6 +59,7 @@ export function SettingsFloatingBall() {
   const { lang, setLang, t, languageOptions } = useLanguage();
   const [position, setPosition] = useState<Position>(getStoredPosition);
   const [open, setOpen] = useState(false);
+  const [dragging, setDragging] = useState(false);
   const dragRef = useRef({
     pointerId: -1,
     startX: 0,
@@ -65,6 +94,7 @@ export function SettingsFloatingBall() {
 
   const handlePointerDown = (event: React.PointerEvent<HTMLButtonElement>) => {
     event.currentTarget.setPointerCapture(event.pointerId);
+    setDragging(true);
     dragRef.current = {
       pointerId: event.pointerId,
       startX: event.clientX,
@@ -88,24 +118,36 @@ export function SettingsFloatingBall() {
   const handlePointerUp = (event: React.PointerEvent<HTMLButtonElement>) => {
     const drag = dragRef.current;
     if (drag.pointerId !== event.pointerId) return;
-    event.currentTarget.releasePointerCapture(event.pointerId);
+    if (event.currentTarget.hasPointerCapture(event.pointerId)) {
+      event.currentTarget.releasePointerCapture(event.pointerId);
+    }
     dragRef.current.pointerId = -1;
-    if (!drag.moved) setOpen(true);
+    setDragging(false);
+    if (drag.moved) setPosition((current) => snapPosition(current));
+    else setOpen(true);
+  };
+
+  const handlePointerCancel = (event: React.PointerEvent<HTMLButtonElement>) => {
+    if (dragRef.current.pointerId !== event.pointerId) return;
+    dragRef.current.pointerId = -1;
+    setDragging(false);
+    setPosition((current) => snapPosition(current));
   };
 
   return (
     <>
       <button
         type="button"
-        className="settings-ball"
+        className={`settings-ball${dragging ? ' dragging' : ''}`}
         style={{ left: position.x, top: position.y }}
         onPointerDown={handlePointerDown}
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}
+        onPointerCancel={handlePointerCancel}
         aria-label={t('settings.button')}
+        title={t('settings.button')}
       >
         <span className="settings-ball-icon">⚙</span>
-        <span className="settings-ball-label">{t('settings.button')}</span>
       </button>
 
       {open && (

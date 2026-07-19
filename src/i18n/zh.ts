@@ -6,7 +6,7 @@ export const zh: Record<string, string> = {
   'home.heroLead': '在 Gameshin 直接游玩益智、休闲、策略、棋类、动作、闯关、射击、竞速、卡牌、RPG、3D 和推理类浏览器游戏，无需下载。',
   'home.primaryCta': '浏览游戏',
   'home.secondaryCta': '策略游戏',
-  'home.stat.games': '10 款游戏',
+  'home.stat.games': '11 款游戏',
   'home.stat.gamesLabel': '内置与外部游戏入口',
   'home.stat.download': '无需下载',
   'home.stat.downloadLabel': '直接在浏览器中游玩',
@@ -29,6 +29,7 @@ export const zh: Record<string, string> = {
   'category.shooting': '射击',
   'category.action': '动作',
   'category.puzzle': '益智休闲',
+  'category.cozy': '治愈',
 
   // ── Status labels (game cards) ──
   'status.active': '热玩中',
@@ -331,6 +332,9 @@ export const zh: Record<string, string> = {
   'game.kitten-quest.title': '小猫寻踪',
   'game.kitten-quest.description': '基于颜色推理的寻猫小游戏。在彩色网格中找出所有隐藏的小猫，灵感来自扫雷！',
   'game.kitten-quest.tags': '益智,休闲,推理',
+  'game.cat-painter.title': '猫咪画家',
+  'game.cat-painter.description': '轻松治愈的猫咪涂色闯关游戏。在缤纷关卡中完成绘画挑战，享受悠闲的创作时光。',
+  'game.cat-painter.tags': '益智休闲,闯关,治愈',
 
   // ── Magic Cube ──
   'game.magic-cube.title': '魔方',

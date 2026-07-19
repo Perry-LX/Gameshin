@@ -6,7 +6,7 @@ export const en: Record<string, string> = {
   'home.heroLead': 'Open Gameshin for puzzle, casual, strategy, board, action, level-based, shooter, racing, card, RPG, 3D and logic browser games with no downloads.',
   'home.primaryCta': 'Browse games',
   'home.secondaryCta': 'Strategy games',
-  'home.stat.games': '10 games',
+  'home.stat.games': '11 games',
   'home.stat.gamesLabel': 'built-in and external games',
   'home.stat.download': 'No download',
   'home.stat.downloadLabel': 'play directly in your browser',
@@ -29,6 +29,7 @@ export const en: Record<string, string> = {
   'category.shooting': 'Shooting',
   'category.action': 'Action',
   'category.puzzle': 'Puzzle',
+  'category.cozy': 'Cozy',
 
   // ── Status labels (game cards) ──
   'status.active': 'HOT',
@@ -331,6 +332,9 @@ export const en: Record<string, string> = {
   'game.kitten-quest.title': 'Kitten Quest',
   'game.kitten-quest.description': 'A color-based deduction puzzle. Find hidden kittens on a colorful grid, inspired by Minesweeper!',
   'game.kitten-quest.tags': 'Puzzle,Casual,Logic',
+  'game.cat-painter.title': 'Cat Painter',
+  'game.cat-painter.description': 'A cozy cat-themed painting puzzle. Complete colorful stages and enjoy a relaxed creative challenge.',
+  'game.cat-painter.tags': 'Puzzle,Level-based,Cozy',
 
   // ── Magic Cube ──
   'game.magic-cube.title': 'Magic Cube',

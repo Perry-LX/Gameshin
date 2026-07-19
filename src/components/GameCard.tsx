@@ -110,7 +110,7 @@ export function GameCard({ game }: GameCardProps) {
   return (
     <a
       href={game.url}
-      target={game.id === 'rightplace' || game.id === 'kitten-quest' ? '_self' : '_blank'}
+      target={game.id === 'rightplace' || game.id === 'kitten-quest' || game.id === 'cat-painter' ? '_self' : '_blank'}
       rel="noopener noreferrer"
       className="game-card"
       style={{ '--card-accent': game.color } as React.CSSProperties}

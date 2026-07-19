@@ -16,17 +16,24 @@ A pixel-styled game navigation center — an entry portal integrating multiple m
 
 - **Pixel-style UI** — Press Start 2P pixel font, crisp borders, stepped animations
 - **Steampunk palette** — deep slate background + amber accent, with grid patterns and gradient glows
-- **Category filtering** — filter games by genre: All / Board / Shooting / Action / Puzzle
+- **Category filtering** — filter games by genre: All / Board / Shooting / Action / Puzzle / Cozy
 - **Responsive layout** — desktop, tablet, and mobile support
 - **Game cards** — each card shows icon, title, description, tags, and status (active / beta / coming-soon)
-- **Card sorting** — active games appear first, then beta, then coming-soon (disabled) cards last
-- **Language switching** — draggable homepage settings ball with English, Chinese, and Japanese options
+- **Card sorting** — Cat Painter is featured first, followed by other featured entries; active games appear before beta and coming-soon cards
+- **Language switching** — icon-only draggable settings ball with edge snapping and English, Chinese, and Japanese options
 - **Touch controls** — Snake and Tetris include on-screen D-pad for mobile play
-- **10 playable game entries + 5 coming-soon cards** - Snake, Tetris, Chinese Chess, Chinese Chess Plus, Gomoku, International Chess, Pixel Jumper, Magic Cube, RightPlace, Kitten Quest
+- **11 playable game entries + 5 coming-soon cards** - Cat Painter, Snake, Tetris, Chinese Chess, Chinese Chess Plus, Gomoku, International Chess, Pixel Jumper, Magic Cube, RightPlace, Kitten Quest
 
 ## Playable Games
 
-Internal games run under language-prefixed routes such as `/en/game/snake`, `/zh/game/chess-plus`, and `/ja/game/magic-cube`. RightPlace and Kitten Quest are external Gameshin subdomain games that open in the current browser tab.
+Internal games run under language-prefixed routes such as `/en/game/snake`, `/zh/game/chess-plus`, and `/ja/game/magic-cube`. Cat Painter, RightPlace, and Kitten Quest are external Gameshin subdomain games that open in the current browser tab.
+
+### Cat Painter
+- Cozy cat-themed painting puzzle hosted at `https://catpainter.gameshin.com/`
+- Featured as the first card on the homepage
+- Localized title, description, and tags for English, Chinese, and Japanese
+- Tagged as Puzzle / Level-based / Cozy, with equivalent localized labels
+- Opens in the current browser tab from the game hub
 
 ### Snake Classic
 - Classic snake gameplay
@@ -89,6 +96,7 @@ Internal games run under language-prefixed routes such as `/en/game/snake`, `/zh
 - Find hidden kittens on a colorful N×N grid
 - 300 fixed levels from 6×6 to 13×13
 - Click to flag, double-click to reveal
+- Listed under the Cozy homepage category
 - Opens in the current browser tab from the game hub
 
 ### RightPlace
@@ -128,8 +136,8 @@ The site has been optimized for both traditional search engines (Google, Bing) a
 |--------|------|---------------------|
 | WebSite | Site metadata + search action | Base SEO |
 | Organization | Brand identity | Base SEO |
-| CollectionPage + ItemList | 10 game entries with descriptions | +25% |
-| FAQPage | 5 questions covering site, games, languages | **+40%** |
+| CollectionPage + ItemList | 11 ordered game entries | +25% |
+| FAQPage | 3 questions covering site, installation, and languages | **+40%** |
 | BreadcrumbList | Navigation hierarchy | Base SEO |
 
 ### Dynamic Page Title
@@ -161,10 +169,14 @@ Gameshin/
 │   ├── robots.txt                    # Crawler & AI bot access rules
 │   ├── sitemap.xml                   # Search engine sitemap
 │   ├── humans.txt                    # Site authorship info
-│   ├── magic-cube-favicon.svg/png    # Magic Cube game icon
+│   ├── cat-painter/
+│   │   └── favicon.webp              # Cat Painter card icon
+│   ├── kitten-quest/
+│   │   └── favicon.webp              # Kitten Quest card icon
 │   ├── magic-cube/
-│   │   └── magic-cube-icon.png       # Magic Cube card icon
+│   │   └── magic-cube-icon.webp      # Magic Cube card icon
 │   └── chess/
+│       ├── favicon.webp              # Chinese Chess Plus card icon
 │       ├── audio/                    # Chinese Chess / Chess Plus sound effects
 │       ├── data/                     # Opening book (gambit.js)
 │       └── img/                      # Board, piece, skin assets (stype_1/2/3)
@@ -215,7 +227,8 @@ Gameshin/
 
 The project includes a built-in i18n system supporting **English** (default), **Chinese**, and **Japanese**.
 - **Storage key**: `gameshin:language` (persisted in localStorage)
-- **Toggle location**: draggable homepage-only settings ball, which opens a settings modal with a language dropdown
+- **Toggle location**: icon-only draggable homepage settings ball; it uses a centered gear icon, 4px inner padding, a 52px desktop size, and a 48px mobile size
+- **Edge snapping**: releasing the settings ball within 48px of a viewport edge snaps it to that edge, including corners
 - **Scope**: all static UI text across every page and component
 - **Routes**: each locale uses a real path prefix: `/en/`, `/zh/`, and `/ja/`
 
@@ -234,7 +247,10 @@ Games are organized into genre categories:
 | Board | board | Chinese Chess, Chinese Chess Plus, Gomoku, International Chess, Card Wars |
 | Shooting | shooting | Space Shooter |
 | Action | action | Snake Classic, Pixel Jumper, Dungeon Quest, Retro Racer |
-| Puzzle | puzzle | Tetris Battle, Match Puzzle, Magic Cube, RightPlace, Kitten Quest |
+| Puzzle | puzzle | Tetris Battle, Match Puzzle, Magic Cube, RightPlace |
+| Cozy | cozy | Cat Painter, Kitten Quest |
+
+The Cozy category label is localized as `Cozy` in English, `治愈` in Chinese, and `癒やし` in Japanese.
 
 Games marked as `coming-soon` are shown as disabled placeholder cards, sorted after all active and beta games. Disabled cards display a dimmed icon + subtle diagonal pattern overlay while keeping text fully readable.
 
@@ -313,7 +329,7 @@ Edit `src/data/games.ts` and add an entry:
   icon: '🎮',
   status: 'active',           // active | beta | coming-soon
   color: '#ff6b1a',
-  category: 'action',         // board | shooting | action | puzzle
+  category: 'action',         // board | shooting | action | puzzle | cozy
 }
 ```
 

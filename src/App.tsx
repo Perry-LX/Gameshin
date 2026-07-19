@@ -28,11 +28,12 @@ function HomePage() {
 
     // Featured games to show first (in this order)
     const featured: Record<string, number> = {
-      'international-chess': 1,
-      'kitten-quest': 2,
-      'chess-plus': 3,
-      'rightplace': 4,
-      'magic-cube': 5,
+      'cat-painter': 1,
+      'international-chess': 2,
+      'kitten-quest': 3,
+      'chess-plus': 4,
+      'rightplace': 5,
+      'magic-cube': 6,
     };
 
     return [...filtered].sort((a, b) => {

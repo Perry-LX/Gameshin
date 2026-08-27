@@ -1,0 +1,168 @@
+/* Local-game chrome only. It intentionally does not target external Gameshin subdomain games. */
+:is(.snake-page, .tetris-page, .chess-page, .chess-plus-page, .gomoku-page, .intl-chess-page, .magic-cube-page, .pixel-jumper-page) {
+  --local-accent: #75c7ff;
+  --local-accent-soft: rgba(117, 199, 255, 0.16);
+  --local-surface: rgba(10, 23, 42, 0.84);
+  --local-surface-strong: rgba(7, 16, 30, 0.96);
+  --local-border: rgba(151, 202, 240, 0.22);
+  --local-text: #f3f7ff;
+  --local-muted: #b8c7da;
+  min-height: 100dvh;
+  position: relative;
+  isolation: isolate;
+  box-sizing: border-box;
+  width: min(100%, 1480px);
+  margin: 0 auto;
+  padding: clamp(20px, 3vw, 44px) clamp(16px, 4vw, 56px) clamp(32px, 5vw, 72px) !important;
+  color: var(--local-text);
+  background: transparent !important;
+}
+
+/* A local game owns one full-viewport backdrop. Keeping it on body prevents the old
+   legacy grid from peeking around a constrained game layout as a second background. */
+body:has(:is(.snake-page, .tetris-page, .chess-page, .chess-plus-page, .gomoku-page, .intl-chess-page, .magic-cube-page, .pixel-jumper-page)) {
+  --local-page-accent: #75c7ff;
+  background:
+    radial-gradient(circle at 88% 4%, color-mix(in srgb, var(--local-page-accent) 18%, transparent), transparent 26rem),
+    radial-gradient(circle at 12% 100%, rgba(26, 74, 113, 0.18), transparent 32rem),
+    linear-gradient(145deg, #06111f 0%, #09192b 54%, #07121f 100%) !important;
+  background-attachment: fixed !important;
+}
+
+body:has(.snake-page) { --local-page-accent: #70d8a2; }
+body:has(.tetris-page) { --local-page-accent: #f4b768; }
+body:has(:is(.chess-page, .chess-plus-page, .gomoku-page)) { --local-page-accent: #e8bc79; }
+body:has(.intl-chess-page) { --local-page-accent: #8aa8ff; }
+body:has(.magic-cube-page) { --local-page-accent: #68d8bd; }
+body:has(.pixel-jumper-page) { --local-page-accent: #78c8ff; }
+
+.snake-page { --local-accent: #70d8a2; --local-accent-soft: rgba(112, 216, 162, 0.17); }
+.tetris-page { --local-accent: #f4b768; --local-accent-soft: rgba(244, 183, 104, 0.17); }
+.chess-page, .chess-plus-page, .gomoku-page { --local-accent: #e8bc79; --local-accent-soft: rgba(232, 188, 121, 0.17); }
+.intl-chess-page { --local-accent: #8aa8ff; --local-accent-soft: rgba(138, 168, 255, 0.18); }
+.magic-cube-page { --local-accent: #68d8bd; --local-accent-soft: rgba(104, 216, 189, 0.18); }
+.pixel-jumper-page { --local-accent: #78c8ff; --local-accent-soft: rgba(120, 200, 255, 0.18); }
+
+:is(.snake-page, .tetris-page, .chess-page, .chess-plus-page, .gomoku-page, .intl-chess-page, .magic-cube-page, .pixel-jumper-page) :is(h1, h2, h3) {
+  color: var(--local-text) !important;
+  font-family: 'Outfit', 'Noto Sans SC', sans-serif !important;
+  font-weight: 720 !important;
+  letter-spacing: -0.025em !important;
+  text-shadow: none !important;
+}
+
+/* The game canvas keeps its own art direction. All surrounding controls use one clear UI typeface. */
+:is(.snake-page, .tetris-page, .chess-page, .chess-plus-page, .gomoku-page, .intl-chess-page, .magic-cube-page, .pixel-jumper-page) :is(p, span, label, li, option) {
+  font-family: 'Outfit', 'Noto Sans SC', sans-serif !important;
+}
+
+:is(.snake-page, .tetris-page, .chess-page, .chess-plus-page, .gomoku-page, .intl-chess-page, .magic-cube-page, .pixel-jumper-page) :is(button:not(.tile), select) {
+  min-height: 44px;
+  border: 1px solid var(--local-border) !important;
+  border-radius: 12px !important;
+  color: var(--local-text) !important;
+  background: rgba(9, 23, 41, 0.82) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06) !important;
+  font-family: 'Outfit', 'Noto Sans SC', sans-serif !important;
+  font-weight: 650 !important;
+  letter-spacing: 0.01em !important;
+  line-height: 1.25 !important;
+  transition: transform 160ms ease, border-color 160ms ease, background-color 160ms ease, box-shadow 160ms ease !important;
+}
+
+:is(.snake-page, .tetris-page, .chess-page, .chess-plus-page, .gomoku-page, .intl-chess-page, .magic-cube-page, .pixel-jumper-page) :is(button:not(.tile), select):hover:not(:disabled) {
+  border-color: color-mix(in srgb, var(--local-accent) 74%, white) !important;
+  background: color-mix(in srgb, var(--local-accent) 13%, #091729) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 10px 30px rgba(1, 8, 18, 0.28) !important;
+  transform: translateY(-1px);
+}
+
+:is(.snake-page, .tetris-page, .chess-page, .chess-plus-page, .gomoku-page, .intl-chess-page, .magic-cube-page, .pixel-jumper-page) button:not(.tile):active:not(:disabled) {
+  transform: translateY(1px) scale(0.985);
+}
+
+:is(.snake-page, .tetris-page, .chess-page, .chess-plus-page, .gomoku-page, .intl-chess-page, .magic-cube-page, .pixel-jumper-page) :is(button:not(.tile), select):focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--local-accent) 76%, white);
+  outline-offset: 3px;
+}
+
+:is(.snake-page, .tetris-page, .chess-page, .chess-plus-page, .gomoku-page, .intl-chess-page, .magic-cube-page, .pixel-jumper-page) :is([class*="panel"], [class*="sidebar"], [class*="mission"], [class*="top-bar"], [class*="top-row"], [class*="hero"]) {
+  border-color: var(--local-border) !important;
+  background: linear-gradient(135deg, rgba(20, 40, 65, 0.72), var(--local-surface)) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 18px 42px rgba(1, 8, 18, 0.16) !important;
+}
+
+:is(.snake-page, .tetris-page, .chess-page, .chess-plus-page, .gomoku-page, .intl-chess-page, .magic-cube-page, .pixel-jumper-page) :is([class*="canvas-wrap"], [class*="canvas-frame"], [class*="canvas-stage"], [class*="frame"], [class*="board-panel"], [class*="cube-wrap"]) {
+  border-color: color-mix(in srgb, var(--local-accent) 42%, #5e7a98) !important;
+  border-radius: 18px !important;
+  background: #071421 !important;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.035), 0 22px 54px rgba(1, 7, 17, 0.32) !important;
+}
+
+:is(.snake-page, .tetris-page, .chess-page, .chess-plus-page, .gomoku-page, .intl-chess-page, .magic-cube-page, .pixel-jumper-page) :is([class*="overlay"], [class*="modal-backdrop"]) {
+  background: rgba(3, 12, 24, 0.84) !important;
+  backdrop-filter: blur(12px) saturate(1.1);
+}
+
+:is(.snake-page, .tetris-page, .chess-page, .chess-plus-page, .gomoku-page, .intl-chess-page, .magic-cube-page, .pixel-jumper-page) :is([class*="status"], [class*="hint"], [class*="label"], [class*="score"], [class*="stat"], [class*="badge"]) {
+  color: var(--local-muted) !important;
+  font-family: 'Outfit', 'Noto Sans SC', sans-serif !important;
+  font-size: max(0.72rem, 0.72em) !important;
+  letter-spacing: 0.01em !important;
+}
+
+.chess-plus-page :is(.chess-plus-board-card, .chess-plus-board-header, .chess-plus-panel, .chess-plus-moves-table, .chess-plus-empty-state) {
+  border-color: var(--local-border) !important;
+  background: linear-gradient(145deg, rgba(21, 41, 65, 0.94), rgba(8, 21, 38, 0.98)) !important;
+}
+
+.chess-plus-page :is(.chess-plus-board-score, .chess-plus-board-label, .chess-plus-empty-state, .chess-plus-moves-cell, .chess-plus-moves-round) {
+  color: var(--local-text) !important;
+  text-shadow: none !important;
+}
+
+.chess-plus-page .chess-plus-badge {
+  border-color: color-mix(in srgb, var(--local-accent) 38%, transparent) !important;
+  background: rgba(10, 28, 48, 0.96) !important;
+  color: #dce9fb !important;
+}
+
+.chess-plus-page .chess-plus-stats-grid article {
+  border-color: var(--local-border) !important;
+  background: linear-gradient(145deg, rgba(20, 42, 67, 0.98), rgba(8, 21, 38, 0.98)) !important;
+}
+
+.chess-plus-page .chess-plus-stat-label {
+  color: var(--local-muted) !important;
+}
+
+.chess-plus-page .chess-plus-stat-value {
+  color: var(--local-text) !important;
+}
+
+:is(.snake-page, .tetris-page, .chess-page, .chess-plus-page, .gomoku-page, .intl-chess-page, .magic-cube-page, .pixel-jumper-page) :is([class*="primary"], [class*="start"], [class*="restart"], [class*="action-btn"]) {
+  background: linear-gradient(135deg, color-mix(in srgb, var(--local-accent) 84%, white), var(--local-accent)) !important;
+  border-color: color-mix(in srgb, var(--local-accent) 80%, white) !important;
+  color: #06111f !important;
+  box-shadow: 0 12px 28px color-mix(in srgb, var(--local-accent) 18%, transparent) !important;
+}
+
+:is(.snake-page, .tetris-page, .chess-page, .chess-plus-page, .gomoku-page, .intl-chess-page, .magic-cube-page, .pixel-jumper-page) :is(canvas, [class*="canvas"], [class*="board"]) {
+  max-width: 100%;
+}
+
+@media (max-width: 760px) {
+  :is(.snake-page, .tetris-page, .chess-page, .chess-plus-page, .gomoku-page, .intl-chess-page, .magic-cube-page, .pixel-jumper-page) {
+    padding: 16px 12px 32px !important;
+  }
+
+  :is(.snake-page, .tetris-page, .chess-page, .chess-plus-page, .gomoku-page, .intl-chess-page, .magic-cube-page, .pixel-jumper-page) :is(button:not(.tile), select) {
+    min-height: 46px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :is(.snake-page, .tetris-page, .chess-page, .chess-plus-page, .gomoku-page, .intl-chess-page, .magic-cube-page, .pixel-jumper-page) :is(button, select) {
+    transition: none !important;
+  }
+}

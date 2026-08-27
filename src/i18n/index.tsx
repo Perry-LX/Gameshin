@@ -119,7 +119,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   );
 
   return (
-    <LanguageContext.Provider value={{ lang, setLang, t, languageOptions: LANGUAGE_OPTIONS, pathFor, homePath: `/${lang}/` }}>
+    <LanguageContext.Provider value={{ lang, setLang, t, languageOptions: LANGUAGE_OPTIONS, pathFor, homePath: `/${lang}/#game-collection` }}>
       {children}
     </LanguageContext.Provider>
   );

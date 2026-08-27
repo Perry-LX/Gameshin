@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../i18n';
+import { useCatalogReturn } from '../hooks/useCatalogReturn';
+import { trackEvent } from '../analytics';
 import './SnakeGame.css';
 
 const GRID_SIZE = 20;
@@ -108,12 +109,13 @@ export function SnakeGame() {
   const { t, homePath } = useLanguage();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const gameRef = useRef<GameData>(createGameData());
-  const navigate = useNavigate();
+  const { isExiting, returnToCatalog } = useCatalogReturn();
 
   const [score, setScore] = useState(0);
   const [highScore, setHighScore] = useState(() => parseInt(localStorage.getItem('snake-high-score') || '0', 10));
   const [gameState, setGameState] = useState<'idle' | 'playing' | 'over'>('idle');
   const [cellSize, setCellSize] = useState(BASE_CELL_SIZE);
+  const roundStartedAtRef = useRef<number | null>(null);
   const cellSizeRef = useRef(cellSize);
   cellSizeRef.current = cellSize;
 
@@ -187,6 +189,15 @@ export function SnakeGame() {
   const endGame = useCallback(() => {
     const g = gameRef.current;
     g.running = false;
+    if (roundStartedAtRef.current !== null) {
+      void trackEvent('game_round_ended', {
+        game_id: 'snake',
+        outcome: 'game_over',
+        score: g.score,
+        duration_seconds: Math.max(0, Math.round((Date.now() - roundStartedAtRef.current) / 1000)),
+      });
+      roundStartedAtRef.current = null;
+    }
     setGameState('over');
     setScore(g.score);
     if (g.score > parseInt(localStorage.getItem('snake-high-score') || '0', 10)) {
@@ -235,6 +246,10 @@ export function SnakeGame() {
 
   const startGame = useCallback(() => {
     const g = gameRef.current;
+    const isReplay = gameState === 'over';
+    if (isReplay) void trackEvent('game_restarted', { game_id: 'snake', trigger: 'game_over' });
+    void trackEvent('game_round_started', { game_id: 'snake', mode: 'classic', is_replay: isReplay });
+    roundStartedAtRef.current = Date.now();
     const snake = getInitialSnake();
     g.snake = snake;
     g.food = randomFood(snake);
@@ -246,7 +261,7 @@ export function SnakeGame() {
     setScore(0);
     setGameState('playing');
     setTimeout(() => gameLoop(), g.speed);
-  }, [gameLoop]);
+  }, [gameLoop, gameState]);
 
   useEffect(() => { draw(); }, [draw]);
 
@@ -283,13 +298,13 @@ export function SnakeGame() {
   const zoomReset = () => setCellSize(BASE_CELL_SIZE);
 
   return (
-    <div className="snake-page">
+    <div className={`snake-page${isExiting ? ' game-route-exiting' : ''}`}>
       {/* Title - at the very top */}
       <h1 className="snake-title">{t('snake.title')}</h1>
 
       {/* Top row: back button + scores on same line */}
       <div className="snake-top-row">
-        <button className="snake-back-btn" onClick={() => navigate(homePath)}>{t('snake.back')}</button>
+        <button className="snake-back-btn" onClick={() => returnToCatalog(homePath)}>{t('snake.back')}</button>
         <div className="snake-scores">
           <span className="snake-score">{t('snake.scoreLabel')}: {score}</span>
           <span className="snake-highscore">{t('snake.bestLabel')}: {highScore}</span>
@@ -332,19 +347,12 @@ export function SnakeGame() {
         )}
       </div>
 
-      {/* Touch D-Pad */}
-      <div className="snake-dpad">
-        <div className="snake-dpad-row">
-          <button className="snake-dpad-btn" onPointerDown={() => handleDirection('UP')} aria-label={t('control.up')}>▲</button>
-        </div>
-        <div className="snake-dpad-row">
-          <button className="snake-dpad-btn" onPointerDown={() => handleDirection('LEFT')} aria-label={t('control.left')}>◀</button>
-          <button className="snake-dpad-btn snake-dpad-blank" disabled />
-          <button className="snake-dpad-btn" onPointerDown={() => handleDirection('RIGHT')} aria-label={t('control.right')}>▶</button>
-        </div>
-        <div className="snake-dpad-row">
-          <button className="snake-dpad-btn" onPointerDown={() => handleDirection('DOWN')} aria-label={t('control.down')}>▼</button>
-        </div>
+      {/* Touch controls: one compact row keeps the game usable without pushing content below the viewport. */}
+      <div className="snake-dpad" role="group" aria-label={t('snake.hint')}>
+        <button type="button" className="snake-dpad-btn" onPointerDown={() => handleDirection('LEFT')} aria-label={t('control.left')}>◀</button>
+        <button type="button" className="snake-dpad-btn" onPointerDown={() => handleDirection('UP')} aria-label={t('control.up')}>▲</button>
+        <button type="button" className="snake-dpad-btn" onPointerDown={() => handleDirection('DOWN')} aria-label={t('control.down')}>▼</button>
+        <button type="button" className="snake-dpad-btn" onPointerDown={() => handleDirection('RIGHT')} aria-label={t('control.right')}>▶</button>
       </div>
     </div>
   );

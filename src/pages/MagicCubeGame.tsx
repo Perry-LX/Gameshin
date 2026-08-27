@@ -1,12 +1,12 @@
 import { useEffect, useRef, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../i18n';
+import { useCatalogReturn } from '../hooks/useCatalogReturn';
 import { ThreeRubiksCube } from '../games/magic-cube/cube';
 import './MagicCubeGame.css';
 
 export function MagicCubeGame() {
   const { t, homePath } = useLanguage();
-  const navigate = useNavigate();
+  const { isExiting, returnToCatalog } = useCatalogReturn();
   const wrapRef = useRef<HTMLDivElement>(null);
   const controlsRef = useRef<HTMLDivElement>(null);
   const statusRef = useRef<HTMLDivElement>(null);
@@ -65,8 +65,8 @@ export function MagicCubeGame() {
   const faces = ['U', "U'", 'D', "D'", 'R', "R'", 'L', "L'", 'F', "F'", 'B', "B'"];
 
   return (
-    <div className="magic-cube-page">
-      <button type="button" className="magic-cube-back-btn" onClick={() => navigate(homePath)}>
+    <div className={`magic-cube-page${isExiting ? ' game-route-exiting' : ''}`}>
+      <button type="button" className="magic-cube-back-btn" onClick={() => returnToCatalog(homePath)}>
         ◂ {t('magicCube.back')}
       </button>
 

@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { getCollisionQueryBounds, getVisibleChunkBounds } from '../games/pixel-jumper/chunks';
 import { useLanguage } from '../i18n';
+import { useCatalogReturn } from '../hooks/useCatalogReturn';
 import {
   collectCollectibles,
   isPlayerHitByBullet,
@@ -46,7 +46,7 @@ export function PixelJumperGame() {
   const frameRef = useRef<number | null>(null);
   const lastFrameRef = useRef<number | null>(null);
   const frameWrapRef = useRef<HTMLDivElement>(null);
-  const navigate = useNavigate();
+  const { isExiting, returnToCatalog } = useCatalogReturn();
   const runRef = useRef(createRunData(1100, 620));
   const inputRef = useRef<InputState>({ left: false, right: false, jumpQueued: false, jumpHeld: false });
   const [bestTime, setBestTime] = useState(() => parseInt(localStorage.getItem('pixel-jumper-best-time') || '0', 10));
@@ -328,9 +328,9 @@ export function PixelJumperGame() {
   }, [goToNextLevel, hud.currentLevel, hud.elapsedMs, hud.totalLevels, overlayState, retryLevel, startRun, t]);
 
   return (
-    <div className="pixel-jumper-page">
+    <div className={`pixel-jumper-page${isExiting ? ' game-route-exiting' : ''}`}>
       <div className="pixel-jumper-top-bar">
-        <button className="pixel-jumper-back-btn" onClick={() => navigate(homePath)}>{t('pixelJumper.back')}</button>
+        <button className="pixel-jumper-back-btn" onClick={() => returnToCatalog(homePath)}>{t('pixelJumper.back')}</button>
         <div className="pixel-jumper-title-wrap">
           <h1 className="pixel-jumper-title">{t('pixelJumper.title')}</h1>
           <span className="pixel-jumper-stage-name">{hud.levelName}</span>

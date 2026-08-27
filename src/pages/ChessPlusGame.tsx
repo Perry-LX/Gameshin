@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../i18n';
+import { useCatalogReturn } from '../hooks/useCatalogReturn';
 import { createChessEngine } from '../games/chess/engine';
 import { PRESETS } from '../games/chess/presets';
 import type { ChessStatus, Difficulty, SkinType } from '../games/chess/types';
@@ -11,7 +11,7 @@ const assetBase = ((typeof import.meta !== 'undefined' && import.meta.env && imp
 
 export function ChessPlusGame() {
   const { t, homePath } = useLanguage();
-  const navigate = useNavigate();
+  const { isExiting, returnToCatalog } = useCatalogReturn();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const clickAudioRef = useRef<HTMLAudioElement>(null);
   const selectAudioRef = useRef<HTMLAudioElement>(null);
@@ -148,7 +148,7 @@ export function ChessPlusGame() {
   };
 
   return (
-    <div className="chess-plus-page pixel-container">
+    <div className={`chess-plus-page pixel-container${isExiting ? ' game-route-exiting' : ''}`}>
       <audio ref={clickAudioRef} src={`${assetBase}/chess/audio/click.wav`} preload="auto" />
       <audio ref={selectAudioRef} src={`${assetBase}/chess/audio/select.wav`} preload="auto" />
 
@@ -158,7 +158,7 @@ export function ChessPlusGame() {
       </h1>
 
       <header className="chess-plus-hero">
-        <button type="button" className="chess-plus-back-btn" onClick={() => navigate(homePath)}>
+        <button type="button" className="chess-plus-back-btn" onClick={() => returnToCatalog(homePath)}>
           {t('chessPlus.home')}
         </button>
         <div className="chess-plus-hero-copy">

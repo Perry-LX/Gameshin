@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../i18n';
+import { useCatalogReturn } from '../hooks/useCatalogReturn';
 import Board from '../games/gobang/Board';
 import Control from '../games/gobang/Control';
 import { getStatusText } from '../games/gobang/engine';
@@ -14,7 +14,7 @@ const BOARD_SIZE_STEP = 40;
 
 function GomokuScreen() {
   const { t, homePath } = useLanguage();
-  const navigate = useNavigate();
+  const { isExiting, returnToCatalog } = useCatalogReturn();
   const { state } = useGobang();
   const [boardSize, setBoardSize] = useState(DEFAULT_BOARD_SIZE);
 
@@ -31,11 +31,11 @@ function GomokuScreen() {
   };
 
   return (
-    <div className="gomoku-page pixel-container">
+    <div className={`gomoku-page pixel-container${isExiting ? ' game-route-exiting' : ''}`}>
       <h1 className="gomoku-title">{t('gomoku.title')}</h1>
 
       <div className="gomoku-top-bar">
-        <button type="button" className="gomoku-back-btn" onClick={() => navigate(homePath)}>
+        <button type="button" className="gomoku-back-btn" onClick={() => returnToCatalog(homePath)}>
           {t('gomoku.home')}
         </button>
         <div className="gomoku-status-chip">{state.status === 'gaming' ? t('gomoku.playing') : t('gomoku.ready')}</div>

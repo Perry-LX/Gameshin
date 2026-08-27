@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../i18n';
+import { useCatalogReturn } from '../hooks/useCatalogReturn';
 import { createChessEngine } from '../games/chess/engine';
 import { PRESETS } from '../games/chess/presets';
 import type { ChessStatus, Difficulty } from '../games/chess/types';
@@ -10,7 +10,7 @@ const assetBase = ((typeof import.meta !== 'undefined' && import.meta.env && imp
 
 export function ChessGame() {
   const { t, homePath } = useLanguage();
-  const navigate = useNavigate();
+  const { isExiting, returnToCatalog } = useCatalogReturn();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const clickAudioRef = useRef<HTMLAudioElement>(null);
   const selectAudioRef = useRef<HTMLAudioElement>(null);
@@ -82,14 +82,14 @@ export function ChessGame() {
   }, [status.winner, t]);
 
   return (
-    <div className="chess-page pixel-container">
+    <div className={`chess-page pixel-container${isExiting ? ' game-route-exiting' : ''}`}>
       <audio ref={clickAudioRef} src={`${assetBase}/chess/audio/click.wav`} preload="auto" />
       <audio ref={selectAudioRef} src={`${assetBase}/chess/audio/select.wav`} preload="auto" />
 
       <h1 className="chess-title">{t('chess.title')}</h1>
 
       <div className="chess-top-bar">
-        <button type="button" className="chess-back-btn" onClick={() => navigate(homePath)}>
+        <button type="button" className="chess-back-btn" onClick={() => returnToCatalog(homePath)}>
           {t('chess.home')}
         </button>
         <div className="chess-status-chip">{status.thinking ? t('chess.thinking') : t('chess.ready')}</div>

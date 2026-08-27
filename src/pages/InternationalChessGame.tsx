@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../i18n';
+import { useCatalogReturn } from '../hooks/useCatalogReturn';
 import { initChessGame } from '../games/international-chess/game';
 import './InternationalChessGame.css';
 
@@ -14,7 +14,7 @@ type InternationalChessResult = {
 
 export function InternationalChessGame() {
   const { t, homePath } = useLanguage();
-  const navigate = useNavigate();
+  const { isExiting, returnToCatalog } = useCatalogReturn();
   const viewRef = useRef<HTMLDivElement>(null);
   const boardRef = useRef<HTMLDivElement>(null);
   const whiteRandomRef = useRef<HTMLInputElement>(null);
@@ -89,11 +89,11 @@ export function InternationalChessGame() {
   };
 
   return (
-    <div className="intl-chess-page pixel-container">
+    <div className={`intl-chess-page pixel-container${isExiting ? ' game-route-exiting' : ''}`}>
       <h1 className="intl-chess-title">{t('intlChess.title')}</h1>
 
       <div className="intl-chess-top-bar">
-        <button type="button" className="intl-chess-back-btn" onClick={() => navigate(homePath)}>
+        <button type="button" className="intl-chess-back-btn" onClick={() => returnToCatalog(homePath)}>
           {t('intlChess.home')}
         </button>
         <div className="intl-chess-status-chip">{t('intlChess.chip')}</div>

@@ -1,7 +1,7 @@
 export interface GameItem {
   id: string;
   url: string;
-  icon: string; // emoji or pixel art text
+  icon: string; // legacy fallback label; current cards render SVG or image assets
   iconImage?: string; // image path for custom icons (overrides icon)
   iconVariant?: 'default' | 'seal';
   status: 'active' | 'coming-soon' | 'beta';

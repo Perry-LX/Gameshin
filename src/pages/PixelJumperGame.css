@@ -7,7 +7,8 @@
 }
 
 .pixel-jumper-top-bar {
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
   align-items: center;
   gap: 16px;
   width: 100%;
@@ -26,6 +27,7 @@
   cursor: pointer;
   transition: all 0.15s steps(3);
   white-space: nowrap;
+  justify-self: start;
 }
 
 .pixel-jumper-back-btn:hover {
@@ -39,7 +41,8 @@
   flex-direction: column;
   align-items: center;
   gap: 6px;
-  flex: 1;
+  grid-column: 2;
+  min-width: 0;
 }
 
 .pixel-jumper-title {
@@ -58,10 +61,13 @@
 
 .pixel-jumper-stats {
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 4px;
-  min-width: 220px;
+  grid-column: 3;
+  justify-self: end;
+  justify-content: flex-end;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  min-width: 0;
 }
 
 .pixel-jumper-mission-panel {
@@ -124,6 +130,11 @@
 .pixel-jumper-best {
   font-family: 'Press Start 2P', monospace;
   font-size: 0.62rem;
+  padding: 8px 10px;
+  border: 1px solid rgba(120, 200, 255, 0.24);
+  border-radius: 8px;
+  background: rgba(7, 20, 36, 0.56);
+  white-space: nowrap;
 }
 
 .pixel-jumper-stat {
@@ -252,18 +263,7 @@
 
 @media (max-width: 900px) {
   .pixel-jumper-top-bar {
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-
-  .pixel-jumper-title-wrap {
-    order: -1;
-    width: 100%;
-  }
-
-  .pixel-jumper-stats {
-    align-items: center;
-    min-width: auto;
+    gap: 10px;
   }
 
   .pixel-jumper-task-item {
@@ -279,6 +279,18 @@
 
   .pixel-jumper-title {
     font-size: 0.8rem;
+  }
+
+  .pixel-jumper-top-bar {
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    row-gap: 10px;
+  }
+
+  .pixel-jumper-stats {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    justify-self: center;
+    justify-content: center;
   }
 
   .pixel-jumper-overlay-title {

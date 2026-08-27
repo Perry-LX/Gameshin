@@ -163,9 +163,11 @@ class Utils {
       board.appendChild(row)
       for (let j = 0; j < 8; j++) {
         const tile = document.createElement("button")
+        tile.type = "button"
         tile.className = "tile"
         const r = Utils.intToRow(i)
         const c = Utils.intToCol(j)
+        tile.setAttribute("aria-label", `Chess square ${c.toLowerCase()}${r}`)
         tile.addEventListener("click", () => handler({ row: r, col: c }))
         row.appendChild(tile)
         tiles[r][c] = tile

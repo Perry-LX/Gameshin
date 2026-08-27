@@ -72,6 +72,8 @@
   grid-template-columns: minmax(0, 1fr) 340px;
   gap: 24px;
   align-items: start;
+  width: min(100%, 1180px);
+  margin-inline: auto;
 }
 
 .gomoku-board-panel,

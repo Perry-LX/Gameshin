@@ -71,6 +71,8 @@
   grid-template-columns: minmax(0, 1fr) 340px;
   gap: 24px;
   align-items: start;
+  width: min(100%, 1180px);
+  margin-inline: auto;
 }
 
 .intl-chess-board-panel,
@@ -375,6 +377,12 @@
   width: auto;
 }
 
+.intl-chess-page .board .row .tile:focus-visible {
+  z-index: 120;
+  outline: 3px solid var(--color-success);
+  outline-offset: -3px;
+}
+
 /* Board colors */
 .intl-chess-page .perspective-black .board .row:nth-child(even) .tile:nth-child(odd),
 .intl-chess-page .perspective-black .board .row:nth-child(odd) .tile:nth-child(even),
@@ -491,8 +499,13 @@
 }
 
 .intl-chess-page svg.black {
-  --fill: var(--color-black);
-  --stroke: rgba(231, 239, 255, 0.5);
+  --fill: #5a759b;
+  --stroke: #d8e8ff;
+  filter: drop-shadow(0 1px 2px rgba(3, 8, 15, 0.78));
+}
+
+.intl-chess-page svg.black text {
+  stroke-width: 12;
 }
 
 .intl-chess-page .pieces {
@@ -610,7 +623,7 @@
 
 @media (max-width: 720px) {
   .intl-chess-page {
-    --diameter-board: min(72vw, 72vw);
+    --diameter-board: min(76vw, 400px);
     padding-top: 12px;
   }
 
@@ -624,7 +637,8 @@
   }
 
   .intl-chess-stage-card {
-    padding: 16px;
+    padding: 0;
+    overflow: hidden;
   }
 
   .intl-chess-overlay {
@@ -655,6 +669,14 @@
   .intl-chess-status-chip {
     font-size: 0.6rem;
     padding: 10px 14px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .intl-chess-page .pieces .piece,
+  .intl-chess-page .pieces .piece svg {
+    animation: none !important;
+    transition: none !important;
   }
 }
 

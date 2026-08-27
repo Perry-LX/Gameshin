@@ -2,6 +2,14 @@ import type { GameItem } from '../types';
 
 export const games: GameItem[] = [
   {
+    id: 'smack-the-sprout',
+    url: 'https://peiron.itch.io/smack-the-sprout',
+    icon: 'sprout',
+    status: 'active',
+    color: '#29c7bd',
+    category: 'action',
+  },
+  {
     id: 'cat-painter',
     url: 'https://catpainter.gameshin.com/',
     icon: '🐱',
@@ -137,10 +145,10 @@ export const games: GameItem[] = [
 ];
 
 export const categories = [
-  { id: 'all', icon: '⭐' },
-  { id: 'board', icon: '♜' },
-  { id: 'shooting', icon: '🎯' },
-  { id: 'action', icon: '⚡' },
-  { id: 'puzzle', icon: '🧩' },
-  { id: 'cozy', icon: '☕' },
+  { id: 'all' },
+  { id: 'favorites' },
+  { id: 'board' },
+  { id: 'action' },
+  { id: 'puzzle' },
+  { id: 'cozy' },
 ];

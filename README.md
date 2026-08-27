@@ -1,28 +1,29 @@
-# GAMESHIN GAME HUB
+# GAMESHIN — VIBE CODING GAME MIX
 
-A pixel-styled game navigation center — an entry portal integrating multiple mini-games.
+A growing Vibe coding game mix that brings many kinds of browser games together. Gameshin is not a pixel-game-only site: it includes board, puzzle, cozy, action platformer, 3D, and other experimental browser experiences that open instantly with no download.
 
 ## Tech Stack
 
 - **React 19** + **TypeScript 6**
 - **Vite 8** build tool
 - **React Router v7** client-side routing (BrowserRouter with language-prefixed routes)
-- Pure CSS pixel-art theme design
+- Pure CSS responsive design system with an immersive portal hero, accessible dark surfaces, and per-game visual identity
 - Canvas game rendering
 - **Three.js** — WebGL 3D rendering (Magic Cube)
 - **i18n** — built-in internationalization (English / Chinese / Japanese)
 
 ## Features
 
-- **Pixel-style UI** — Press Start 2P pixel font, crisp borders, stepped animations
-- **Steampunk palette** — deep slate background + amber accent, with grid patterns and gradient glows
-- **Category filtering** — filter games by genre: All / Board / Shooting / Action / Puzzle / Cozy
+- **Vibe coding game mix UI** — an original fantasy-portal hero leads directly to a clear, filterable game collection; individual games keep their own visual identity
+- **Transparent brand assets** — the homepage masthead uses `public/brand/gameshin-mark.webp` with a transparent background; browser tabs use the multi-size `public/favicon.ico`
+- **Accessible dark palette** — high-contrast slate surfaces, orange CTA, cyan focus rings and reduced-motion support
+- **Category filtering** — filter playable games by genre: All / Board / Action / Puzzle / Cozy
 - **Responsive layout** — desktop, tablet, and mobile support
-- **Game cards** — each card shows icon, title, description, tags, and status (active / beta / coming-soon)
-- **Card sorting** — Cat Painter is featured first, followed by other featured entries; active games appear before beta and coming-soon cards
-- **Language switching** — icon-only draggable settings ball with edge snapping and English, Chinese, and Japanese options
+- **Playable-first game cards** — each card shows an SVG/image icon, title, description, tags, status and a clear play action; unavailable placeholders stay out of the main catalog
+- **Card sorting** — Cat Painter is featured first, followed by the rest of the playable collection
+- **Language switching** — accessible draggable settings control with keyboard movement, focus management and English, Chinese, and Japanese options
 - **Touch controls** — Snake and Tetris include on-screen D-pad for mobile play
-- **11 playable game entries + 5 coming-soon cards** - Cat Painter, Snake, Tetris, Chinese Chess, Chinese Chess Plus, Gomoku, International Chess, Pixel Jumper, Magic Cube, RightPlace, Kitten Quest
+- **11 playable game entries** - Cat Painter, Snake, Tetris, Chinese Chess, Chinese Chess Plus, Gomoku, International Chess, Pixel Jumper, Magic Cube, RightPlace, Kitten Quest
 
 ## Playable Games
 
@@ -116,6 +117,8 @@ The site has been optimized for both traditional search engines (Google, Bing) a
 |------|---------|
 | `public/robots.txt` | Allows all major crawlers and AI bots access |
 | `public/sitemap.xml` | Indexes all game pages and subdomain games |
+| `public/favicon.ico` | Transparent multi-size browser-tab icon |
+| `public/brand/gameshin-mark.webp` | Transparent WebP masthead brand mark |
 | `public/og-image.png` | 1200×630 Open Graph image for social sharing |
 | `public/humans.txt` | Site authorship and tech-stack information |
 | `wrangler.jsonc` | Cloudflare Workers static asset config with SPA fallback |
@@ -164,7 +167,10 @@ Gameshin/
 ├── docs/
 │   └── international-chess-rules.md  # FIDE chess rules reference
 ├── public/
-│   ├── favicon.svg / favicon.png     # Site icons
+│   ├── favicon.ico                   # Transparent browser-tab icon
+│   ├── favicon.svg / favicon.png     # Transparent fallback site icons
+│   ├── brand/
+│   │   └── gameshin-mark.webp        # Transparent homepage masthead mark
 │   ├── og-image.png                  # Open Graph share image
 │   ├── robots.txt                    # Crawler & AI bot access rules
 │   ├── sitemap.xml                   # Search engine sitemap
@@ -267,7 +273,8 @@ Output goes to `dist/`:
 ```
 dist/
 ├── index.html
-├── favicon.svg / favicon.png
+├── favicon.ico
+├── brand/gameshin-mark.webp
 ├── og-image.png
 ├── robots.txt
 ├── sitemap.xml

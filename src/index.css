@@ -396,14 +396,14 @@ a {
 }
 
 .settings-ball-icon {
-  display: inline-grid;
-  place-items: center;
-  width: 1em;
-  height: 1em;
-  font-family: 'Segoe UI Symbol', 'Noto Sans Symbols', sans-serif;
-  font-size: 1.55rem;
-  line-height: 1;
-  transform: translateY(-1px);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: block;
+  width: 25px;
+  height: 25px;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
 }
 
 .settings-modal-backdrop {
@@ -862,7 +862,8 @@ a {
   }
 
   .settings-ball-icon {
-    font-size: 1.4rem;
+    width: 23px;
+    height: 23px;
   }
 }
 

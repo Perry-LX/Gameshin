@@ -13,7 +13,7 @@
   justify-content: space-between;
   gap: 12px;
   width: 100%;
-  max-width: 700px;
+  max-width: 960px;
   margin-bottom: 8px;
   padding: 4px 0;
 }
@@ -133,6 +133,33 @@
   display: flex;
   justify-content: center;
   width: 100%;
+  min-width: 0;
+}
+
+/* Keep the blocks square, but give the board a wider game desk on desktop.
+   The input deck sits alongside it instead of extending the page vertically. */
+.tetris-board-shell {
+  display: grid;
+  grid-template-columns: max-content minmax(280px, 300px);
+  justify-content: center;
+  align-items: center;
+  gap: clamp(20px, 4vw, 52px);
+  width: min(100%, 960px);
+  margin: 0 auto;
+  padding: clamp(16px, 2.5vw, 28px);
+  border: 1px solid var(--local-border, var(--border-color));
+  border-radius: 20px;
+  background: linear-gradient(135deg, rgba(20, 40, 65, 0.64), rgba(7, 16, 30, 0.82));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 20px 48px rgba(1, 8, 18, 0.2);
+  box-sizing: border-box;
+}
+
+.tetris-board-shell .tetris-canvas-wrap {
+  margin-inline: auto;
+}
+
+.tetris-board-shell .tetris-play-area {
+  width: fit-content;
 }
 
 .tetris-canvas-wrap {
@@ -272,6 +299,16 @@
   -webkit-user-select: none;
 }
 
+.tetris-board-shell .tetris-dpad {
+  width: min(100%, 300px);
+  margin: 0 auto;
+  padding: 18px;
+  border: 1px solid var(--local-border, var(--border-color));
+  border-radius: 16px;
+  background: rgba(5, 18, 32, 0.62);
+  box-sizing: border-box;
+}
+
 .tetris-dpad-row {
   display: flex;
   gap: 8px;
@@ -361,5 +398,21 @@
   .tetris-dpad-drop {
     min-width: 76px;
     font-size: 0.55rem;
+  }
+}
+
+@media (max-width: 760px) {
+  .tetris-board-shell {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    padding: 12px;
+  }
+
+  .tetris-board-shell .tetris-play-area {
+    width: 100%;
+  }
+
+  .tetris-board-shell .tetris-dpad {
+    margin-top: 0;
   }
 }

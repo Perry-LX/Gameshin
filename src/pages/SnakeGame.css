@@ -218,28 +218,26 @@
   transform: scale(1.05);
 }
 
-/* ── D-Pad Touch Controls ── */
+/* ── Compact horizontal touch controls ── */
 .snake-dpad {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 6px;
-  margin-top: 16px;
+  justify-content: center;
+  gap: 8px;
+  width: min(100%, 280px);
+  margin-top: 12px;
   margin-bottom: 4px;
   touch-action: manipulation;
   user-select: none;
   -webkit-user-select: none;
 }
 
-.snake-dpad-row {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-}
-
 .snake-dpad-btn {
-  width: 60px;
-  height: 60px;
+  box-sizing: border-box;
+  flex: 1 1 0;
+  min-width: 44px;
+  max-width: 64px;
+  height: 52px;
   border: 2px solid var(--border-color);
   background: var(--bg-card);
   color: var(--text-secondary);
@@ -261,16 +259,8 @@
   transform: scale(0.92);
 }
 
-.snake-dpad-blank {
-  background: transparent;
-  border-color: transparent;
-  cursor: default;
-  pointer-events: none;
-  opacity: 0.3;
-}
-
 @media (hover: hover) {
-  .snake-dpad-btn:hover:not(.snake-dpad-blank) {
+  .snake-dpad-btn:hover {
     border-color: var(--accent-green);
     color: var(--accent-green);
   }
@@ -298,7 +288,6 @@
   }
 
   .snake-dpad-btn {
-    width: 52px;
     height: 52px;
     font-size: 1.1rem;
   }

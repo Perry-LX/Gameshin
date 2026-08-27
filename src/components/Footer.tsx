@@ -5,17 +5,13 @@ export function Footer() {
 
   return (
     <footer className="pixel-footer">
-      <div className="footer-divider">
-        <span className="divider-pixel">◆</span>
-        <span className="divider-pixel">◆</span>
-        <span className="divider-pixel">◆</span>
-        <span className="divider-pixel">◆</span>
-        <span className="divider-pixel">◆</span>
-      </div>
+      <div className="footer-ornament" aria-hidden="true"><span /></div>
       <div className="footer-content">
-        <p className="footer-text">
-          ♥ {t('footer.text')}
-        </p>
+        <div className="footer-brand-lockup">
+          <p className="footer-brand">GAMESHIN</p>
+          <span>VIBE CODING GAME MIX</span>
+        </div>
+        <p className="footer-text">{t('footer.text')}</p>
         <p className="footer-copy">{t('footer.copyright')}</p>
       </div>
     </footer>

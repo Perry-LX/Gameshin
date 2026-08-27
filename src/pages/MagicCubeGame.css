@@ -6,12 +6,12 @@
   z-index: 1;
   overflow: hidden;
   user-select: none;
-  color: #1f2933;
-  font-family: "Segoe UI", "Microsoft YaHei", system-ui, sans-serif;
+  color: #f3f7ff;
+  font-family: 'Outfit', 'Noto Sans SC', "Segoe UI", "Microsoft YaHei", system-ui, sans-serif;
   background:
-    radial-gradient(circle at 20% 18%, rgba(255, 255, 255, 0.95), transparent 34%),
-    radial-gradient(circle at 78% 74%, rgba(125, 154, 190, 0.26), transparent 36%),
-    linear-gradient(135deg, #e9eef4 0%, #cfd9e5 100%);
+    radial-gradient(circle at 50% 42%, rgba(63, 194, 165, 0.16), transparent 26%),
+    radial-gradient(circle at 82% 8%, rgba(97, 153, 228, 0.18), transparent 31%),
+    linear-gradient(145deg, #06111f 0%, #0b1d30 54%, #07131f 100%);
 }
 
 .magic-cube-back-btn {
@@ -20,20 +20,21 @@
   left: 16px;
   z-index: 20;
   padding: 8px 16px;
-  border: 1px solid rgba(255, 255, 255, 0.66);
+  border: 1px solid rgba(132, 220, 198, 0.42);
   border-radius: 10px;
-  background: rgba(255, 255, 255, 0.82);
-  color: #1f2933;
-  font-family: 'Press Start 2P', monospace;
-  font-size: 0.6rem;
+  background: rgba(7, 22, 39, 0.88);
+  color: #f3f7ff;
+  font-family: 'Outfit', 'Noto Sans SC', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 700;
   cursor: pointer;
   backdrop-filter: blur(14px);
-  box-shadow: 0 4px 12px rgba(31, 41, 51, 0.10);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.24);
   transition: transform 0.12s ease, background 0.12s ease;
 }
 
 .magic-cube-back-btn:hover {
-  background: #e4e9f0;
+  background: rgba(18, 49, 66, 0.96);
   transform: translateY(-1px);
 }
 
@@ -60,15 +61,15 @@
   transform: translateX(-50%);
   padding: 7px 18px;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.82);
-  color: #374151;
-  box-shadow: 0 10px 30px rgba(31, 41, 51, 0.10);
+  background: rgba(7, 22, 39, 0.9);
+  color: #f3f7ff;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.28);
   backdrop-filter: blur(10px);
   font-size: 14px;
   font-weight: 600;
   white-space: nowrap;
 }
-#mc-status .count { color: #7b8492; font-weight: 500; }
+#mc-status .count { color: #b8c7da; font-weight: 500; }
 
 /* Controls */
 #mc-controls {
@@ -83,10 +84,10 @@
   gap: 9px;
   min-width: min(94vw, 620px);
   padding: 15px 20px;
-  border: 1px solid rgba(255, 255, 255, 0.66);
+  border: 1px solid rgba(132, 220, 198, 0.3);
   border-radius: 18px;
-  background: rgba(255, 255, 255, 0.82);
-  box-shadow: 0 18px 45px rgba(31, 41, 51, 0.14);
+  background: rgba(7, 22, 39, 0.9);
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.3);
   backdrop-filter: blur(14px);
 }
 
@@ -98,8 +99,8 @@
   gap: 7px;
 }
 
-.mc-control-label { margin-right: 4px; color: #6b7280; font-size: 12px; font-weight: 700; letter-spacing: 0.08em; }
-.mc-divider { color: #c9ced6; margin: 0 2px; }
+.mc-control-label { margin-right: 4px; color: #b8c7da; font-size: 12px; font-weight: 700; letter-spacing: 0.08em; }
+.mc-divider { color: rgba(132, 220, 198, 0.35); margin: 0 2px; }
 
 .mc-btn {
   border: 0; border-radius: 8px; cursor: pointer; font: inherit; font-weight: 700;
@@ -108,9 +109,9 @@
 .mc-btn:disabled { cursor: not-allowed; opacity: 0.5; transform: none !important; }
 
 .mc-btn-face {
-  width: 38px; height: 36px; color: #202734; background: #f1f4f8; box-shadow: 0 2px 8px rgba(31, 41, 51, 0.12);
+  width: 44px; height: 44px; color: #f3f7ff; background: rgba(24, 47, 70, 0.94); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
-.mc-btn-face:hover:not(:disabled) { background: #e4e9f0; transform: translateY(-1px); box-shadow: 0 5px 12px rgba(31, 41, 51, 0.14); }
+.mc-btn-face:hover:not(:disabled) { background: rgba(37, 78, 92, 0.98); transform: translateY(-1px); box-shadow: 0 5px 12px rgba(0, 0, 0, 0.28); }
 .mc-btn-face.prime::after { content: "'"; font-size: 10px; vertical-align: super; }
 
 .mc-btn-action { padding: 8px 18px; color: white; }
@@ -121,13 +122,13 @@
 
 #mc-hint {
   width: 100%; padding: 2px 10px 5px; border-radius: 999px;
-  color: #7b8492; font-size: 12px; font-weight: 600; text-align: center; white-space: nowrap;
+  color: #b8c7da; font-size: 12px; font-weight: 600; text-align: center; white-space: nowrap;
 }
 
 @media (max-width: 680px) {
   #mc-controls { bottom: 14px; width: 94vw; padding: 11px 12px; border-radius: 14px; }
   #mc-hint { font-size: 11px; white-space: normal; }
-  .mc-btn-face { width: 33px; height: 32px; font-size: 12px; }
+  .mc-btn-face { width: 44px; height: 44px; font-size: 12px; }
   .mc-btn-action { padding: 7px 13px; font-size: 13px; }
   .mc-control-label { width: 100%; text-align: center; margin: 1px 0; }
 }

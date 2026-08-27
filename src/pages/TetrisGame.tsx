@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../i18n';
+import { useCatalogReturn } from '../hooks/useCatalogReturn';
+import { trackEvent } from '../analytics';
 import './TetrisGame.css';
 
 const GRID_ROWS = 22;
@@ -202,7 +203,7 @@ function drawPreview(ctx: CanvasRenderingContext2D, p: PieceType, cs: number, w:
 
 // ── Main game component ──
 export function TetrisGame() {
-  const navigate = useNavigate();
+  const { isExiting, returnToCatalog } = useCatalogReturn();
   const { t, homePath } = useLanguage();
   const [score, setScore] = useState(0);
   const [hi, setHi] = useState(() => parseInt(localStorage.getItem('tetris-hi') || '0', 10));
@@ -210,14 +211,28 @@ export function TetrisGame() {
   const [cellSize, setCellSize] = useState(BASE_CELL);
   const [gameKey, setGameKey] = useState(0);
   const [lastScore, setLastScore] = useState(0);
+  const roundStartedAtRef = useRef<number | null>(null);
 
   const startNewGame = useCallback(() => {
+    const isReplay = gameState === 'over';
+    if (isReplay) void trackEvent('game_restarted', { game_id: 'tetris', trigger: 'game_over' });
+    void trackEvent('game_round_started', { game_id: 'tetris', mode: 'classic', is_replay: isReplay });
+    roundStartedAtRef.current = Date.now();
     setGameKey(k => k + 1);
     setScore(0);
     setGameState('playing');
-  }, []);
+  }, [gameState]);
 
   const handleGameOver = useCallback((finalScore: number) => {
+    if (roundStartedAtRef.current !== null) {
+      void trackEvent('game_round_ended', {
+        game_id: 'tetris',
+        outcome: 'game_over',
+        score: finalScore,
+        duration_seconds: Math.max(0, Math.round((Date.now() - roundStartedAtRef.current) / 1000)),
+      });
+      roundStartedAtRef.current = null;
+    }
     setGameState('over');
     setLastScore(finalScore);
     const prevHi = parseInt(localStorage.getItem('tetris-hi') || '0', 10);
@@ -232,10 +247,10 @@ export function TetrisGame() {
   const zoomReset = () => setCellSize(BASE_CELL);
 
   return (
-    <div className="tetris-page">
+    <div className={`tetris-page${isExiting ? ' game-route-exiting' : ''}`}>
       <h1 className="tetris-title">{t('tetris.title')}</h1>
       <div className="tetris-top-row">
-        <button className="tetris-back-btn" onClick={() => navigate(homePath)}>{t('tetris.back')}</button>
+        <button className="tetris-back-btn" onClick={() => returnToCatalog(homePath)}>{t('tetris.back')}</button>
         <div className="tetris-stats">
           <span className="tetris-stat">{t('tetris.lines')}: <b>{score}</b></span>
           <span className="tetris-stat">{t('tetris.best')}: <b>{hi}</b></span>
@@ -485,7 +500,7 @@ function TetrisBoard({ cellSize, onGameOver, onScoreChange }: {
   const handleTouchAction = (action: () => void) => { action(); };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
+    <div className="tetris-board-shell">
       <div className="tetris-play-area">
         <div className="tetris-canvas-wrap" style={{ maxWidth: gridW }}>
           <canvas ref={gridCanvasRef} width={gridW} height={gridH} className="tetris-canvas" style={{ width: gridW, height: gridH }} />
@@ -495,15 +510,15 @@ function TetrisBoard({ cellSize, onGameOver, onScoreChange }: {
           </div>
         </div>
       </div>
-      <div className="tetris-dpad">
+      <div className="tetris-dpad" role="group" aria-label={t('tetris.hint')}>
         <div className="tetris-dpad-row">
-          <button className="tetris-dpad-btn tetris-dpad-wide" onPointerDown={() => handleTouchAction(onLeft)} aria-label={t('control.left')}>◀</button>
-          <button className="tetris-dpad-btn" onPointerDown={() => handleTouchAction(onUp)} aria-label={t('control.rotate')}>▲</button>
-          <button className="tetris-dpad-btn tetris-dpad-wide" onPointerDown={() => handleTouchAction(onRight)} aria-label={t('control.right')}>▶</button>
+          <button type="button" className="tetris-dpad-btn tetris-dpad-wide" onPointerDown={() => handleTouchAction(onLeft)} aria-label={t('control.left')}>◀</button>
+          <button type="button" className="tetris-dpad-btn" onPointerDown={() => handleTouchAction(onUp)} aria-label={t('control.rotate')}>▲</button>
+          <button type="button" className="tetris-dpad-btn tetris-dpad-wide" onPointerDown={() => handleTouchAction(onRight)} aria-label={t('control.right')}>▶</button>
         </div>
         <div className="tetris-dpad-row">
-          <button className="tetris-dpad-btn tetris-dpad-wide" onPointerDown={() => handleTouchAction(onDown)} aria-label={t('control.softDrop')}>▼</button>
-          <button className="tetris-dpad-btn tetris-dpad-drop" onPointerDown={() => handleTouchAction(onSpace)} aria-label={t('control.hardDrop')}>{t('control.drop')}</button>
+          <button type="button" className="tetris-dpad-btn tetris-dpad-wide" onPointerDown={() => handleTouchAction(onDown)} aria-label={t('control.softDrop')}>▼</button>
+          <button type="button" className="tetris-dpad-btn tetris-dpad-drop" onPointerDown={() => handleTouchAction(onSpace)} aria-label={t('control.hardDrop')}>{t('control.drop')}</button>
         </div>
       </div>
     </div>

@@ -1,11 +1,25 @@
 {
   "name": "gameshin",
+  "main": "./src/worker.ts",
   "compatibility_date": "2026-07-12",
   "observability": {
     "enabled": true
   },
   "assets": {
     "directory": "./dist",
+    "binding": "ASSETS",
+    "run_worker_first": [
+      "/",
+      "/en",
+      "/en/*",
+      "/zh",
+      "/zh/*",
+      "/ja",
+      "/ja/*",
+      "/robots.txt",
+      "/sitemap.xml",
+      "/llms.txt"
+    ],
     "not_found_handling": "single-page-application"
   },
   "compatibility_flags": [

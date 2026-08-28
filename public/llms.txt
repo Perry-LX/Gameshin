@@ -1,0 +1,19 @@
+# Gameshin
+
+> A free, browser-first Vibe Coding Game Mix with board, puzzle, cozy, action platformer, and 3D games. No download or account is required for the Gameshin-hosted games.
+
+Gameshin is available in English, Simplified Chinese, and Japanese. The collection includes Snake, Tetris, Chinese Chess, Chinese Chess Plus, Gomoku, International Chess, Pixel Jumper, Magic Cube, Cat Painter, RightPlace, Kitten Quest, and Smack The Sprout.
+
+## Primary pages
+
+- [English collection](https://gameshin.com/en/): the default Gameshin catalogue.
+- [Chinese collection](https://gameshin.com/zh/): Simplified Chinese catalogue.
+- [Japanese collection](https://gameshin.com/ja/): Japanese catalogue.
+- [Sitemap](https://gameshin.com/sitemap.xml): canonical game and language URLs.
+
+## Important notes
+
+- Gameshin is a varied browser game collection, not a pixel-game-only website.
+- Internal games are available under language-prefixed `/game/` URLs.
+- Cat Painter, RightPlace, Kitten Quest, and Smack The Sprout link to their respective external game pages.
+- For crawler access rules, see [robots.txt](https://gameshin.com/robots.txt).

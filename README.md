@@ -117,6 +117,7 @@ The site has been optimized for both traditional search engines (Google, Bing) a
 |------|---------|
 | `public/robots.txt` | Allows all major crawlers and AI bots access |
 | `public/sitemap.xml` | Indexes all game pages and subdomain games |
+| `public/llms.txt` | Concise, AI-readable description of the collection and canonical links |
 | `public/favicon.ico` | Transparent multi-size browser-tab icon |
 | `public/brand/gameshin-mark.webp` | Transparent WebP masthead brand mark |
 | `public/og-image.png` | 1200×630 Open Graph image for social sharing |
@@ -316,12 +317,33 @@ Cloudflare Workers is configured through `wrangler.jsonc`:
 
 ```jsonc
 {
+  "main": "./src/worker.ts",
   "assets": {
     "directory": "./dist",
+    "binding": "ASSETS",
+    "run_worker_first": ["/", "/en/*", "/zh/*", "/ja/*"],
     "not_found_handling": "single-page-application"
   }
 }
 ```
+
+The Worker serves the selected HTML and crawler-discovery routes from `ASSETS` and sends recognised AI crawler visits to DataFast. This keeps heavy images and game files on the direct static-asset path.
+
+#### DataFast bot traffic tracking
+
+The browser DataFast setup tracks player page views. AI crawler statistics require the Worker above, so deploy with:
+
+```bash
+npm run deploy:cloudflare
+```
+
+If DataFast's **Reject unauthenticated requests** option is enabled, create a Bot traffic token (`dfbot_…`) in DataFast and store it only in Cloudflare:
+
+```bash
+npx wrangler secret put DATAFAST_BOT_TOKEN
+```
+
+The token is optional when that dashboard option is disabled. DataFast records a bot visit only after a real crawler requests one of these paths; a browser refresh or normal player visit does not create bot traffic.
 
 Do not add `public/_redirects` for Workers deployments. Cloudflare Workers rejects `_redirects` SPA rules such as `/* /index.html 200` or `/en/* /index.html 200` as infinite rewrite loops because `/index.html` can match the same rule after extension/index normalization. Vercel uses `vercel.json`.
 

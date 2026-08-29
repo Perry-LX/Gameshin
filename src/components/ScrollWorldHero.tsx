@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useLanguage } from '../i18n';
 import { ArrowRightIcon } from './Icons';
 import { trackEvent } from '../analytics';
@@ -9,6 +9,13 @@ interface ScrollWorldHeroProps {
 
 const sceneIds = ['idea', 'strategy', 'puzzle', 'arcade', 'plaza'] as const;
 const sceneImages = [
+  '/scroll-world/stills/01-idea-portal.webp',
+  '/scroll-world/stills/02-strategy-arena.webp',
+  '/scroll-world/stills/03-puzzle-workshop.webp',
+  '/scroll-world/stills/04-arcade-runway.webp',
+  '/scroll-world/stills/05-game-plaza.webp',
+] as const;
+const sceneHdImages = [
   '/scroll-world/stills/01-idea-portal-hd.webp',
   '/scroll-world/stills/02-strategy-arena-hd.webp',
   '/scroll-world/stills/03-puzzle-workshop-hd.webp',
@@ -16,6 +23,13 @@ const sceneImages = [
   '/scroll-world/stills/05-game-plaza-hd.webp',
 ] as const;
 const mobileSceneImages = [
+  '/scroll-world/stills/01-idea-portal-mobile.webp',
+  '/scroll-world/stills/02-strategy-arena-mobile.webp',
+  '/scroll-world/stills/03-puzzle-workshop-mobile.webp',
+  '/scroll-world/stills/04-arcade-runway-mobile.webp',
+  '/scroll-world/stills/05-game-plaza-mobile.webp',
+] as const;
+const mobileSceneHdImages = [
   '/scroll-world/stills/01-idea-portal-mobile-hd.webp',
   '/scroll-world/stills/02-strategy-arena-mobile-hd.webp',
   '/scroll-world/stills/03-puzzle-workshop-mobile-hd.webp',
@@ -28,17 +42,20 @@ export function ScrollWorldHero({ onExplore }: ScrollWorldHeroProps) {
   const rootRef = useRef<HTMLElement>(null);
   const mediaRefs = useRef<Array<HTMLElement | null>>([]);
   const [activeScene, setActiveScene] = useState(0);
+  const [loadedScenes, setLoadedScenes] = useState<ReadonlySet<number>>(() => new Set([0]));
 
   const scenes = sceneIds.map((id, index) => ({
     id,
     image: sceneImages[index],
+    hdImage: sceneHdImages[index],
     mobileImage: mobileSceneImages[index],
+    mobileHdImage: mobileSceneHdImages[index],
     eyebrow: t(`world.${id}.eyebrow`),
     title: t(`world.${id}.title`),
     body: t(`world.${id}.body`),
   }));
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     let frame = 0;
     let previousScene = -1;
 
@@ -55,6 +72,20 @@ export function ScrollWorldHero({ onExplore }: ScrollWorldHeroProps) {
       if (nextScene !== previousScene) {
         previousScene = nextScene;
         setActiveScene(nextScene);
+      }
+
+      // Do not compete with the first hero image for bandwidth. Once the user
+      // starts moving through the world, load only the current and next scene.
+      if (sceneProgress > 0.04) {
+        const current = Math.min(scenes.length - 1, Math.floor(sceneProgress));
+        const next = Math.min(scenes.length - 1, current + 1);
+        setLoadedScenes((loaded) => {
+          if (loaded.has(current) && loaded.has(next)) return loaded;
+          const updated = new Set(loaded);
+          updated.add(current);
+          updated.add(next);
+          return updated;
+        });
       }
 
       mediaRefs.current.forEach((element, index) => {
@@ -84,6 +115,29 @@ export function ScrollWorldHero({ onExplore }: ScrollWorldHeroProps) {
     };
   }, [scenes.length]);
 
+  useEffect(() => {
+    // Warm the second scene only after the critical render has had time to
+    // settle, keeping a smooth first transition without delaying LCP.
+    const warmNextScene = () => setLoadedScenes((loaded) => {
+      if (loaded.has(1)) return loaded;
+      const updated = new Set(loaded);
+      updated.add(1);
+      return updated;
+    });
+    let timeout = 0;
+    const scheduleWarmup = () => {
+      timeout = globalThis.setTimeout(warmNextScene, 1500);
+    };
+
+    if (document.readyState === 'complete') scheduleWarmup();
+    else window.addEventListener('load', scheduleWarmup, { once: true });
+
+    return () => {
+      window.removeEventListener('load', scheduleWarmup);
+      globalThis.clearTimeout(timeout);
+    };
+  }, []);
+
   const exploreGames = (category: string, placement: 'hero_primary' | 'hero_secondary' | 'hero_final') => {
     void trackEvent('hero_cta_click', { locale: lang, category, placement, destination: 'catalog' });
     onExplore(category);
@@ -105,18 +159,27 @@ export function ScrollWorldHero({ onExplore }: ScrollWorldHeroProps) {
               className="scroll-world-media"
               style={{ opacity: index === 0 ? 1 : 0 }}
             >
-              <picture>
-                <source media="(max-width: 760px)" srcSet={scene.mobileImage} />
-                <img
-                  src={scene.image}
-                  alt=""
-                  width="3072"
-                  height="2048"
-                  loading={index === 0 ? 'eager' : 'lazy'}
-                  fetchPriority={index === 0 ? 'high' : 'auto'}
-                  draggable={false}
-                />
-              </picture>
+              {loadedScenes.has(index) && (
+                <picture>
+                  <source
+                    media="(max-width: 760px)"
+                    srcSet={`${scene.mobileImage} 768w, ${scene.mobileHdImage} 1536w`}
+                    sizes="100vw"
+                  />
+                  <img
+                    src={scene.image}
+                    srcSet={`${scene.image} 1536w, ${scene.hdImage} 3072w`}
+                    sizes="100vw"
+                    alt=""
+                    width="1536"
+                    height="1024"
+                    loading={index === 0 ? 'eager' : 'lazy'}
+                    fetchPriority={index === 0 ? 'high' : 'auto'}
+                    decoding={index === 0 ? 'sync' : 'async'}
+                    draggable={false}
+                  />
+                </picture>
+              )}
             </figure>
           ))}
         </div>

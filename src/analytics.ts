@@ -1,19 +1,19 @@
-import { initDataFast } from 'datafast';
-
 type AnalyticsValue = string | number | boolean;
 export type AnalyticsProperties = Record<string, AnalyticsValue>;
+type DataFastModule = typeof import('datafast');
+type DataFastClient = Awaited<ReturnType<DataFastModule['initDataFast']>>;
 
 const WEBSITE_ID = 'dfid_ult96FALaaaTkgcQqNt1I';
-let clientPromise: ReturnType<typeof initDataFast> | null = null;
+let clientPromise: Promise<DataFastClient> | null = null;
 
 /** Initializes one shared client so analytics never delays interaction code. */
 export function initializeAnalytics() {
   if (!clientPromise) {
-    clientPromise = initDataFast({
+    clientPromise = import('datafast').then(({ initDataFast }) => initDataFast({
       websiteId: WEBSITE_ID,
       autoCapturePageviews: true,
       allowLocalhost: import.meta.env.DEV,
-    });
+    }));
   }
 
   return clientPromise;

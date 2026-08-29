@@ -6,7 +6,18 @@ import { initializeAnalytics } from './analytics'
 import './index.css'
 import App from './App.tsx'
 
-void initializeAnalytics()
+const startAnalytics = () => void initializeAnalytics()
+
+const scheduleAnalytics = () => {
+  if ('requestIdleCallback' in window) {
+    window.requestIdleCallback(startAnalytics, { timeout: 3000 })
+  } else {
+    globalThis.setTimeout(startAnalytics, 1500)
+  }
+}
+
+if (document.readyState === 'complete') scheduleAnalytics()
+else window.addEventListener('load', scheduleAnalytics, { once: true })
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

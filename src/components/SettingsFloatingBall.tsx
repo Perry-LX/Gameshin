@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import { useLanguage, type SupportedLanguage } from '../i18n';
 
 // Version the persisted position so existing installs migrate away from the
@@ -279,7 +279,10 @@ export function SettingsFloatingBall() {
         ref={ballRef}
         type="button"
         className={`settings-ball${dragging ? ' dragging' : ''}`}
-        style={{ left: position.x, top: position.y }}
+        style={{
+          '--settings-x': `${position.x}px`,
+          '--settings-y': `${position.y}px`,
+        } as CSSProperties}
         onPointerDown={handlePointerDown}
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}

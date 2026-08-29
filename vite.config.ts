@@ -12,15 +12,5 @@ export default defineConfig({
   build: {
     // 生成 sourcemap 便于调试生产问题（生产环境可设为 false）
     sourcemap: false,
-    // 代码分割
-    rollupOptions: {
-      output: {
-        manualChunks(id: string) {
-          if (id.includes('node_modules')) {
-            return 'vendor';
-          }
-        },
-      },
-    },
   },
 })

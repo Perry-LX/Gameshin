@@ -100,8 +100,8 @@ body:has(.pixel-jumper-page) { --local-page-accent: #78c8ff; }
 }
 
 :is(.snake-page, .tetris-page, .chess-page, .chess-plus-page, .gomoku-page, .intl-chess-page, .magic-cube-page, .pixel-jumper-page) :is([class*="overlay"], [class*="modal-backdrop"]) {
-  background: rgba(3, 12, 24, 0.84) !important;
-  backdrop-filter: blur(12px) saturate(1.1);
+  background: rgba(3, 12, 24, 0.96) !important;
+  backdrop-filter: none;
 }
 
 :is(.snake-page, .tetris-page, .chess-page, .chess-plus-page, .gomoku-page, .intl-chess-page, .magic-cube-page, .pixel-jumper-page) :is([class*="status"], [class*="hint"], [class*="label"], [class*="score"], [class*="stat"], [class*="badge"]) {

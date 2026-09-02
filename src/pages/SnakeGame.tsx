@@ -117,7 +117,8 @@ export function SnakeGame() {
   const [cellSize, setCellSize] = useState(BASE_CELL_SIZE);
   const roundStartedAtRef = useRef<number | null>(null);
   const cellSizeRef = useRef(cellSize);
-  cellSizeRef.current = cellSize;
+  const loopTimerRef = useRef<number | null>(null);
+  const gameLoopRef = useRef<() => void>(() => {});
 
   const draw = useCallback(() => {
     const canvas = canvasRef.current;
@@ -189,6 +190,7 @@ export function SnakeGame() {
   const endGame = useCallback(() => {
     const g = gameRef.current;
     g.running = false;
+    loopTimerRef.current = null;
     if (roundStartedAtRef.current !== null) {
       void trackEvent('game_round_ended', {
         game_id: 'snake',
@@ -241,8 +243,12 @@ export function SnakeGame() {
     }
 
     draw();
-    setTimeout(() => gameLoop(), g.speed);
+    loopTimerRef.current = globalThis.setTimeout(() => gameLoopRef.current(), g.speed);
   }, [draw, endGame]);
+
+  useEffect(() => {
+    gameLoopRef.current = gameLoop;
+  }, [gameLoop]);
 
   const startGame = useCallback(() => {
     const g = gameRef.current;
@@ -258,12 +264,21 @@ export function SnakeGame() {
     g.speed = INITIAL_SPEED;
     g.running = true;
     g.score = 0;
+    if (loopTimerRef.current !== null) globalThis.clearTimeout(loopTimerRef.current);
     setScore(0);
     setGameState('playing');
-    setTimeout(() => gameLoop(), g.speed);
-  }, [gameLoop, gameState]);
+    loopTimerRef.current = globalThis.setTimeout(() => gameLoopRef.current(), g.speed);
+  }, [gameState]);
 
-  useEffect(() => { draw(); }, [draw]);
+  useEffect(() => {
+    cellSizeRef.current = cellSize;
+    draw();
+  }, [cellSize, draw]);
+
+  useEffect(() => () => {
+    gameRef.current.running = false;
+    if (loopTimerRef.current !== null) globalThis.clearTimeout(loopTimerRef.current);
+  }, []);
 
   // ── Touch / click direction handler ──
   const handleDirection = useCallback((dir: Direction) => {
